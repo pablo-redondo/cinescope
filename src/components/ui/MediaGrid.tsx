@@ -1,21 +1,29 @@
 import MediaCard from './MediaCard'
-import type { Movie, TVShow } from '@/types/tmdb'
+import type { MediaItem } from '@/types/omdb'
 
 type Props = {
-  items: (Movie | TVShow)[]
-  type: 'movie' | 'tv'
+  items: MediaItem[]
   title?: string
 }
 
-export default function MediaGrid({ items, type, title }: Props) {
+export default function MediaGrid({ items, title }: Props) {
+  if (items.length === 0) return null
+
   return (
     <section>
       {title && (
-        <h2 className="text-xl font-bold text-white mb-4">{title}</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+          <div style={{ width: 3, height: 20, background: 'var(--accent)', borderRadius: 2, flexShrink: 0 }} />
+          <h2 style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.2px' }}>{title}</h2>
+        </div>
       )}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+        gap: 20,
+      }}>
         {items.map((item) => (
-          <MediaCard key={item.id} item={item} type={type} />
+          <MediaCard key={item.imdbID} item={item} />
         ))}
       </div>
     </section>

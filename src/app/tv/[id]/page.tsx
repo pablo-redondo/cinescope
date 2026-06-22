@@ -1,104 +1,204 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getTVDetail, getTVCredits, getTVVideos } from '@/services/tv'
-import { getBackdropUrl, getPosterUrl } from '@/lib/tmdb'
+import { getTVDetail, searchTV, normalizeSearchItem } from '@/services/tv'
+import { normalizePoster } from '@/lib/omdb'
+import WatchlistButton from '@/components/WatchlistButton'
+import MediaCarousel from '@/components/ui/MediaCarousel'
 
-export default async function TVPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function TVDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const tvId = Number(id)
-
-  const [show, credits, videos] = await Promise.all([
-    getTVDetail(tvId).catch(() => null),
-    getTVCredits(tvId).catch(() => []),
-    getTVVideos(tvId).catch(() => []),
-  ])
-
+  const show = await getTVDetail(id)
   if (!show) notFound()
 
-  const backdropUrl = getBackdropUrl(show.backdrop_path, 'original')
-  const posterUrl = getPosterUrl(show.poster_path, 'w500')
-  const trailer = videos[0]
-  const year = show.first_air_date ? new Date(show.first_air_date).getFullYear() : '—'
+  const poster = normalizePoster(show.Poster)
+
+  const searchTerm = show.Actors !== 'N/A' ? show.Actors.split(', ')[0] : null
+  const similarRes = searchTerm ? await searchTV(searchTerm) : null
+  const similar = similarRes?.Search
+    ?.filter((s) => s.imdbID !== id)
+    .slice(0, 12)
+    .map(normalizeSearchItem) ?? []
+
+  const genres = show.Genre !== 'N/A' ? show.Genre.split(', ') : []
 
   return (
-    <div>
-      <div className="relative h-[50vh] w-full overflow-hidden">
-        {backdropUrl && (
-          <Image src={backdropUrl} alt={show.name} fill priority className="object-cover" sizes="100vw" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-black/50 to-black/30" />
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+
+      {/* Cinematic backdrop */}
+      <div style={{ position: 'relative', height: 420, overflow: 'hidden' }}>
+        {poster ? (
+          <Image src={poster} alt="" fill priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', transform: 'scale(1.1)', filter: 'blur(60px)', opacity: 0.3 }}
+          />
+        ) : null}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, var(--bg) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, transparent 50%)' }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 -mt-32 relative z-10 pb-16">
-        <div className="flex gap-8 items-start">
-          {posterUrl && (
-            <div className="hidden md:block shrink-0 w-52 rounded-xl overflow-hidden shadow-2xl">
-              <Image src={posterUrl} alt={show.name} width={208} height={312} className="w-full" />
+      <div className="page-inner" style={{
+        marginTop: -340,
+        position: 'relative', zIndex: 10,
+      }}>
+
+        <Link href="/tv" style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          color: 'var(--muted)', fontSize: 13, fontWeight: 600,
+          textDecoration: 'none', marginBottom: 24,
+        }}>
+          ← Volver a series
+        </Link>
+
+        <div style={{ display: 'flex', gap: 40, alignItems: 'flex-start' }}>
+
+          {poster && (
+            <div style={{
+              flexShrink: 0,
+              width: 'clamp(150px, 16vw, 260px)',
+              borderRadius: 18, overflow: 'hidden',
+              boxShadow: '0 40px 100px -10px rgba(0,0,0,0.9)',
+              outline: '1px solid rgba(255,255,255,0.08)',
+            }}>
+              <Image src={poster} alt={show.Title} width={260} height={390} style={{ width: '100%', display: 'block' }} priority />
             </div>
           )}
 
-          <div className="flex-1 space-y-4 pt-8">
-            <div className="flex flex-wrap gap-2">
-              {show.genres.map((g) => (
-                <span key={g.id} className="bg-white/10 text-xs text-slate-300 px-3 py-1 rounded-full">
-                  {g.name}
-                </span>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16, paddingTop: 8 }}>
+
+            {/* Series badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <span style={{
+                background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)',
+                color: '#818cf8', fontSize: 10, fontWeight: 800,
+                padding: '4px 12px', borderRadius: 999, letterSpacing: '0.1em', textTransform: 'uppercase',
+              }}>Serie</span>
+              {genres.map((g) => (
+                <span key={g} style={{
+                  background: 'var(--surface2)', border: '1px solid var(--border)',
+                  color: 'var(--muted)', fontSize: 11, fontWeight: 600,
+                  padding: '4px 12px', borderRadius: 999,
+                }}>{g}</span>
               ))}
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-bold text-white">{show.name}</h1>
+            <h1 style={{
+              fontSize: 'clamp(28px, 4vw, 52px)',
+              fontWeight: 900, color: '#fff',
+              letterSpacing: '-1.5px', lineHeight: 0.95,
+            }}>
+              {show.Title}
+            </h1>
 
-            {show.tagline && <p className="text-slate-400 italic">"{show.tagline}"</p>}
-
-            <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400">
-              <span>⭐ {show.vote_average.toFixed(1)}</span>
-              <span>📅 {year}</span>
-              <span>📺 {show.number_of_seasons} temporadas</span>
-              <span>🎬 {show.number_of_episodes} episodios</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              {show.imdbRating !== 'N/A' && (
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
+                  <span style={{ color: 'var(--accent)', fontSize: 18 }}>★</span>
+                  <span style={{ color: '#fff', fontWeight: 900, fontSize: 22 }}>{show.imdbRating}</span>
+                  <span style={{ color: 'var(--muted)', fontSize: 13 }}>/10 · IMDb</span>
+                  {show.imdbVotes && (
+                    <span style={{ color: 'var(--muted)', fontSize: 12 }}>· {show.imdbVotes} votos</span>
+                  )}
+                </div>
+              )}
+              {show.Year && <span style={{ color: 'var(--muted)', fontSize: 14 }}>{show.Year}</span>}
+              {show.totalSeasons && (
+                <span style={{
+                  background: 'var(--surface2)', border: '1px solid var(--border)',
+                  color: 'var(--text)', fontSize: 13, fontWeight: 700,
+                  padding: '4px 12px', borderRadius: 8,
+                }}>
+                  {show.totalSeasons} temporadas
+                </span>
+              )}
+              {show.Runtime && show.Runtime !== 'N/A' && (
+                <span style={{ color: 'var(--muted)', fontSize: 14 }}>{show.Runtime}/ep</span>
+              )}
             </div>
 
-            <p className="text-slate-300 leading-relaxed max-w-2xl">{show.overview}</p>
-
-            {trailer && (
-              <a
-                href={`https://www.youtube.com/watch?v=${trailer.key}`}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', paddingTop: 4 }}>
+              <WatchlistButton movie={show} />
+              <Link
+                href={`https://www.imdb.com/title/${show.imdbID}/`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2.5 rounded-full text-sm transition-colors"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: 'var(--surface)', border: '1px solid var(--border)',
+                  color: 'var(--text)', fontSize: 13, fontWeight: 600,
+                  padding: '11px 20px', borderRadius: 10, textDecoration: 'none',
+                }}
               >
-                ▶ Ver tráiler
-              </a>
-            )}
+                <span style={{ color: 'var(--accent)', fontWeight: 900, fontSize: 12 }}>IMDb</span>
+                Ver en IMDb ↗
+              </Link>
+            </div>
+
           </div>
         </div>
 
-        {credits.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-bold text-white mb-4">Reparto principal</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {credits.map((actor) => (
-                <div key={actor.id} className="shrink-0 w-24 text-center">
-                  <div className="w-24 h-24 rounded-full overflow-hidden bg-white/10 mx-auto mb-2">
-                    {actor.profile_path ? (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-                        alt={actor.name}
-                        width={96}
-                        height={96}
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-2xl">👤</div>
-                    )}
-                  </div>
-                  <p className="text-white text-xs font-medium line-clamp-2">{actor.name}</p>
-                  <p className="text-slate-500 text-xs line-clamp-1">{actor.character}</p>
-                </div>
-              ))}
+        {/* Details */}
+        <div style={{
+          marginTop: 48,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) 280px',
+          gap: 48,
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
+                Sinopsis
+              </p>
+              <p style={{ color: 'var(--text)', fontSize: 15, lineHeight: 1.75, opacity: 0.9 }}>{show.Plot}</p>
             </div>
-          </section>
-        )}
+
+            {show.Awards && show.Awards !== 'N/A' && (
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(245,197,24,0.08), rgba(245,197,24,0.03))',
+                border: '1px solid rgba(245,197,24,0.15)',
+                borderRadius: 14, padding: '16px 20px',
+                display: 'flex', alignItems: 'flex-start', gap: 12,
+              }}>
+                <span style={{ fontSize: 20 }}>🏆</span>
+                <div>
+                  <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>Premios</p>
+                  <p style={{ color: 'var(--text)', fontSize: 14, opacity: 0.85 }}>{show.Awards}</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div style={{
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            borderRadius: 16, padding: 24,
+            display: 'flex', flexDirection: 'column', gap: 20,
+            height: 'fit-content',
+          }}>
+            {[
+              { label: 'Reparto', value: show.Actors },
+              { label: 'Idioma', value: show.Language },
+              { label: 'Estreno', value: show.Released },
+            ].filter(({ value }) => value && value !== 'N/A').map(({ label, value }) => (
+              <div key={label} style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16 }}>
+                <p style={{ fontSize: 10, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
+                  {label}
+                </p>
+                <p style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.55, opacity: 0.9 }}>{value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ height: 64 }} />
       </div>
+
+      {similar.length > 0 && (
+        <div style={{ paddingBottom: 64 }}>
+          <MediaCarousel items={similar} title={`Más con ${searchTerm}`} subtitle="Puede que también te guste" />
+        </div>
+      )}
+
     </div>
   )
 }

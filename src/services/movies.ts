@@ -1,59 +1,39 @@
-import tmdbFetch from '@/lib/tmdb'
-import type { Movie, MovieDetail, Cast, Video, Genre, PaginatedResponse } from '@/types/tmdb'
+import { omdbFetch, normalizePoster } from '@/lib/omdb'
+import type { OmdbDetail, OmdbSearchItem, OmdbSearchResponse, MediaItem } from '@/types/omdb'
 
-export async function getTrending(timeWindow: 'day' | 'week' = 'week') {
-  return tmdbFetch<PaginatedResponse<Movie>>(`/trending/movie/${timeWindow}`)
+export function normalizeDetail(d: OmdbDetail): MediaItem {
+  return {
+    imdbID: d.imdbID,
+    title: d.Title,
+    year: d.Year,
+    type: 'movie',
+    poster: normalizePoster(d.Poster),
+    rating: d.imdbRating !== 'N/A' ? d.imdbRating : undefined,
+  }
 }
 
-export async function getNowPlaying(page = 1) {
-  return tmdbFetch<PaginatedResponse<Movie>>('/movie/now_playing', { page: String(page) })
+export function normalizeSearchItem(item: OmdbSearchItem): MediaItem {
+  return {
+    imdbID: item.imdbID,
+    title: item.Title,
+    year: item.Year,
+    type: 'movie',
+    poster: normalizePoster(item.Poster),
+  }
 }
 
-export async function getTopRated(page = 1) {
-  return tmdbFetch<PaginatedResponse<Movie>>('/movie/top_rated', { page: String(page) })
+export async function getMoviesByIds(ids: string[]): Promise<OmdbDetail[]> {
+  const results = await Promise.all(
+    ids.map((id) => omdbFetch<OmdbDetail>({ i: id, plot: 'short' }))
+  )
+  return results.filter((r) => r.Response === 'True')
 }
 
-export async function getUpcoming(page = 1) {
-  return tmdbFetch<PaginatedResponse<Movie>>('/movie/upcoming', { page: String(page) })
+export async function getMovieDetail(id: string): Promise<OmdbDetail | null> {
+  const data = await omdbFetch<OmdbDetail>({ i: id, plot: 'full' })
+  return data.Response === 'True' ? data : null
 }
 
-export async function getMovieDetail(id: number) {
-  return tmdbFetch<MovieDetail>(`/movie/${id}`)
-}
-
-export async function getMovieCredits(id: number) {
-  const data = await tmdbFetch<{ cast: Cast[] }>(`/movie/${id}/credits`)
-  return data.cast.slice(0, 10)
-}
-
-export async function getMovieVideos(id: number) {
-  const data = await tmdbFetch<{ results: Video[] }>(`/movie/${id}/videos`)
-  return data.results.filter((v) => v.site === 'YouTube' && v.type === 'Trailer')
-}
-
-export async function getSimilarMovies(id: number) {
-  return tmdbFetch<PaginatedResponse<Movie>>(`/movie/${id}/similar`)
-}
-
-export async function searchMovies(query: string, page = 1) {
-  return tmdbFetch<PaginatedResponse<Movie>>('/search/movie', { query, page: String(page) })
-}
-
-export async function discoverMovies(params: {
-  genre?: string
-  year?: string
-  sortBy?: string
-  page?: number
-}) {
-  return tmdbFetch<PaginatedResponse<Movie>>('/discover/movie', {
-    with_genres: params.genre || '',
-    primary_release_year: params.year || '',
-    sort_by: params.sortBy || 'popularity.desc',
-    page: String(params.page || 1),
-  })
-}
-
-export async function getMovieGenres() {
-  const data = await tmdbFetch<{ genres: Genre[] }>('/genre/movie/list')
-  return data.genres
+export async function searchMovies(query: string, page = 1): Promise<OmdbSearchResponse> {
+  return omdbFetch<OmdbSearchResponse>({ s: query, type: 'movie', page: String(page) })
 }

@@ -1,124 +1,223 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getMovieDetail, getMovieCredits, getMovieVideos, getSimilarMovies } from '@/services/movies'
-import { getBackdropUrl, getPosterUrl } from '@/lib/tmdb'
-import MediaGrid from '@/components/ui/MediaGrid'
+import { getMovieDetail, searchMovies, normalizeSearchItem } from '@/services/movies'
+import { normalizePoster } from '@/lib/omdb'
 import WatchlistButton from '@/components/WatchlistButton'
+import MediaCarousel from '@/components/ui/MediaCarousel'
 
 export default async function MoviePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const movieId = Number(id)
-
-  const [movie, credits, videos, similar] = await Promise.all([
-    getMovieDetail(movieId).catch(() => null),
-    getMovieCredits(movieId).catch(() => []),
-    getMovieVideos(movieId).catch(() => []),
-    getSimilarMovies(movieId).catch(() => ({ results: [] })),
-  ])
-
+  const movie = await getMovieDetail(id)
   if (!movie) notFound()
 
-  const backdropUrl = getBackdropUrl(movie.backdrop_path, 'original')
-  const posterUrl = getPosterUrl(movie.poster_path, 'w500')
-  const trailer = videos[0]
-  const year = movie.release_date ? new Date(movie.release_date).getFullYear() : '—'
-  const runtime = movie.runtime ? `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m` : '—'
+  const poster = normalizePoster(movie.Poster)
+
+  const searchTerm = movie.Director !== 'N/A'
+    ? movie.Director.split(', ')[0]
+    : movie.Actors.split(', ')[0]
+  const similarRes = searchTerm ? await searchMovies(searchTerm) : null
+  const similar = similarRes?.Search
+    ?.filter((s) => s.imdbID !== id)
+    .slice(0, 12)
+    .map(normalizeSearchItem) ?? []
+
+  const genres = movie.Genre !== 'N/A' ? movie.Genre.split(', ') : []
 
   return (
-    <div>
-      {/* Backdrop */}
-      <div className="relative h-[50vh] w-full overflow-hidden">
-        {backdropUrl && (
-          <Image src={backdropUrl} alt={movie.title} fill priority className="object-cover" sizes="100vw" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-black/50 to-black/30" />
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+
+      {/* Cinematic backdrop */}
+      <div style={{ position: 'relative', height: 420, overflow: 'hidden' }}>
+        {poster ? (
+          <Image src={poster} alt="" fill priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', transform: 'scale(1.1)', filter: 'blur(60px)', opacity: 0.3 }}
+          />
+        ) : null}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, var(--bg) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, transparent 50%)' }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 -mt-32 relative z-10 pb-16">
-        <div className="flex gap-8 items-start">
+      {/* Content — overlaps the backdrop */}
+      <div className="page-inner" style={{
+        marginTop: -340,
+        position: 'relative', zIndex: 10,
+      }}>
+
+        {/* Back link */}
+        <Link href="/movies" style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          color: 'var(--muted)', fontSize: 13, fontWeight: 600,
+          textDecoration: 'none', marginBottom: 24,
+          transition: 'color .2s',
+        }}>
+          ← Volver a películas
+        </Link>
+
+        {/* Main card */}
+        <div style={{ display: 'flex', gap: 40, alignItems: 'flex-start' }}>
+
           {/* Poster */}
-          {posterUrl && (
-            <div className="hidden md:block shrink-0 w-52 rounded-xl overflow-hidden shadow-2xl">
-              <Image src={posterUrl} alt={movie.title} width={208} height={312} className="w-full" />
+          {poster && (
+            <div style={{
+              flexShrink: 0,
+              width: 'clamp(150px, 16vw, 260px)',
+              borderRadius: 18,
+              overflow: 'hidden',
+              boxShadow: '0 40px 100px -10px rgba(0,0,0,0.9)',
+              outline: '1px solid rgba(255,255,255,0.08)',
+            }}>
+              <Image src={poster} alt={movie.Title} width={260} height={390} style={{ width: '100%', display: 'block' }} priority />
             </div>
           )}
 
           {/* Info */}
-          <div className="flex-1 space-y-4 pt-8">
-            <div className="flex flex-wrap gap-2">
-              {movie.genres.map((g) => (
-                <span key={g.id} className="bg-white/10 text-xs text-slate-300 px-3 py-1 rounded-full">
-                  {g.name}
-                </span>
-              ))}
-            </div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16, paddingTop: 8 }}>
 
-            <h1 className="text-3xl md:text-4xl font-bold text-white">{movie.title}</h1>
-
-            {movie.tagline && (
-              <p className="text-slate-400 italic">"{movie.tagline}"</p>
+            {/* Genres */}
+            {genres.length > 0 && (
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {genres.map((g) => (
+                  <span key={g} style={{
+                    background: 'var(--surface2)', border: '1px solid var(--border)',
+                    color: 'var(--muted)', fontSize: 11, fontWeight: 600,
+                    padding: '4px 12px', borderRadius: 999,
+                  }}>{g}</span>
+                ))}
+              </div>
             )}
 
-            <div className="flex flex-wrap items-center gap-4 text-sm text-slate-400">
-              <span>⭐ {movie.vote_average.toFixed(1)} ({movie.vote_count.toLocaleString()} votos)</span>
-              <span>📅 {year}</span>
-              <span>⏱ {runtime}</span>
-              <span className="uppercase text-xs bg-white/10 px-2 py-0.5 rounded">{movie.original_language}</span>
-            </div>
+            <h1 style={{
+              fontSize: 'clamp(28px, 4vw, 52px)',
+              fontWeight: 900, color: '#fff',
+              letterSpacing: '-1.5px', lineHeight: 0.95,
+            }}>
+              {movie.Title}
+            </h1>
 
-            <p className="text-slate-300 leading-relaxed max-w-2xl">{movie.overview}</p>
-
-            <div className="flex gap-3 pt-2">
-              {trailer && (
-                <a
-                  href={`https://www.youtube.com/watch?v=${trailer.key}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-red-600 hover:bg-red-700 text-white font-semibold px-5 py-2.5 rounded-full text-sm transition-colors"
-                >
-                  ▶ Ver tráiler
-                </a>
+            {/* Meta row */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              {movie.imdbRating !== 'N/A' && (
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
+                  <span style={{ color: 'var(--accent)', fontSize: 18 }}>★</span>
+                  <span style={{ color: '#fff', fontWeight: 900, fontSize: 22 }}>{movie.imdbRating}</span>
+                  <span style={{ color: 'var(--muted)', fontSize: 13 }}>/10 · IMDb</span>
+                  {movie.imdbVotes && (
+                    <span style={{ color: 'var(--muted)', fontSize: 12 }}>· {movie.imdbVotes} votos</span>
+                  )}
+                </div>
               )}
-              <WatchlistButton movie={movie} />
+              {movie.Metascore && movie.Metascore !== 'N/A' && (
+                <div style={{
+                  background: parseInt(movie.Metascore) >= 61 ? '#2d6a2d' : parseInt(movie.Metascore) >= 40 ? '#7a6020' : '#6a2020',
+                  color: '#fff', fontWeight: 900, fontSize: 13,
+                  padding: '4px 10px', borderRadius: 6,
+                }}>
+                  {movie.Metascore} <span style={{ fontWeight: 500, opacity: 0.8 }}>Metascore</span>
+                </div>
+              )}
+              {movie.Year && <span style={{ color: 'var(--muted)', fontSize: 14 }}>{movie.Year}</span>}
+              {movie.Runtime !== 'N/A' && <span style={{ color: 'var(--muted)', fontSize: 14 }}>{movie.Runtime}</span>}
+              {movie.Rated !== 'N/A' && (
+                <span style={{
+                  background: 'var(--surface2)', border: '1px solid var(--border)',
+                  color: 'var(--muted)', fontSize: 11, fontWeight: 700,
+                  padding: '3px 8px', borderRadius: 5,
+                }}>{movie.Rated}</span>
+              )}
             </div>
+
+            {/* Actions */}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', paddingTop: 4 }}>
+              <WatchlistButton movie={movie} />
+              <Link
+                href={`https://www.imdb.com/title/${movie.imdbID}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: 'var(--surface)', border: '1px solid var(--border)',
+                  color: 'var(--text)', fontSize: 13, fontWeight: 600,
+                  padding: '11px 20px', borderRadius: 10, textDecoration: 'none',
+                  transition: 'border-color .2s',
+                }}
+              >
+                <span style={{ color: 'var(--accent)', fontWeight: 900, fontSize: 12 }}>IMDb</span>
+                Ver en IMDb ↗
+              </Link>
+            </div>
+
           </div>
         </div>
 
-        {/* Cast */}
-        {credits.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-bold text-white mb-4">Reparto principal</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {credits.map((actor) => (
-                <div key={actor.id} className="shrink-0 w-24 text-center">
-                  <div className="w-24 h-24 rounded-full overflow-hidden bg-white/10 mx-auto mb-2">
-                    {actor.profile_path ? (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-                        alt={actor.name}
-                        width={96}
-                        height={96}
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-2xl">👤</div>
-                    )}
-                  </div>
-                  <p className="text-white text-xs font-medium line-clamp-2">{actor.name}</p>
-                  <p className="text-slate-500 text-xs line-clamp-1">{actor.character}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* Details section */}
+        <div style={{
+          marginTop: 48,
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) 280px',
+          gap: 48,
+        }}>
 
-        {/* Similar */}
-        {similar.results.length > 0 && (
-          <section className="mt-12">
-            <MediaGrid items={similar.results.slice(0, 10)} type="movie" title="Películas similares" />
-          </section>
-        )}
+          {/* Left — plot */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
+                Sinopsis
+              </p>
+              <p style={{ color: 'var(--text)', fontSize: 15, lineHeight: 1.75, opacity: 0.9 }}>{movie.Plot}</p>
+            </div>
+
+            {movie.Awards && movie.Awards !== 'N/A' && (
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(245,197,24,0.08), rgba(245,197,24,0.03))',
+                border: '1px solid rgba(245,197,24,0.15)',
+                borderRadius: 14, padding: '16px 20px',
+                display: 'flex', alignItems: 'flex-start', gap: 12,
+              }}>
+                <span style={{ fontSize: 20 }}>🏆</span>
+                <div>
+                  <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>Premios</p>
+                  <p style={{ color: 'var(--text)', fontSize: 14, opacity: 0.85 }}>{movie.Awards}</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right — credits */}
+          <div style={{
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            borderRadius: 16, padding: 24,
+            display: 'flex', flexDirection: 'column', gap: 20,
+            height: 'fit-content',
+          }}>
+            {[
+              { label: 'Director', value: movie.Director },
+              { label: 'Reparto', value: movie.Actors },
+              { label: 'País', value: movie.Language },
+              { label: 'Estreno', value: movie.Released },
+            ].filter(({ value }) => value && value !== 'N/A').map(({ label, value }) => (
+              <div key={label} style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16 }}>
+                <p style={{ fontSize: 10, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
+                  {label}
+                </p>
+                <p style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.55, opacity: 0.9 }}>{value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ height: 64 }} />
       </div>
+
+      {/* Similar */}
+      {similar.length > 0 && (
+        <div style={{ paddingBottom: 64 }}>
+          <MediaCarousel items={similar} title={`Más de ${searchTerm}`} subtitle="Puede que también te guste" />
+        </div>
+      )}
+
     </div>
   )
 }

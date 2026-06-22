@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from 'react'
 import { addToWatchlist, removeFromWatchlist, isInWatchlist } from '@/lib/watchlist'
-import type { Movie } from '@/types/tmdb'
+import type { OmdbDetail } from '@/types/omdb'
 
-export default function WatchlistButton({ movie }: { movie: Movie }) {
+export default function WatchlistButton({ movie }: { movie: OmdbDetail }) {
   const [inList, setInList] = useState(false)
 
   useEffect(() => {
-    setInList(isInWatchlist(movie.id))
-  }, [movie.id])
+    setInList(isInWatchlist(movie.imdbID))
+  }, [movie.imdbID])
 
   function toggle() {
     if (inList) {
-      removeFromWatchlist(movie.id)
+      removeFromWatchlist(movie.imdbID)
       setInList(false)
     } else {
       addToWatchlist(movie)
@@ -24,11 +24,15 @@ export default function WatchlistButton({ movie }: { movie: Movie }) {
   return (
     <button
       onClick={toggle}
-      className={`font-semibold px-5 py-2.5 rounded-full text-sm transition-all cursor-pointer border ${
-        inList
-          ? 'bg-white text-black border-white hover:bg-slate-200'
-          : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
-      }`}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: 8,
+        background: inList ? '#fff' : 'rgba(255,255,255,0.1)',
+        color: inList ? '#000' : '#fff',
+        border: inList ? '1px solid #fff' : '1px solid rgba(255,255,255,0.2)',
+        fontWeight: 700, fontSize: 13,
+        padding: '11px 22px', borderRadius: 10,
+        cursor: 'pointer', transition: 'all .2s',
+      }}
     >
       {inList ? '✓ En mi lista' : '+ Mi lista'}
     </button>
