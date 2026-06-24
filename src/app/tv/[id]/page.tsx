@@ -1,122 +1,155 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getTVDetail, searchTV, normalizeSearchItem } from '@/services/tv'
+import { getTVDetail } from '@/services/tv'
 import { normalizePoster } from '@/lib/omdb'
+import { getTVEnhancement } from '@/services/tmdb'
 import WatchlistButton from '@/components/WatchlistButton'
-import MediaCarousel from '@/components/ui/MediaCarousel'
+import CastSection from '@/components/CastSection'
+import TmdbCarousel from '@/components/TmdbCarousel'
 
 export default async function TVDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const show = await getTVDetail(id)
+  const [show, tmdb] = await Promise.all([
+    getTVDetail(id),
+    getTVEnhancement(id),
+  ])
   if (!show) notFound()
 
   const poster = normalizePoster(show.Poster)
-
-  const searchTerm = show.Actors !== 'N/A' ? show.Actors.split(', ')[0] : null
-  const similarRes = searchTerm ? await searchTV(searchTerm) : null
-  const similar = similarRes?.Search
-    ?.filter((s) => s.imdbID !== id)
-    .slice(0, 12)
-    .map(normalizeSearchItem) ?? []
-
+  const backdropUrl = tmdb?.backdropUrl ?? null
   const genres = show.Genre !== 'N/A' ? show.Genre.split(', ') : []
+
+  const ratingNum = parseFloat(show.imdbRating)
+  const ratingPercent = show.imdbRating !== 'N/A' ? (ratingNum / 10) * 100 : null
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Cinematic backdrop */}
-      <div style={{ position: 'relative', height: 420, overflow: 'hidden' }}>
-        {poster ? (
-          <Image src={poster} alt="" fill priority
+      <div style={{ position: 'relative', height: 480, overflow: 'hidden' }}>
+        {(backdropUrl || poster) ? (
+          <Image
+            src={backdropUrl ?? poster!}
+            alt=""
+            fill
+            priority
             sizes="100vw"
-            style={{ objectFit: 'cover', transform: 'scale(1.1)', filter: 'blur(60px)', opacity: 0.3 }}
+            style={{
+              objectFit: 'cover',
+              transform: backdropUrl ? 'scale(1.02)' : 'scale(1.1)',
+              filter: backdropUrl ? 'brightness(0.6)' : 'blur(60px)',
+              opacity: backdropUrl ? 1 : 0.3,
+            }}
           />
         ) : null}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, var(--bg) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, transparent 50%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(20,24,32,0.2) 0%, var(--bg) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, rgba(20,24,32,0.3) 60%, transparent 100%)' }} />
       </div>
 
       <div className="page-inner" style={{
-        marginTop: -340,
+        marginTop: -400,
         position: 'relative', zIndex: 10,
       }}>
 
         <Link href="/tv" style={{
           display: 'inline-flex', alignItems: 'center', gap: 6,
-          color: 'var(--muted)', fontSize: 13, fontWeight: 600,
-          textDecoration: 'none', marginBottom: 24,
+          color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 600,
+          textDecoration: 'none', marginBottom: 28,
+          background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(8px)',
+          padding: '6px 14px', borderRadius: 999,
+          border: '1px solid rgba(255,255,255,0.1)',
         }}>
-          ← Volver a series
+          ← Series
         </Link>
 
-        <div style={{ display: 'flex', gap: 40, alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', gap: 36, alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
           {poster && (
             <div style={{
               flexShrink: 0,
-              width: 'clamp(150px, 16vw, 260px)',
+              width: 'clamp(150px, 16vw, 240px)',
               borderRadius: 18, overflow: 'hidden',
-              boxShadow: '0 40px 100px -10px rgba(0,0,0,0.9)',
-              outline: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: '0 40px 100px -10px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08)',
             }}>
-              <Image src={poster} alt={show.Title} width={260} height={390} style={{ width: '100%', display: 'block' }} priority />
+              <Image src={poster} alt={show.Title} width={240} height={360} style={{ width: '100%', display: 'block' }} priority />
             </div>
           )}
 
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16, paddingTop: 8 }}>
+          <div style={{ flex: 1, minWidth: 260, display: 'flex', flexDirection: 'column', gap: 14, paddingTop: poster ? 8 : 0 }}>
 
-            {/* Series badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
               <span style={{
-                background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)',
-                color: '#818cf8', fontSize: 10, fontWeight: 800,
+                background: 'rgba(99,102,241,0.2)', border: '1px solid rgba(99,102,241,0.4)',
+                color: '#a5b4fc', fontSize: 10, fontWeight: 800,
                 padding: '4px 12px', borderRadius: 999, letterSpacing: '0.1em', textTransform: 'uppercase',
+                backdropFilter: 'blur(8px)',
               }}>Serie</span>
               {genres.map((g) => (
                 <span key={g} style={{
-                  background: 'var(--surface2)', border: '1px solid var(--border)',
-                  color: 'var(--muted)', fontSize: 11, fontWeight: 600,
+                  background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)',
+                  color: 'rgba(255,255,255,0.75)', fontSize: 11, fontWeight: 600,
                   padding: '4px 12px', borderRadius: 999,
+                  backdropFilter: 'blur(8px)',
                 }}>{g}</span>
               ))}
             </div>
 
             <h1 style={{
-              fontSize: 'clamp(28px, 4vw, 52px)',
+              fontSize: 'clamp(28px, 4vw, 54px)',
               fontWeight: 900, color: '#fff',
               letterSpacing: '-1.5px', lineHeight: 0.95,
+              textShadow: '0 2px 20px rgba(0,0,0,0.5)',
             }}>
               {show.Title}
             </h1>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
               {show.imdbRating !== 'N/A' && (
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
-                  <span style={{ color: 'var(--accent)', fontSize: 18 }}>★</span>
-                  <span style={{ color: '#fff', fontWeight: 900, fontSize: 22 }}>{show.imdbRating}</span>
-                  <span style={{ color: 'var(--muted)', fontSize: 13 }}>/10 · IMDb</span>
-                  {show.imdbVotes && (
-                    <span style={{ color: 'var(--muted)', fontSize: 12 }}>· {show.imdbVotes} votos</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                    <span style={{ color: 'var(--accent)', fontSize: 20 }}>★</span>
+                    <span style={{ color: '#fff', fontWeight: 900, fontSize: 24 }}>{show.imdbRating}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>/10</span>
+                  </div>
+                  {ratingPercent !== null && (
+                    <div style={{ width: 52, height: 4, background: 'rgba(255,255,255,0.12)', borderRadius: 2, overflow: 'hidden' }}>
+                      <div style={{ width: `${ratingPercent}%`, height: '100%', background: 'var(--accent)', borderRadius: 2 }} />
+                    </div>
                   )}
                 </div>
               )}
-              {show.Year && <span style={{ color: 'var(--muted)', fontSize: 14 }}>{show.Year}</span>}
+              {show.Year && (
+                <span style={{
+                  background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)',
+                  color: 'rgba(255,255,255,0.7)', fontSize: 13, padding: '3px 10px', borderRadius: 6,
+                }}>{show.Year}</span>
+              )}
               {show.totalSeasons && (
                 <span style={{
-                  background: 'var(--surface2)', border: '1px solid var(--border)',
-                  color: 'var(--text)', fontSize: 13, fontWeight: 700,
-                  padding: '4px 12px', borderRadius: 8,
+                  background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)',
+                  color: '#a5b4fc', fontSize: 13, fontWeight: 700,
+                  padding: '3px 12px', borderRadius: 8,
                 }}>
-                  {show.totalSeasons} temporadas
+                  {show.totalSeasons} temp.
                 </span>
               )}
               {show.Runtime && show.Runtime !== 'N/A' && (
-                <span style={{ color: 'var(--muted)', fontSize: 14 }}>{show.Runtime}/ep</span>
+                <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13 }}>{show.Runtime}/ep</span>
               )}
             </div>
 
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', paddingTop: 4 }}>
+            {show.Plot && show.Plot !== 'N/A' && (
+              <p style={{
+                color: 'rgba(255,255,255,0.65)', fontSize: 14, lineHeight: 1.65,
+                display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical',
+                overflow: 'hidden', maxWidth: '60ch',
+              }}>
+                {show.Plot}
+              </p>
+            )}
+
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', paddingTop: 2 }}>
               <WatchlistButton movie={show} />
               <Link
                 href={`https://www.imdb.com/title/${show.imdbID}/`}
@@ -124,45 +157,49 @@ export default async function TVDetailPage({ params }: { params: Promise<{ id: s
                 rel="noopener noreferrer"
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
-                  background: 'var(--surface)', border: '1px solid var(--border)',
-                  color: 'var(--text)', fontSize: 13, fontWeight: 600,
-                  padding: '11px 20px', borderRadius: 10, textDecoration: 'none',
+                  background: 'rgba(245,197,24,0.12)', border: '1px solid rgba(245,197,24,0.3)',
+                  color: 'var(--accent)', fontSize: 13, fontWeight: 700,
+                  padding: '10px 18px', borderRadius: 10, textDecoration: 'none',
                 }}
               >
-                <span style={{ color: 'var(--accent)', fontWeight: 900, fontSize: 12 }}>IMDb</span>
-                Ver en IMDb ↗
+                IMDb ↗
               </Link>
             </div>
-
           </div>
         </div>
 
         {/* Details */}
         <div style={{
-          marginTop: 48,
+          marginTop: 52,
           display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr) 280px',
+          gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 300px)',
           gap: 48,
-        }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+        }}
+          className="detail-grid"
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
             <div>
               <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
                 Sinopsis
               </p>
-              <p style={{ color: 'var(--text)', fontSize: 15, lineHeight: 1.75, opacity: 0.9 }}>{show.Plot}</p>
+              <p style={{ color: 'var(--text)', fontSize: 15, lineHeight: 1.8, opacity: 0.9 }}>{show.Plot}</p>
             </div>
+
+            {tmdb && tmdb.cast.length > 0 && (
+              <CastSection cast={tmdb.cast} />
+            )}
 
             {show.Awards && show.Awards !== 'N/A' && (
               <div style={{
                 background: 'linear-gradient(135deg, rgba(245,197,24,0.08), rgba(245,197,24,0.03))',
                 border: '1px solid rgba(245,197,24,0.15)',
-                borderRadius: 14, padding: '16px 20px',
-                display: 'flex', alignItems: 'flex-start', gap: 12,
+                borderRadius: 14, padding: '18px 22px',
+                display: 'flex', alignItems: 'flex-start', gap: 14,
               }}>
-                <span style={{ fontSize: 20 }}>🏆</span>
+                <span style={{ fontSize: 22, flexShrink: 0 }}>🏆</span>
                 <div>
-                  <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>Premios</p>
-                  <p style={{ color: 'var(--text)', fontSize: 14, opacity: 0.85 }}>{show.Awards}</p>
+                  <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>Premios</p>
+                  <p style={{ color: 'var(--text)', fontSize: 14, opacity: 0.85, lineHeight: 1.6 }}>{show.Awards}</p>
                 </div>
               </div>
             )}
@@ -172,16 +209,20 @@ export default async function TVDetailPage({ params }: { params: Promise<{ id: s
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 16, padding: 24,
-            display: 'flex', flexDirection: 'column', gap: 20,
+            display: 'flex', flexDirection: 'column', gap: 0,
             height: 'fit-content',
           }}>
             {[
+              { label: 'Creador', value: show.Director !== 'N/A' ? show.Director : null },
               { label: 'Reparto', value: show.Actors },
               { label: 'Idioma', value: show.Language },
               { label: 'Estreno', value: show.Released },
-            ].filter(({ value }) => value && value !== 'N/A').map(({ label, value }) => (
-              <div key={label} style={{ borderBottom: '1px solid var(--border)', paddingBottom: 16 }}>
-                <p style={{ fontSize: 10, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6 }}>
+            ].filter(({ value }) => value && value !== 'N/A').map(({ label, value }, i, arr) => (
+              <div key={label} style={{
+                borderBottom: i < arr.length - 1 ? '1px solid var(--border)' : 'none',
+                padding: '14px 0',
+              }}>
+                <p style={{ fontSize: 9, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 5 }}>
                   {label}
                 </p>
                 <p style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.55, opacity: 0.9 }}>{value}</p>
@@ -190,15 +231,20 @@ export default async function TVDetailPage({ params }: { params: Promise<{ id: s
           </div>
         </div>
 
-        <div style={{ height: 64 }} />
+        <div style={{ height: 72 }} />
       </div>
 
-      {similar.length > 0 && (
-        <div style={{ paddingBottom: 64 }}>
-          <MediaCarousel items={similar} title={`Más con ${searchTerm}`} subtitle="Puede que también te guste" />
+      {tmdb && tmdb.similar.length > 0 && (
+        <div style={{ paddingBottom: 72 }}>
+          <TmdbCarousel items={tmdb.similar} title="Series similares" subtitle="Puede que también te guste" type="tv" />
         </div>
       )}
 
+      <style>{`
+        @media (max-width: 640px) {
+          .detail-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   )
 }
