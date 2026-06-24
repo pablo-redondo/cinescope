@@ -19,6 +19,7 @@ export type TmdbMovieResult = {
   first_air_date?: string
   overview: string
   genre_ids: number[]
+  imdb_id?: string | null
 }
 
 export type TmdbFindResult = {
@@ -79,14 +80,28 @@ export async function getTVEnhancement(imdbId: string): Promise<TmdbDetailEnhanc
   }
 }
 
+async function enrichWithImdbId(
+  items: TmdbMovieResult[],
+  mediaType: 'movie' | 'tv',
+): Promise<TmdbMovieResult[]> {
+  const ids = await Promise.all(
+    items.map(item =>
+      safeTmdbFetch<{ imdb_id?: string | null }>(`/${mediaType}/${item.id}/external_ids`)
+    )
+  )
+  return items.map((item, i) => ({ ...item, imdb_id: ids[i]?.imdb_id ?? null }))
+}
+
 export async function getTrendingMovies(): Promise<TmdbMovieResult[]> {
   const data = await safeTmdbFetch<{ results: TmdbMovieResult[] }>('/trending/movie/week')
-  return data?.results ?? []
+  const results = data?.results ?? []
+  return enrichWithImdbId(results, 'movie')
 }
 
 export async function getTrendingTV(): Promise<TmdbMovieResult[]> {
   const data = await safeTmdbFetch<{ results: TmdbMovieResult[] }>('/trending/tv/week')
-  return data?.results ?? []
+  const results = data?.results ?? []
+  return enrichWithImdbId(results, 'tv')
 }
 
 export { getPosterUrl, getBackdropUrl }

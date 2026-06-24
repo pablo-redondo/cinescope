@@ -20,10 +20,15 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
   const title = item.title ?? item.name ?? ''
   const year = (item.release_date ?? item.first_air_date ?? '').slice(0, 4)
   const rating = item.vote_average ? item.vote_average.toFixed(1) : null
+  const routeType = type === 'tv' ? 'tv' : 'movie'
+  const href = item.imdb_id
+    ? `/${routeType}/${item.imdb_id}`
+    : `/search?q=${encodeURIComponent(title)}`
 
   return (
-    <div
-      style={{ display: 'block', cursor: 'default' }}
+    <Link
+      href={href}
+      style={{ display: 'block', textDecoration: 'none' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -101,7 +106,7 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
           {year}
         </p>
       </div>
-    </div>
+    </Link>
   )
 }
 
