@@ -311,6 +311,8 @@ export type DiscoverMovieParams = {
   sort_by?: string
   'vote_average.gte'?: string
   'vote_count.gte'?: string
+  'primary_release_date.gte'?: string
+  'primary_release_date.lte'?: string
   primary_release_year?: string
   with_original_language?: string
   page?: string

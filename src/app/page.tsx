@@ -1,77 +1,60 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
-import { omdbFetch } from '@/lib/omdb'
-import { getMoviesByIds, normalizeDetail as normalizeMovie } from '@/services/movies'
-import { getTVByIds, normalizeDetail as normalizeTV } from '@/services/tv'
-import { getTrendingMovies, getTrendingTV } from '@/services/tmdb'
-import {
-  FEATURED_MOVIE_IDS,
-  CURATED_MOVIES,
-  CURATED_CLASSIC_MOVIES,
-  CURATED_SCIFI_MOVIES,
-  CURATED_TV,
-  CURATED_CRIME_TV,
-  CURATED_COMEDY_TV,
-} from '@/lib/curated'
-import MediaCarousel from '@/components/ui/MediaCarousel'
+import { getTrendingMovies, getTrendingTV, discoverMovies, discoverTV, getTopRatedMovies, getTopRatedTV } from '@/services/tmdb'
 import TmdbCarousel from '@/components/TmdbCarousel'
-import HeroCarousel from '@/components/HeroCarousel'
-import type { OmdbDetail } from '@/types/omdb'
+import TmdbHero from '@/components/TmdbHero'
 
 export default async function HomePage() {
-  const featuredRaw = await Promise.allSettled(
-    FEATURED_MOVIE_IDS.map(id => omdbFetch<OmdbDetail>({ i: id, plot: 'full' }))
-  )
-  const featuredMovies = featuredRaw
-    .filter((r): r is PromiseFulfilledResult<OmdbDetail> => r.status === 'fulfilled' && r.value.Response === 'True')
-    .map(r => r.value)
-
-  const [popular, classics, scifi, tv, crimeTv, comedyTv, trendingMovies, trendingTV] = await Promise.all([
-    getMoviesByIds(CURATED_MOVIES),
-    getMoviesByIds(CURATED_CLASSIC_MOVIES),
-    getMoviesByIds(CURATED_SCIFI_MOVIES),
-    getTVByIds(CURATED_TV),
-    getTVByIds(CURATED_CRIME_TV),
-    getTVByIds(CURATED_COMEDY_TV),
+  const [
+    trending,
+    trendingTV,
+    scifiMovies,
+    thrillerMovies,
+    classicMovies,
+    crimeTV,
+    comedyTV,
+    topMovies,
+    topTV,
+  ] = await Promise.all([
     getTrendingMovies(),
     getTrendingTV(),
+    discoverMovies({ with_genres: '878', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
+    discoverMovies({ with_genres: '53', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
+    discoverMovies({ sort_by: 'vote_average.desc', 'vote_count.gte': '5000', 'primary_release_date.lte': '2000-12-31' }),
+    discoverTV({ with_genres: '80', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
+    discoverTV({ with_genres: '35', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
+    getTopRatedMovies(),
+    getTopRatedTV(),
   ])
+
+  const heroItems = trending.filter(m => m.backdrop_path).slice(0, 6)
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
-      <HeroCarousel movies={featuredMovies} />
+      <TmdbHero items={heroItems} type="movie" />
 
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: 28, paddingBottom: 56, display: 'flex', flexDirection: 'column', gap: 36 }}>
 
-        {trendingMovies.length > 0 && (
-          <TmdbCarousel
-            items={trendingMovies}
-            title="🔥 En tendencia esta semana"
-            subtitle="Lo más visto ahora mismo"
-            type="movie"
-          />
-        )}
+        <TmdbCarousel items={trending.slice(0, 12)} title="🔥 En tendencia esta semana" subtitle="Lo más visto ahora mismo" type="movie" />
 
-        <MediaCarousel items={popular.map(normalizeMovie)} title="⭐ Películas populares" subtitle="Los títulos más vistos del momento" />
+        <TmdbCarousel items={trendingTV.slice(0, 12)} title="📺 Series en tendencia" subtitle="Los shows del momento" type="tv" />
 
-        {trendingTV.length > 0 && (
-          <TmdbCarousel
-            items={trendingTV}
-            title="📺 Series en tendencia"
-            subtitle="Los shows del momento"
-            type="tv"
-          />
-        )}
+        <TmdbCarousel items={topMovies.slice(0, 12)} title="⭐ Las mejores películas de la historia" subtitle="Mejor valoradas por la comunidad" type="movie" />
 
-        <MediaCarousel items={tv.map(normalizeTV)} title="🏅 Series imprescindibles" subtitle="Las mejores series de todos los tiempos" />
-        <MediaCarousel items={scifi.map(normalizeMovie)} title="🚀 Ciencia Ficción" />
-        <MediaCarousel items={classics.map(normalizeMovie)} title="🏆 Clásicos del cine" subtitle="Historia del séptimo arte" />
-        <MediaCarousel items={crimeTv.map(normalizeTV)} title="🔍 Crimen & Misterio" />
-        <MediaCarousel items={comedyTv.map(normalizeTV)} title="😂 Comedia" />
+        <TmdbCarousel items={topTV.slice(0, 12)} title="🏅 Las mejores series de la historia" subtitle="Las series más aclamadas" type="tv" />
+
+        <TmdbCarousel items={scifiMovies.results.filter(m => m.poster_path).slice(0, 12)} title="🚀 Ciencia Ficción" type="movie" />
+
+        <TmdbCarousel items={thrillerMovies.results.filter(m => m.poster_path).slice(0, 12)} title="🔪 Thriller & Suspense" type="movie" />
+
+        <TmdbCarousel items={classicMovies.results.filter(m => m.poster_path).slice(0, 12)} title="🏆 Clásicos del cine" subtitle="Las obras maestras de todos los tiempos" type="movie" />
+
+        <TmdbCarousel items={crimeTV.results.filter(m => m.poster_path).slice(0, 12)} title="🔍 Crimen & Misterio" type="tv" />
+
+        <TmdbCarousel items={comedyTV.results.filter(m => m.poster_path).slice(0, 12)} title="😂 Comedia" type="tv" />
 
       </div>
-
     </div>
   )
 }
