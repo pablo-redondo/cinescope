@@ -17,8 +17,14 @@ import HeroCarousel from '@/components/HeroCarousel'
 import type { OmdbDetail } from '@/types/omdb'
 
 export default async function HomePage() {
-  const [featuredMovies, popular, classics, scifi, tv, crimeTv, comedyTv, trendingMovies, trendingTV] = await Promise.all([
-    Promise.all(FEATURED_MOVIE_IDS.map(id => omdbFetch<OmdbDetail>({ i: id, plot: 'full' }))),
+  const featuredRaw = await Promise.allSettled(
+    FEATURED_MOVIE_IDS.map(id => omdbFetch<OmdbDetail>({ i: id, plot: 'full' }))
+  )
+  const featuredMovies = featuredRaw
+    .filter((r): r is PromiseFulfilledResult<OmdbDetail> => r.status === 'fulfilled' && r.value.Response === 'True')
+    .map(r => r.value)
+
+  const [popular, classics, scifi, tv, crimeTv, comedyTv, trendingMovies, trendingTV] = await Promise.all([
     getMoviesByIds(CURATED_MOVIES),
     getMoviesByIds(CURATED_CLASSIC_MOVIES),
     getMoviesByIds(CURATED_SCIFI_MOVIES),
