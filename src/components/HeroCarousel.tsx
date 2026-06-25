@@ -9,6 +9,11 @@ import type { OmdbDetail } from '@/types/omdb'
 const INTERVAL_MS = 7000
 
 export default function HeroCarousel({ movies }: { movies: OmdbDetail[] }) {
+  if (!movies.length) return null
+  return <HeroCarouselInner movies={movies} />
+}
+
+function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
   const [current, setCurrent] = useState(0)
   const [fading, setFading] = useState(false)
 
