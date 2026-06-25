@@ -23,15 +23,22 @@ export function normalizeSearchItem(item: OmdbSearchItem): MediaItem {
 }
 
 export async function getMoviesByIds(ids: string[]): Promise<OmdbDetail[]> {
-  const results = await Promise.all(
+  const results = await Promise.allSettled(
     ids.map((id) => omdbFetch<OmdbDetail>({ i: id, plot: 'short' }))
   )
-  return results.filter((r) => r.Response === 'True')
+  return results
+    .filter((r): r is PromiseFulfilledResult<OmdbDetail> => r.status === 'fulfilled')
+    .map(r => r.value)
+    .filter(r => r.Response === 'True')
 }
 
 export async function getMovieDetail(id: string): Promise<OmdbDetail | null> {
-  const data = await omdbFetch<OmdbDetail>({ i: id, plot: 'full' })
-  return data.Response === 'True' ? data : null
+  try {
+    const data = await omdbFetch<OmdbDetail>({ i: id, plot: 'full' })
+    return data.Response === 'True' ? data : null
+  } catch {
+    return null
+  }
 }
 
 export async function searchMovies(query: string, page = 1): Promise<OmdbSearchResponse> {
