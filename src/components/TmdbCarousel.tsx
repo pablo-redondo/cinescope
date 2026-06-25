@@ -11,7 +11,6 @@ type Props = {
   title: string
   subtitle?: string
   type: 'movie' | 'tv'
-  imdbMap?: Record<number, string>
 }
 
 function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' }) {
@@ -23,7 +22,7 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
   const routeType = type === 'tv' ? 'tv' : 'movie'
   const href = item.imdb_id
     ? `/${routeType}/${item.imdb_id}`
-    : `/search?q=${encodeURIComponent(title)}`
+    : `/tmdb/${routeType}/${item.id}`
 
   return (
     <Link

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import type { TmdbCastMember } from '@/services/tmdb'
 import { getPosterUrl } from '@/services/tmdb'
 
@@ -14,16 +15,14 @@ export default function CastSection({ cast }: { cast: TmdbCastMember[] }) {
         {cast.map((member) => {
           const photo = getPosterUrl(member.profile_path, 'w185')
           return (
-            <div key={member.id} style={{
-              display: 'flex', flexDirection: 'column', alignItems: 'center',
-              width: 72, gap: 6,
-            }}>
+            <Link key={member.id} href={`/person/${member.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', width: 72, gap: 6 }}>
               <div style={{
                 width: 56, height: 56, borderRadius: '50%',
                 overflow: 'hidden', flexShrink: 0,
                 background: 'var(--surface2)',
                 border: '2px solid var(--border)',
                 position: 'relative',
+                transition: 'border-color .2s',
               }}>
                 {photo ? (
                   <Image src={photo} alt={member.name} fill sizes="56px" style={{ objectFit: 'cover' }} />
@@ -31,7 +30,8 @@ export default function CastSection({ cast }: { cast: TmdbCastMember[] }) {
                   <div style={{
                     position: 'absolute', inset: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 18, color: 'var(--muted)',
+                    fontSize: 20, fontWeight: 700, color: 'var(--muted)',
+                    background: 'var(--surface2)',
                   }}>
                     {member.name[0]}
                   </div>
@@ -47,7 +47,7 @@ export default function CastSection({ cast }: { cast: TmdbCastMember[] }) {
                   </p>
                 )}
               </div>
-            </div>
+            </Link>
           )
         })}
       </div>

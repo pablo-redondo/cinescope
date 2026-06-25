@@ -1,0 +1,73 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { getCollection, getBackdropUrl, getPosterUrl } from '@/services/tmdb'
+
+export default async function CollectionPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const collection = await getCollection(id)
+  if (!collection) notFound()
+
+  const backdrop = getBackdropUrl(collection.backdrop_path, 'w1280')
+  const parts = (collection.parts ?? []).filter(p => p.poster_path).sort((a, b) => {
+    const da = a.release_date ?? ''
+    const db = b.release_date ?? ''
+    return da.localeCompare(db)
+  })
+
+  return (
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+
+      {/* Hero */}
+      <div style={{ position: 'relative', height: 360, overflow: 'hidden' }}>
+        {backdrop && (
+          <Image src={backdrop} alt="" fill priority sizes="100vw" style={{ objectFit: 'cover', filter: 'brightness(0.45)' }} />
+        )}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(20,24,32,0.2) 0%, var(--bg) 100%)' }} />
+        <div className="page-inner" style={{ position: 'absolute', bottom: 36, left: 0, right: 0 }}>
+          <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Saga · {parts.length} películas</p>
+          <h1 style={{ fontSize: 'clamp(28px, 5vw, 58px)', fontWeight: 900, color: '#fff', letterSpacing: '-1.5px', lineHeight: 1 }}>
+            {collection.name}
+          </h1>
+        </div>
+      </div>
+
+      <div className="page-inner" style={{ paddingTop: 40, paddingBottom: 80 }}>
+        {collection.overview && (
+          <p style={{ color: 'var(--muted)', fontSize: 15, lineHeight: 1.7, maxWidth: '70ch', marginBottom: 48 }}>
+            {collection.overview}
+          </p>
+        )}
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 20 }}>
+          {parts.map((movie, i) => {
+            const poster = getPosterUrl(movie.poster_path, 'w342')
+            const title = movie.title ?? movie.name ?? ''
+            const year = (movie.release_date ?? '').slice(0, 4)
+            const rating = movie.vote_average ? movie.vote_average.toFixed(1) : null
+
+            return (
+              <Link key={movie.id} href={`/tmdb/movie/${movie.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 12, overflow: 'hidden', background: 'var(--surface2)' }}>
+                  {poster && <Image src={poster} alt={title} fill sizes="200px" style={{ objectFit: 'cover' }} />}
+                  <div style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(0,0,0,0.8)', color: 'var(--muted)', fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>
+                    #{i + 1}
+                  </div>
+                  {rating && (
+                    <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8, border: '1px solid rgba(245,197,24,0.2)' }}>
+                      ★ {rating}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</p>
+                  <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{year}</p>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}

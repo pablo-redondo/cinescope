@@ -29,6 +29,10 @@ export interface OmdbDetail {
   totalSeasons?: string
   Metascore?: string
   Awards?: string
+  BoxOffice?: string
+  Production?: string
+  Country?: string
+  Writer?: string
 }
 
 export interface OmdbSearchResponse {
