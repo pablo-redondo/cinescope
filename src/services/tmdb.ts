@@ -27,11 +27,25 @@ export type TmdbFindResult = {
   tv_results: (TmdbMovieResult & { imdb_id?: string })[]
 }
 
+export type WatchProvider = {
+  provider_id: number
+  provider_name: string
+  logo_path: string
+}
+
+export type WatchProviders = {
+  flatrate?: WatchProvider[]
+  rent?: WatchProvider[]
+  buy?: WatchProvider[]
+  link?: string
+}
+
 export type TmdbDetailEnhancement = {
   tmdbId: number
   backdropUrl: string | null
   cast: TmdbCastMember[]
   similar: TmdbMovieResult[]
+  providers: WatchProviders | null
 }
 
 async function safeTmdbFetch<T>(endpoint: string, params?: Record<string, string>): Promise<T | null> {
@@ -42,15 +56,24 @@ async function safeTmdbFetch<T>(endpoint: string, params?: Record<string, string
   }
 }
 
+async function fetchWatchProviders(mediaType: 'movie' | 'tv', tmdbId: number): Promise<WatchProviders | null> {
+  type ProvidersResponse = { results: Record<string, WatchProviders> }
+  const raw = await safeTmdbFetch<ProvidersResponse>(`/${mediaType}/${tmdbId}/watch/providers`)
+  if (!raw?.results) return null
+  // Prefer Spain, fallback to US
+  return raw.results['ES'] ?? raw.results['US'] ?? null
+}
+
 export async function getMovieEnhancement(imdbId: string): Promise<TmdbDetailEnhancement | null> {
   const found = await safeTmdbFetch<TmdbFindResult>(`/find/${imdbId}`, { external_source: 'imdb_id' })
   const movie = found?.movie_results?.[0]
   if (!movie) return null
 
   const tmdbId = movie.id
-  const [creditsRaw, similarRaw] = await Promise.all([
+  const [creditsRaw, similarRaw, providers] = await Promise.all([
     safeTmdbFetch<{ cast: TmdbCastMember[] }>(`/movie/${tmdbId}/credits`),
     safeTmdbFetch<{ results: TmdbMovieResult[] }>(`/movie/${tmdbId}/similar`),
+    fetchWatchProviders('movie', tmdbId),
   ])
 
   return {
@@ -58,6 +81,7 @@ export async function getMovieEnhancement(imdbId: string): Promise<TmdbDetailEnh
     backdropUrl: getBackdropUrl(movie.backdrop_path, 'w1280'),
     cast: (creditsRaw?.cast ?? []).slice(0, 8),
     similar: (similarRaw?.results ?? []).filter(m => m.poster_path).slice(0, 12),
+    providers,
   }
 }
 
@@ -67,9 +91,10 @@ export async function getTVEnhancement(imdbId: string): Promise<TmdbDetailEnhanc
   if (!show) return null
 
   const tmdbId = show.id
-  const [creditsRaw, similarRaw] = await Promise.all([
+  const [creditsRaw, similarRaw, providers] = await Promise.all([
     safeTmdbFetch<{ cast: TmdbCastMember[] }>(`/tv/${tmdbId}/credits`),
     safeTmdbFetch<{ results: TmdbMovieResult[] }>(`/tv/${tmdbId}/similar`),
+    fetchWatchProviders('tv', tmdbId),
   ])
 
   return {
@@ -77,6 +102,7 @@ export async function getTVEnhancement(imdbId: string): Promise<TmdbDetailEnhanc
     backdropUrl: getBackdropUrl(show.backdrop_path, 'w1280'),
     cast: (creditsRaw?.cast ?? []).slice(0, 8),
     similar: (similarRaw?.results ?? []).filter(s => s.poster_path).slice(0, 12),
+    providers,
   }
 }
 

@@ -8,6 +8,7 @@ import WatchlistButton from '@/components/WatchlistButton'
 import MediaCarousel from '@/components/ui/MediaCarousel'
 import CastSection from '@/components/CastSection'
 import TmdbCarousel from '@/components/TmdbCarousel'
+import WatchProvidersSection from '@/components/WatchProvidersSection'
 
 export default async function MoviePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -224,30 +225,35 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
             )}
           </div>
 
-          {/* Right — credits */}
-          <div style={{
-            background: 'var(--surface)',
-            border: '1px solid var(--border)',
-            borderRadius: 16, padding: 24,
-            display: 'flex', flexDirection: 'column', gap: 0,
-            height: 'fit-content',
-          }}>
-            {[
-              { label: 'Director', value: movie.Director },
-              { label: 'Reparto', value: movie.Actors },
-              { label: 'País / Idioma', value: movie.Language },
-              { label: 'Estreno', value: movie.Released },
-            ].filter(({ value }) => value && value !== 'N/A').map(({ label, value }, i, arr) => (
-              <div key={label} style={{
-                borderBottom: i < arr.length - 1 ? '1px solid var(--border)' : 'none',
-                padding: '14px 0',
-              }}>
-                <p style={{ fontSize: 9, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 5 }}>
-                  {label}
-                </p>
-                <p style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.55, opacity: 0.9 }}>{value}</p>
-              </div>
-            ))}
+          {/* Right — credits + providers */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, height: 'fit-content' }}>
+            <div style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 16, padding: 24,
+              display: 'flex', flexDirection: 'column', gap: 0,
+            }}>
+              {[
+                { label: 'Director', value: movie.Director },
+                { label: 'Reparto', value: movie.Actors },
+                { label: 'País / Idioma', value: movie.Language },
+                { label: 'Estreno', value: movie.Released },
+              ].filter(({ value }) => value && value !== 'N/A').map(({ label, value }, i, arr) => (
+                <div key={label} style={{
+                  borderBottom: i < arr.length - 1 ? '1px solid var(--border)' : 'none',
+                  padding: '14px 0',
+                }}>
+                  <p style={{ fontSize: 9, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 5 }}>
+                    {label}
+                  </p>
+                  <p style={{ color: 'var(--text)', fontSize: 13, lineHeight: 1.55, opacity: 0.9 }}>{value}</p>
+                </div>
+              ))}
+            </div>
+
+            {tmdb?.providers && (
+              <WatchProvidersSection providers={tmdb.providers} tmdbLink={tmdb.providers.link} />
+            )}
           </div>
         </div>
 
