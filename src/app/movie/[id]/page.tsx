@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { getMovieDetail } from '@/services/movies'
 import { normalizePoster } from '@/lib/omdb'
 import { getMovieEnhancement } from '@/services/tmdb'
@@ -16,7 +16,11 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
     getMovieDetail(id),
     getMovieEnhancement(id),
   ])
-  if (!movie) notFound()
+  // If OMDb doesn't have the movie but TMDB does, redirect to the TMDB-native page
+  if (!movie) {
+    if (tmdb?.tmdbId) redirect(`/tmdb/movie/${tmdb.tmdbId}`)
+    notFound()
+  }
 
   const poster = normalizePoster(movie.Poster)
   const backdropUrl = tmdb?.backdropUrl ?? null

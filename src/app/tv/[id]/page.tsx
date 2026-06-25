@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { getTVDetail } from '@/services/tv'
 import { normalizePoster } from '@/lib/omdb'
 import { getTVEnhancement, getBackdropUrl } from '@/services/tmdb'
@@ -16,7 +16,10 @@ export default async function TVDetailPage({ params }: { params: Promise<{ id: s
     getTVDetail(id),
     getTVEnhancement(id),
   ])
-  if (!show) notFound()
+  if (!show) {
+    if (tmdb?.tmdbId) redirect(`/tmdb/tv/${tmdb.tmdbId}`)
+    notFound()
+  }
 
   const poster = normalizePoster(show.Poster)
   const backdropUrl = tmdb?.backdropUrl ?? null
