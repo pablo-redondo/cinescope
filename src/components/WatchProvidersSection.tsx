@@ -29,7 +29,24 @@ type Props = {
 
 export default function WatchProvidersSection({ providers, tmdbLink }: Props) {
   const hasAny = providers.flatrate?.length || providers.rent?.length || providers.buy?.length
-  if (!hasAny) return null
+  const link = tmdbLink ?? providers.link
+
+  if (!hasAny) {
+    if (!link) return null
+    return (
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '18px 20px' }}>
+        <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>Dónde verlo</p>
+        <a href={link} target="_blank" rel="noopener noreferrer" style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)',
+          color: 'var(--muted)', fontSize: 12, fontWeight: 600,
+          padding: '8px 14px', borderRadius: 8, textDecoration: 'none',
+        }}>
+          Consultar disponibilidad en JustWatch ↗
+        </a>
+      </div>
+    )
+  }
 
   return (
     <div style={{

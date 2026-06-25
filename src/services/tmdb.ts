@@ -214,7 +214,11 @@ function pickTrailer(videos: TmdbVideoResult[]): string | null {
 
 function pickProviders(raw: Record<string, WatchProviders> | undefined): WatchProviders | null {
   if (!raw) return null
-  return raw['ES'] ?? raw['US'] ?? null
+  // Prefer Spain, then US, then any country that has streaming data
+  const preferred = raw['ES'] ?? raw['US']
+  if (preferred) return preferred
+  const fallback = Object.values(raw).find(r => r.flatrate?.length || r.rent?.length || r.buy?.length)
+  return fallback ?? null
 }
 
 // ─── Detail Enhancements (for OMDb-ID pages) ────────────────────────────────
