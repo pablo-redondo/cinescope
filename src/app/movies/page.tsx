@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getMoviesByIds, normalizeDetail } from '@/services/movies'
 import {
   CURATED_MOVIES,

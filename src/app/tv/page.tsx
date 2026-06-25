@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getTVByIds, normalizeDetail } from '@/services/tv'
 import { CURATED_TV, CURATED_CRIME_TV, CURATED_COMEDY_TV, CURATED_SCIFI_TV } from '@/lib/curated'
 import MediaCarousel from '@/components/ui/MediaCarousel'

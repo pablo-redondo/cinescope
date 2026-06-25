@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { omdbFetch } from '@/lib/omdb'
 import { getMoviesByIds, normalizeDetail as normalizeMovie } from '@/services/movies'
 import { getTVByIds, normalizeDetail as normalizeTV } from '@/services/tv'
