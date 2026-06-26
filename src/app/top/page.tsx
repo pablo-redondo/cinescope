@@ -141,7 +141,7 @@ export default async function TopPage() {
   ]
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+    <div style={{ '--bg': '#0d0c08', '--surface': '#17150f', '--surface2': '#1f1c14', '--surface3': '#282419', '--border': 'rgba(255,255,255,0.065)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(245,197,24,0.5)' }}>

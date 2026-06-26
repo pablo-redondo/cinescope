@@ -79,7 +79,7 @@ export default async function SearchPage({
 
   if (!q) {
     return (
-      <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+      <div style={{ '--bg': '#0b0a0f', '--surface': '#131220', '--surface2': '#1a192a', '--surface3': '#222134', background: 'var(--bg)', minHeight: '100vh' } as unknown as React.CSSProperties}>
         <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(255,255,255,0.08)' }}>
           <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
             <h1 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1 }}>Buscar</h1>
@@ -104,7 +104,7 @@ export default async function SearchPage({
   const totalResults = results.movies.length + results.tv.length + results.people.length
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+    <div style={{ '--bg': '#0b0a0f', '--surface': '#131220', '--surface2': '#1a192a', '--surface3': '#222134', background: 'var(--bg)', minHeight: '100vh' } as unknown as React.CSSProperties}>
 
       <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(255,255,255,0.08)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>

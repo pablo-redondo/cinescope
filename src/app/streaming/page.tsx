@@ -74,7 +74,7 @@ export default async function StreamingPage() {
   const platforms = await Promise.all(PROVIDERS.map(fetchPlatform))
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+    <div style={{ '--bg': '#070910', '--surface': '#0c1019', '--surface2': '#121823', '--surface3': '#19202e', '--border': 'rgba(255,255,255,0.07)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
 
       {/* Header */}
       <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(0,168,224,0.5)' }}>

@@ -32,7 +32,7 @@ export default async function MoviesPage() {
   ]
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+    <div style={{ '--bg': '#110909', '--surface': '#1b0e0e', '--surface2': '#251515', '--surface3': '#2e1b1b', '--border': 'rgba(255,255,255,0.065)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
 
       {/* Compact header */}
       <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(220,38,38,0.45)' }}>

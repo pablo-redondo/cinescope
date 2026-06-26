@@ -87,7 +87,7 @@ export default async function EstrenosPage() {
   })
 
   return (
-    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
+    <div style={{ '--bg': '#0f0d08', '--surface': '#181409', '--surface2': '#211b0c', '--surface3': '#2a230f', '--border': 'rgba(255,255,255,0.065)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
 
       {/* Compact header */}
       <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(249,115,22,0.5)' }}>
