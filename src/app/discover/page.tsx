@@ -78,10 +78,10 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
     : null
 
   return (
-    <div style={{ '--bg': '#080f0a', '--surface': '#0d1710', '--surface2': '#142016', '--surface3': '#1c2a1e', '--border': 'rgba(255,255,255,0.065)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Compact header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: `3px solid ${type === 'tv' ? 'rgba(99,102,241,0.45)' : 'rgba(16,185,129,0.45)'}` }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <h1 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1 }}>Descubrir</h1>
           <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>

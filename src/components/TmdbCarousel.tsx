@@ -128,7 +128,7 @@ export default function TmdbCarousel({ items, title, subtitle, type, viewAllHref
       {/* Header row */}
       <div className="page-offset" style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-          <div style={{ width: 2, height: 14, borderRadius: 2, flexShrink: 0, background: type === 'tv' ? 'rgba(99,102,241,0.8)' : 'rgba(220,38,38,0.8)' }} />
+          <div style={{ width: 2, height: 14, borderRadius: 2, flexShrink: 0, background: 'rgba(255,255,255,0.25)' }} />
           <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.1px', whiteSpace: 'nowrap' }}>{title}</h2>
           {subtitle && <p style={{ fontSize: 11, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{subtitle}</p>}
         </div>

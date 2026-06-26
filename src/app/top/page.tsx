@@ -141,10 +141,10 @@ export default async function TopPage() {
   ]
 
   return (
-    <div style={{ '--bg': '#0d0c08', '--surface': '#17150f', '--surface2': '#1f1c14', '--surface3': '#282419', '--border': 'rgba(255,255,255,0.065)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(245,197,24,0.5)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
             <div>
@@ -168,7 +168,7 @@ export default async function TopPage() {
 
           <section id="movies">
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <div style={{ width: 2, height: 14, background: 'rgba(239,68,68,0.7)', borderRadius: 2 }} />
+              <div style={{ width: 2, height: 14, background: 'rgba(255,255,255,0.2)', borderRadius: 2 }} />
               <h2 style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)' }}>Top Películas</h2>
               <span style={{ fontSize: 10, color: 'var(--muted)' }}>{movies.length}</span>
               <Link href="/discover?sort=vote_average.desc&type=movie&rating=7" style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--muted)', textDecoration: 'none', fontWeight: 600 }}>Ver todas →</Link>
@@ -178,7 +178,7 @@ export default async function TopPage() {
 
           <section id="tv">
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-              <div style={{ width: 2, height: 14, background: 'rgba(99,102,241,0.7)', borderRadius: 2 }} />
+              <div style={{ width: 2, height: 14, background: 'rgba(255,255,255,0.2)', borderRadius: 2 }} />
               <h2 style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)' }}>Top Series</h2>
               <span style={{ fontSize: 10, color: 'var(--muted)' }}>{tvShows.length}</span>
               <Link href="/discover?sort=vote_average.desc&type=tv&rating=7" style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--muted)', textDecoration: 'none', fontWeight: 600 }}>Ver todas →</Link>
@@ -190,7 +190,7 @@ export default async function TopPage() {
         {/* Genre tops: 4-col grid */}
         <section id="generos">
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-            <div style={{ width: 2, height: 14, background: 'var(--accent)', borderRadius: 2 }} />
+            <div style={{ width: 2, height: 14, background: 'rgba(255,255,255,0.2)', borderRadius: 2 }} />
             <h2 style={{ fontSize: 13, fontWeight: 800, color: 'var(--text)' }}>Rankings por Género</h2>
             <span style={{ fontSize: 10, color: 'var(--muted)', marginLeft: 2 }}>Top 8 en cada categoría</span>
           </div>

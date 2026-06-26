@@ -32,10 +32,10 @@ export default async function TVPage() {
   ]
 
   return (
-    <div style={{ '--bg': '#08090f', '--surface': '#10111e', '--surface2': '#181928', '--surface3': '#202133', '--border': 'rgba(255,255,255,0.07)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Compact header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(99,102,241,0.5)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
             <div>

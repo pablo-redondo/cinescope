@@ -3,22 +3,22 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Palette — warm purple-dark, premium cinema feel */
-  --bg:        #0b0b10;
-  --surface:   #13131c;
-  --surface2:  #1b1b28;
-  --surface3:  #252534;
+  /* Palette — deep space, futuristic */
+  --bg:        #060609;
+  --surface:   #0c0c16;
+  --surface2:  #131322;
+  --surface3:  #1c1c30;
   --border:    rgba(255,255,255,0.07);
-  --border2:   rgba(255,255,255,0.12);
+  --border2:   rgba(255,255,255,0.13);
 
-  /* Accent — cinema gold */
-  --accent:    #f5c518;
-  --accent2:   rgba(245,197,24,0.13);
+  /* Accent — clean white */
+  --accent:    #ffffff;
+  --accent2:   rgba(255,255,255,0.09);
 
   /* Text */
-  --text:      #eeeef8;
-  --muted:     #5c5c7a;
-  --muted2:    #8888aa;
+  --text:      #eeeeff;
+  --muted:     #4e4e70;
+  --muted2:    #8080a8;
 
   /* Layout */
   --page-pad:  clamp(16px, 3.5vw, 72px);

@@ -87,10 +87,10 @@ export default async function EstrenosPage() {
   })
 
   return (
-    <div style={{ '--bg': '#0f0d08', '--surface': '#181409', '--surface2': '#211b0c', '--surface3': '#2a230f', '--border': 'rgba(255,255,255,0.065)', background: 'var(--bg)', minHeight: '100vh' } as React.CSSProperties}>
+    <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Compact header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(249,115,22,0.5)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
             <div>
@@ -111,7 +111,7 @@ export default async function EstrenosPage() {
         {nowFiltered.length > 0 && (
           <section id="en-cines">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 2, height: 16, background: 'rgba(220,38,38,0.8)', borderRadius: 2 }} />
+              <div style={{ width: 2, height: 16, background: 'rgba(255,255,255,0.2)', borderRadius: 2 }} />
               <h2 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>En cines ahora</h2>
               <span style={{ fontSize: 11, color: 'var(--muted)' }}>{nowFiltered.length} películas</span>
             </div>
@@ -125,7 +125,7 @@ export default async function EstrenosPage() {
         {Object.keys(grouped).length > 0 && (
           <section id="proximos">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-              <div style={{ width: 2, height: 16, background: 'rgba(249,115,22,0.8)', borderRadius: 2 }} />
+              <div style={{ width: 2, height: 16, background: 'rgba(255,255,255,0.2)', borderRadius: 2 }} />
               <h2 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>Próximos estrenos</h2>
             </div>
             {Object.entries(grouped).map(([monthKey, movies]) => {

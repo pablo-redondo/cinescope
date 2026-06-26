@@ -5,14 +5,14 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
 
 const NAV = [
-  { href: '/', label: 'Inicio', color: '#f5c518' },
-  { href: '/movies', label: 'Películas', color: '#dc2626' },
-  { href: '/tv', label: 'Series', color: '#6366f1' },
-  { href: '/estrenos', label: 'Estrenos', color: '#f97316' },
-  { href: '/streaming', label: 'Streaming', color: '#00a8e0' },
-  { href: '/discover', label: 'Descubrir', color: '#10b981' },
-  { href: '/top', label: 'Top', color: '#f5c518' },
-  { href: '/watchlist', label: 'Mi lista', color: '#a78bfa' },
+  { href: '/', label: 'Inicio' },
+  { href: '/movies', label: 'Películas' },
+  { href: '/tv', label: 'Series' },
+  { href: '/estrenos', label: 'Estrenos' },
+  { href: '/streaming', label: 'Streaming' },
+  { href: '/discover', label: 'Descubrir' },
+  { href: '/top', label: 'Top' },
+  { href: '/watchlist', label: 'Mi lista' },
 ]
 
 export default function Navbar() {
@@ -46,7 +46,7 @@ export default function Navbar() {
       position: 'sticky', top: 0, zIndex: 100,
       height: 56,
       display: 'flex', alignItems: 'center',
-      background: 'rgba(9,9,15,0.92)',
+      background: 'rgba(4,4,7,0.93)',
       backdropFilter: 'blur(20px) saturate(180%)',
       borderBottom: '1px solid var(--border)',
     }}>
@@ -68,7 +68,7 @@ export default function Navbar() {
 
         {/* Nav links */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: 0, flex: 1, overflow: 'hidden' }}>
-          {NAV.map(({ href, label, color }) => {
+          {NAV.map(({ href, label }) => {
             const active = pathname === href || (href !== '/' && pathname.startsWith(href))
             return (
               <Link key={href} href={href} style={{
@@ -79,7 +79,7 @@ export default function Navbar() {
                 fontWeight: active ? 600 : 400,
                 textDecoration: 'none',
                 color: active ? 'var(--text)' : 'var(--muted)',
-                borderBottom: active ? `2px solid ${color}` : '2px solid transparent',
+                borderBottom: active ? '2px solid var(--accent)' : '2px solid transparent',
                 transition: 'color .15s, border-color .15s',
                 whiteSpace: 'nowrap',
               }} onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--muted2)' }}
