@@ -55,7 +55,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ id:
                     #{i + 1}
                   </div>
                   {rating && (
-                    <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8, border: '1px solid rgba(245,197,24,0.2)' }}>
+                    <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.12)' }}>
                       ★ {rating}
                     </div>
                   )}

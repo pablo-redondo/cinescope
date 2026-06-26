@@ -28,7 +28,7 @@ export default function MediaCard({ item }: { item: MediaItem }) {
         transform: hovered ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
         transition: 'transform .25s ease, box-shadow .25s ease',
         boxShadow: hovered
-          ? '0 24px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(245,197,24,0.2)'
+          ? '0 24px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1)'
           : '0 4px 16px rgba(0,0,0,0.4)',
       }}>
 
@@ -45,10 +45,9 @@ export default function MediaCard({ item }: { item: MediaItem }) {
             position: 'absolute', inset: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexDirection: 'column', gap: 8,
-            color: '#3a4060', fontSize: 32
+            color: '#3a4060',
           }}>
-            🎬
-            <span style={{ fontSize: 10, color: '#3a4060', letterSpacing: 1 }}>SIN IMAGEN</span>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.4"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
           </div>
         )}
 
@@ -60,7 +59,7 @@ export default function MediaCard({ item }: { item: MediaItem }) {
             background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
             color: 'var(--accent)', fontSize: 11, fontWeight: 800,
             padding: '4px 8px', borderRadius: 8,
-            border: '1px solid rgba(245,197,24,0.2)',
+            border: '1px solid rgba(255,255,255,0.12)',
           }}>
             ★ {item.rating}
           </div>

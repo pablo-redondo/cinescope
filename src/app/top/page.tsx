@@ -130,14 +130,14 @@ export default async function TopPage() {
   const f = (d: { results: TmdbMovieResult[] }) => d.results.filter(m => m.poster_path)
 
   const GENRE_TOPS = [
-    { title: 'Top Documentales', items: f(documentary), href: '/discover?genre=99&type=movie&sort=vote_average.desc', color: '#60a5fa', type: 'movie' as const },
-    { title: 'Top Animación', items: f(animation), href: '/discover?genre=16&type=movie&sort=vote_average.desc', color: '#f472b6', type: 'movie' as const },
-    { title: 'Top Ciencia Ficción', items: f(scifi), href: '/discover?genre=878&type=movie&sort=vote_average.desc', color: '#a78bfa', type: 'movie' as const },
-    { title: 'Top Thriller', items: f(thriller), href: '/discover?genre=53&type=movie&sort=vote_average.desc', color: '#fb923c', type: 'movie' as const },
-    { title: 'Top Comedia', items: f(comedy), href: '/discover?genre=35&type=movie&sort=vote_average.desc', color: '#4ade80', type: 'movie' as const },
-    { title: 'Top Terror', items: f(horror), href: '/discover?genre=27&type=movie&sort=vote_average.desc', color: '#f87171', type: 'movie' as const },
-    { title: 'Top Drama (Series)', items: f(dramaTV), href: '/discover?genre=18&type=tv&sort=vote_average.desc', color: '#e879f9', type: 'tv' as const },
-    { title: 'Top Crimen (Series)', items: f(crimeTV), href: '/discover?genre=80&type=tv&sort=vote_average.desc', color: '#94a3b8', type: 'tv' as const },
+    { title: 'Top Documentales', items: f(documentary), href: '/discover?genre=99&type=movie&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'movie' as const },
+    { title: 'Top Animación', items: f(animation), href: '/discover?genre=16&type=movie&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'movie' as const },
+    { title: 'Top Ciencia Ficción', items: f(scifi), href: '/discover?genre=878&type=movie&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'movie' as const },
+    { title: 'Top Thriller', items: f(thriller), href: '/discover?genre=53&type=movie&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'movie' as const },
+    { title: 'Top Comedia', items: f(comedy), href: '/discover?genre=35&type=movie&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'movie' as const },
+    { title: 'Top Terror', items: f(horror), href: '/discover?genre=27&type=movie&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'movie' as const },
+    { title: 'Top Drama (Series)', items: f(dramaTV), href: '/discover?genre=18&type=tv&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'tv' as const },
+    { title: 'Top Crimen (Series)', items: f(crimeTV), href: '/discover?genre=80&type=tv&sort=vote_average.desc', color: 'rgba(255,255,255,0.2)', type: 'tv' as const },
   ]
 
   return (

@@ -145,7 +145,7 @@ export default async function TVDetailPage({ params }: { params: Promise<{ id: s
                 target="_blank" rel="noopener noreferrer"
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
-                  background: 'rgba(245,197,24,0.12)', border: '1px solid rgba(245,197,24,0.3)',
+                  background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
                   color: 'var(--accent)', fontSize: 13, fontWeight: 700,
                   padding: '10px 18px', borderRadius: 10, textDecoration: 'none',
                 }}
@@ -165,8 +165,8 @@ export default async function TVDetailPage({ params }: { params: Promise<{ id: s
 
             {show.Awards && show.Awards !== 'N/A' && (
               <div style={{
-                background: 'linear-gradient(135deg, rgba(245,197,24,0.08), rgba(245,197,24,0.03))',
-                border: '1px solid rgba(245,197,24,0.15)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))',
+                border: '1px solid rgba(255,255,255,0.09)',
                 borderRadius: 14, padding: '18px 22px',
                 display: 'flex', alignItems: 'flex-start', gap: 14,
               }}>

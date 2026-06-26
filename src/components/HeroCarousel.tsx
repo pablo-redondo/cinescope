@@ -77,7 +77,7 @@ function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 5,
-              background: 'rgba(245,197,24,0.15)', border: '1px solid rgba(245,197,24,0.3)',
+              background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.15)',
               color: 'var(--accent)', fontSize: 10, fontWeight: 800,
               padding: '3px 10px', borderRadius: 999, letterSpacing: '0.1em', textTransform: 'uppercase',
             }}>
@@ -168,7 +168,7 @@ function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
         {poster && (
           <div style={{ flexShrink: 0, display: 'none' }} className="hero-poster">
             <div style={{ position: 'relative', width: 'clamp(160px, 14vw, 230px)' }}>
-              <div style={{ position: 'absolute', inset: '15%', background: 'rgba(245,197,24,0.1)', filter: 'blur(32px)', borderRadius: 20 }} />
+              <div style={{ position: 'absolute', inset: '15%', background: 'rgba(255,255,255,0.06)', filter: 'blur(32px)', borderRadius: 20 }} />
               <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', boxShadow: '0 28px 64px -8px rgba(0,0,0,0.9)', outline: '1px solid rgba(255,255,255,0.1)', transform: 'rotate(1.5deg)' }}>
                 <Image src={poster} alt={movie.Title} width={230} height={345} style={{ width: '100%', display: 'block' }} priority />
               </div>
@@ -196,7 +196,7 @@ function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
                   border: active ? '2px solid var(--accent)' : '2px solid rgba(255,255,255,0.08)',
                   background: 'var(--surface2)', cursor: 'pointer', padding: 0,
                   opacity: active ? 1 : 0.45,
-                  boxShadow: active ? '0 0 12px rgba(245,197,24,0.28)' : 'none',
+                  boxShadow: active ? '0 0 12px rgba(255,255,255,0.12)' : 'none',
                   transition: 'width .3s, opacity .2s, border-color .2s',
                 }}
               >

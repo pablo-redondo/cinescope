@@ -61,8 +61,8 @@ export default function DiscoverFilters({ genres, tvGenres }: Props) {
   const chip = (active: boolean) => ({
     fontSize: 12, fontWeight: 600, padding: '6px 14px', borderRadius: 999, cursor: 'pointer' as const,
     border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
-    background: active ? 'rgba(245,197,24,0.12)' : 'var(--surface2)',
-    color: active ? 'var(--accent)' : 'var(--muted)',
+    background: active ? 'rgba(255,255,255,0.09)' : 'var(--surface2)',
+    color: active ? 'var(--text)' : 'var(--muted)',
     transition: 'all .15s',
     flexShrink: 0 as const,
   })
@@ -81,7 +81,7 @@ export default function DiscoverFilters({ genres, tvGenres }: Props) {
             padding: '7px 20px', borderRadius: 8, cursor: 'pointer',
             transition: 'all .15s',
           }}>
-            {t === 'movie' ? '🎬 Películas' : '📺 Series'}
+            {t === 'movie' ? 'Películas' : 'Series'}
           </button>
         ))}
       </div>

@@ -124,7 +124,7 @@ export default async function EstrenosPage() {
         {/* Próximos estrenos por mes */}
         {Object.keys(grouped).length > 0 && (
           <section id="proximos">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
               <div style={{ width: 2, height: 16, background: 'rgba(255,255,255,0.2)', borderRadius: 2 }} />
               <h2 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>Próximos estrenos</h2>
             </div>
@@ -132,7 +132,7 @@ export default async function EstrenosPage() {
               const label = monthKey === 'sin-fecha' ? 'Sin fecha'
                 : new Date(monthKey + '-01').toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())
               return (
-                <div key={monthKey} style={{ marginBottom: 36 }}>
+                <div key={monthKey} style={{ marginBottom: 20 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--muted2)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{label}</span>
                     <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
@@ -150,7 +150,7 @@ export default async function EstrenosPage() {
       <style>{`
         .card-hover:hover .card-poster { transform: scale(1.06); }
         .card-img { box-shadow: 0 2px 12px rgba(0,0,0,0.4); transition: box-shadow .3s; }
-        .card-hover:hover .card-img { box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,197,24,0.12); }
+        .card-hover:hover .card-img { box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1); }
         .upcoming-row { transition: background .12s; border-radius: 8px; padding-left: 8px; padding-right: 8px; margin: 0 -8px; }
         .upcoming-row:hover { background: var(--surface2); }
       `}</style>

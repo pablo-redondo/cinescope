@@ -152,7 +152,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                 target="_blank" rel="noopener noreferrer"
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
-                  background: 'rgba(245,197,24,0.12)', border: '1px solid rgba(245,197,24,0.3)',
+                  background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
                   color: 'var(--accent)', fontSize: 13, fontWeight: 700,
                   padding: '10px 18px', borderRadius: 10, textDecoration: 'none',
                 }}
@@ -167,8 +167,8 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
         {tmdb?.collection && tmdb.collection.parts && tmdb.collection.parts.length > 1 && (
           <div style={{
             marginTop: 40,
-            background: 'linear-gradient(135deg, rgba(245,197,24,0.06), rgba(245,197,24,0.02))',
-            border: '1px solid rgba(245,197,24,0.12)',
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))',
+            border: '1px solid rgba(255,255,255,0.08)',
             borderRadius: 16, padding: '20px 24px',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap',
           }}>
@@ -180,7 +180,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
               <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{tmdb.collection.parts.length} películas</p>
             </div>
             <Link href={`/tmdb/collection/${tmdb.collection.id}`} style={{
-              background: 'rgba(245,197,24,0.15)', border: '1px solid rgba(245,197,24,0.25)',
+              background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.12)',
               color: 'var(--accent)', fontSize: 12, fontWeight: 700,
               padding: '8px 16px', borderRadius: 8, textDecoration: 'none', flexShrink: 0,
             }}>
@@ -202,8 +202,8 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
             {movie.Awards && movie.Awards !== 'N/A' && (
               <div style={{
-                background: 'linear-gradient(135deg, rgba(245,197,24,0.08), rgba(245,197,24,0.03))',
-                border: '1px solid rgba(245,197,24,0.15)',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))',
+                border: '1px solid rgba(255,255,255,0.09)',
                 borderRadius: 14, padding: '18px 22px',
                 display: 'flex', alignItems: 'flex-start', gap: 14,
               }}>

@@ -120,7 +120,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
             {/* Info */}
             <div style={{ flex: 1, minWidth: 220, display: 'flex', flexDirection: 'column', gap: 10 }}>
               <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
-                <span style={{ background: 'rgba(245,197,24,0.1)', border: '1px solid rgba(245,197,24,0.2)', color: 'var(--accent)', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '2px 8px', borderRadius: 4 }}>
+                <span style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--muted2)', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '2px 8px', borderRadius: 4 }}>
                   {deptLabel}
                 </span>
                 {totalWorks > 0 && (
@@ -157,8 +157,8 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
               {detail.imdb_id && (
                 <Link href={`https://www.imdb.com/name/${detail.imdb_id}/`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start',
-                  background: 'rgba(245,197,24,0.08)', border: '1px solid rgba(245,197,24,0.2)',
-                  color: 'var(--accent)', fontSize: 12, fontWeight: 700,
+                  background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
+                  color: 'var(--muted2)', fontSize: 12, fontWeight: 700,
                   padding: '6px 14px', borderRadius: 6, textDecoration: 'none',
                 }}>IMDb ↗</Link>
               )}

@@ -97,8 +97,8 @@ function TmdbHeroInner({ items, type }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 5,
-              background: 'rgba(245,197,24,0.12)', border: '1px solid rgba(245,197,24,0.25)',
-              color: 'var(--accent)', fontSize: 10, fontWeight: 700,
+              background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)',
+              color: 'var(--text)', fontSize: 10, fontWeight: 700,
               padding: '3px 10px', borderRadius: 4, letterSpacing: '0.08em', textTransform: 'uppercase',
             }}>
               <span style={{ width: 4, height: 4, background: 'var(--accent)', borderRadius: '50%', animation: 'heroHbeat 2s infinite' }} />
@@ -170,7 +170,7 @@ function TmdbHeroInner({ items, type }: Props) {
                 border: active ? '2px solid var(--accent)' : '1px solid rgba(255,255,255,0.08)',
                 background: 'var(--surface2)', cursor: 'pointer', padding: 0,
                 opacity: active ? 1 : 0.38,
-                boxShadow: active ? '0 0 16px rgba(245,197,24,0.3)' : 'none',
+                boxShadow: active ? '0 0 12px rgba(255,255,255,0.15)' : 'none',
                 transition: 'width .3s, opacity .25s, border-color .25s, box-shadow .25s',
               }}>
               {p && <Image src={p} alt={m.title ?? m.name ?? ''} fill sizes="46px" style={{ objectFit: 'cover' }} />}

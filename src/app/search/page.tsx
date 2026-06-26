@@ -60,7 +60,7 @@ function SectionGrid({ title, children }: { title: string; children: React.React
   return (
     <section>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-        <div style={{ width: 2, height: 16, background: 'var(--accent)', borderRadius: 2 }} />
+        <div style={{ width: 2, height: 16, background: 'rgba(255,255,255,0.25)', borderRadius: 2 }} />
         <h2 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{title}</h2>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(135px, 1fr))', gap: 14 }}>
@@ -129,7 +129,7 @@ export default async function SearchPage({
             </Link>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
             {results.movies.length > 0 && (
               <SectionGrid title={`Películas (${results.movies.length})`}>
                 {results.movies.map(m => <MovieCard key={m.id} item={m} type="movie" />)}

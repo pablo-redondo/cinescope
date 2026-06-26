@@ -101,7 +101,7 @@ export default async function StreamingPage() {
         {platforms.map(({ provider, items, movieCount, tvCount }) => {
           if (items.length === 0) return null
           return (
-            <div key={provider.id} id={provider.id} style={{ paddingTop: 32 }}>
+            <div key={provider.id} id={provider.id} style={{ paddingTop: 24 }}>
               {/* Section header */}
               <div className="page-inner" style={{ marginBottom: 14 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -127,7 +127,7 @@ export default async function StreamingPage() {
                 </div>
               </div>
 
-              <div style={{ height: 1, background: 'var(--border)', marginTop: 24, marginLeft: 'var(--page-pad)', marginRight: 'var(--page-pad)' }} />
+              <div style={{ height: 1, background: 'var(--border)', marginTop: 16, marginLeft: 'var(--page-pad)', marginRight: 'var(--page-pad)' }} />
             </div>
           )
         })}

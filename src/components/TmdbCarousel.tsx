@@ -55,7 +55,7 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
             color: 'var(--accent)', fontSize: 10, fontWeight: 800,
             padding: '3px 7px', borderRadius: 6,
             backdropFilter: 'blur(6px)',
-            border: '1px solid rgba(245,197,24,0.15)',
+            border: '1px solid rgba(255,255,255,0.12)',
           }}>★ {rating}</div>
         )}
 
@@ -90,7 +90,7 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
           transition: box-shadow .3s ease;
         }
         .tmdb-card:hover .tmdb-card-img {
-          box-shadow: 0 16px 40px rgba(0,0,0,0.75), 0 0 0 1px rgba(245,197,24,0.15);
+          box-shadow: 0 16px 40px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.1);
         }
       `}</style>
     </Link>

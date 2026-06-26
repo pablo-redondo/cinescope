@@ -26,7 +26,7 @@ function ResultCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv
       <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--surface2)' }} className="result-img">
         {poster && <Image src={poster} alt={title} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'cover', transition: 'transform .4s ease' }} className="result-poster" />}
         {rating && (
-          <div style={{ position: 'absolute', top: 7, right: 7, background: 'rgba(0,0,0,0.88)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '3px 7px', borderRadius: 6, backdropFilter: 'blur(6px)', border: '1px solid rgba(245,197,24,0.15)' }}>
+          <div style={{ position: 'absolute', top: 7, right: 7, background: 'rgba(0,0,0,0.88)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '3px 7px', borderRadius: 6, backdropFilter: 'blur(6px)', border: '1px solid rgba(255,255,255,0.12)' }}>
             ★ {rating}
           </div>
         )}
@@ -131,7 +131,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
       <style>{`
         .result-card:hover .result-poster { transform: scale(1.06); }
         .result-img { box-shadow: 0 2px 12px rgba(0,0,0,0.4); transition: box-shadow .3s; }
-        .result-card:hover .result-img { box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,197,24,0.12); }
+        .result-card:hover .result-img { box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1); }
       `}</style>
     </div>
   )

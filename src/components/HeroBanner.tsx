@@ -46,7 +46,7 @@ export default function HeroBanner({ movie }: { movie: OmdbDetail }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <span style={{
                 display: 'inline-flex', alignItems: 'center', gap: 6,
-                background: 'rgba(245,197,24,0.15)', border: '1px solid rgba(245,197,24,0.35)',
+                background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.18)',
                 color: 'var(--accent)', fontSize: 10, fontWeight: 800,
                 padding: '4px 12px', borderRadius: 999, letterSpacing: '0.12em', textTransform: 'uppercase',
               }}>
