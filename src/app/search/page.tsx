@@ -80,7 +80,7 @@ export default async function SearchPage({
   if (!q) {
     return (
       <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-        <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(255,255,255,0.08)' }}>
           <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
             <h1 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1 }}>Buscar</h1>
             <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>Películas, series y personas</p>
@@ -106,7 +106,7 @@ export default async function SearchPage({
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(255,255,255,0.08)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <h1 style={{ fontSize: 'clamp(20px, 3vw, 30px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.6px', lineHeight: 1 }}>
             &ldquo;<span style={{ color: 'var(--accent)' }}>{q}</span>&rdquo;

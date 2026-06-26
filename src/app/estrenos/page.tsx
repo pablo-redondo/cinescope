@@ -45,7 +45,7 @@ function UpcomingRow({ movie }: { movie: TmdbMovieResult }) {
           ? <Image src={poster} alt={title} fill sizes="52px" style={{ objectFit: 'cover' }} />
           : backdrop
             ? <Image src={backdrop} alt={title} fill sizes="52px" style={{ objectFit: 'cover' }} />
-            : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>🎬</div>
+            : null
         }
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -90,7 +90,7 @@ export default async function EstrenosPage() {
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Compact header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(249,115,22,0.5)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
             <div>
@@ -125,7 +125,7 @@ export default async function EstrenosPage() {
         {Object.keys(grouped).length > 0 && (
           <section id="proximos">
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-              <div style={{ width: 2, height: 16, background: 'var(--accent)', borderRadius: 2 }} />
+              <div style={{ width: 2, height: 16, background: 'rgba(249,115,22,0.8)', borderRadius: 2 }} />
               <h2 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)' }}>Próximos estrenos</h2>
             </div>
             {Object.entries(grouped).map(([monthKey, movies]) => {

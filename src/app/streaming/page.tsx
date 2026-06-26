@@ -77,7 +77,7 @@ export default async function StreamingPage() {
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(0,168,224,0.5)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
             <div>

@@ -81,7 +81,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Compact header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: `3px solid ${type === 'tv' ? 'rgba(99,102,241,0.45)' : 'rgba(16,185,129,0.45)'}` }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <h1 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1 }}>Descubrir</h1>
           <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>
@@ -101,9 +101,11 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
         {/* Results */}
         {results.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <p style={{ fontSize: 40, marginBottom: 14 }}>🔍</p>
-            <p style={{ fontSize: 17, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>Sin resultados</p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '48px 0', gap: 10 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)' }}>Sin resultados</p>
             <p style={{ fontSize: 13, color: 'var(--muted)' }}>Prueba con otros filtros</p>
           </div>
         ) : (

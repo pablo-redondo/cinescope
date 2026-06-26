@@ -35,7 +35,7 @@ export default async function MoviesPage() {
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Compact header */}
-      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)', borderTop: '3px solid rgba(220,38,38,0.45)' }}>
         <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
             <div>
