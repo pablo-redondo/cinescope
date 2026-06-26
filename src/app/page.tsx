@@ -1,6 +1,6 @@
 export const revalidate = 3600
 
-import { getTrendingMovies, getTrendingTV, discoverMovies, discoverTV, getTopRatedMovies, getTopRatedTV } from '@/services/tmdb'
+import { getTrendingMovies, getTrendingTV, discoverMovies, discoverTV, getTopRatedMovies, getTopRatedTV, getNowPlaying } from '@/services/tmdb'
 import TmdbCarousel from '@/components/TmdbCarousel'
 import TmdbHero from '@/components/TmdbHero'
 
@@ -15,6 +15,7 @@ export default async function HomePage() {
     comedyTV,
     topMovies,
     topTV,
+    nowPlaying,
   ] = await Promise.all([
     getTrendingMovies(),
     getTrendingTV(),
@@ -25,6 +26,7 @@ export default async function HomePage() {
     discoverTV({ with_genres: '35', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
     getTopRatedMovies(),
     getTopRatedTV(),
+    getNowPlaying(),
   ])
 
   const heroItems = trending.filter(m => m.backdrop_path).slice(0, 6)
@@ -35,6 +37,10 @@ export default async function HomePage() {
       <TmdbHero items={heroItems} type="movie" />
 
       <div style={{ borderTop: '1px solid var(--border)', paddingTop: 28, paddingBottom: 56, display: 'flex', flexDirection: 'column', gap: 36 }}>
+
+        {nowPlaying.filter(m => m.poster_path).length > 0 && (
+          <TmdbCarousel items={nowPlaying.filter(m => m.poster_path).slice(0, 12)} title="🎟️ En cines ahora" subtitle="Cartelera actual en España" type="movie" />
+        )}
 
         <TmdbCarousel items={trending.slice(0, 12)} title="🔥 En tendencia esta semana" subtitle="Lo más visto ahora mismo" type="movie" />
 

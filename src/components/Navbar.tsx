@@ -8,6 +8,7 @@ const NAV = [
   { href: '/', label: 'Inicio' },
   { href: '/movies', label: 'Películas' },
   { href: '/tv', label: 'Series' },
+  { href: '/estrenos', label: 'Estrenos' },
   { href: '/discover', label: 'Descubrir' },
   { href: '/top', label: 'Top' },
   { href: '/watchlist', label: 'Mi Lista' },

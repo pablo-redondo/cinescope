@@ -148,7 +148,48 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
                 <p style={{ color: 'var(--text)', fontSize: 15, lineHeight: 1.8, opacity: 0.9 }}>{show.overview}</p>
               </div>
             )}
+
+            {(show.keywords?.results?.length ?? 0) > 0 && (
+              <div>
+                <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>Temas</p>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {show.keywords.results.slice(0, 18).map(kw => (
+                    <Link key={kw.id} href={`/search?q=${encodeURIComponent(kw.name)}`} style={{
+                      background: 'var(--surface2)', border: '1px solid var(--border)',
+                      color: 'var(--muted)', fontSize: 11, fontWeight: 500,
+                      padding: '4px 12px', borderRadius: 999, textDecoration: 'none',
+                    }}>{kw.name}</Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {cast.length > 0 && <CastSection cast={cast} />}
+
+            {(show.reviews?.results?.length ?? 0) > 0 && (
+              <div>
+                <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>Reseñas</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {show.reviews.results.slice(0, 3).map(r => (
+                    <div key={r.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '18px 20px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: 'var(--accent)', flexShrink: 0 }}>
+                          {r.author.charAt(0).toUpperCase()}
+                        </div>
+                        <div style={{ minWidth: 0 }}>
+                          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{r.author}</p>
+                          <p style={{ fontSize: 11, color: 'var(--muted)' }}>{new Date(r.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'long' })}</p>
+                        </div>
+                        {r.author_details?.rating != null && (
+                          <span style={{ marginLeft: 'auto', background: 'rgba(245,197,24,0.12)', border: '1px solid rgba(245,197,24,0.25)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '3px 10px', borderRadius: 8, flexShrink: 0 }}>★ {r.author_details.rating}/10</span>
+                        )}
+                      </div>
+                      <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.65, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{r.content}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
