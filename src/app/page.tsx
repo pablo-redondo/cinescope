@@ -29,37 +29,33 @@ export default async function HomePage() {
     getNowPlaying(),
   ])
 
-  const heroItems = trending.filter(m => m.backdrop_path).slice(0, 6)
+  const heroItems = trending.filter(m => m.backdrop_path).slice(0, 7)
+  const f = (r: { results: import('@/services/tmdb').TmdbMovieResult[] }) =>
+    r.results.filter(m => m.poster_path).slice(0, 16)
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-
       <TmdbHero items={heroItems} type="movie" />
 
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: 28, paddingBottom: 56, display: 'flex', flexDirection: 'column', gap: 36 }}>
-
+      <div style={{ paddingTop: 32, paddingBottom: 64, display: 'flex', flexDirection: 'column', gap: 32 }}>
         {nowPlaying.filter(m => m.poster_path).length > 0 && (
-          <TmdbCarousel items={nowPlaying.filter(m => m.poster_path).slice(0, 12)} title="🎟️ En cines ahora" subtitle="Cartelera actual en España" type="movie" />
+          <TmdbCarousel
+            items={nowPlaying.filter(m => m.poster_path).slice(0, 14)}
+            title="En cines ahora"
+            subtitle="Cartelera actual"
+            type="movie"
+            viewAllHref="/estrenos"
+          />
         )}
-
-        <TmdbCarousel items={trending.slice(0, 12)} title="🔥 En tendencia esta semana" subtitle="Lo más visto ahora mismo" type="movie" />
-
-        <TmdbCarousel items={trendingTV.slice(0, 12)} title="📺 Series en tendencia" subtitle="Los shows del momento" type="tv" />
-
-        <TmdbCarousel items={topMovies.slice(0, 12)} title="⭐ Las mejores películas de la historia" subtitle="Mejor valoradas por la comunidad" type="movie" />
-
-        <TmdbCarousel items={topTV.slice(0, 12)} title="🏅 Las mejores series de la historia" subtitle="Las series más aclamadas" type="tv" />
-
-        <TmdbCarousel items={scifiMovies.results.filter(m => m.poster_path).slice(0, 12)} title="🚀 Ciencia Ficción" type="movie" />
-
-        <TmdbCarousel items={thrillerMovies.results.filter(m => m.poster_path).slice(0, 12)} title="🔪 Thriller & Suspense" type="movie" />
-
-        <TmdbCarousel items={classicMovies.results.filter(m => m.poster_path).slice(0, 12)} title="🏆 Clásicos del cine" subtitle="Las obras maestras de todos los tiempos" type="movie" />
-
-        <TmdbCarousel items={crimeTV.results.filter(m => m.poster_path).slice(0, 12)} title="🔍 Crimen & Misterio" type="tv" />
-
-        <TmdbCarousel items={comedyTV.results.filter(m => m.poster_path).slice(0, 12)} title="😂 Comedia" type="tv" />
-
+        <TmdbCarousel items={trending.slice(0, 16)} title="Tendencias esta semana" subtitle="Las más vistas ahora mismo" type="movie" viewAllHref="/movies" />
+        <TmdbCarousel items={trendingTV.slice(0, 16)} title="Series en tendencia" subtitle="Los shows del momento" type="tv" viewAllHref="/tv" />
+        <TmdbCarousel items={topMovies.slice(0, 16)} title="Mejores películas de la historia" subtitle="Mejor valoradas por la comunidad" type="movie" viewAllHref="/top#movies" />
+        <TmdbCarousel items={topTV.slice(0, 16)} title="Mejores series de la historia" subtitle="Las más aclamadas" type="tv" viewAllHref="/top#tv" />
+        <TmdbCarousel items={f(scifiMovies)} title="Ciencia ficción" type="movie" viewAllHref="/discover?genre=878&type=movie" />
+        <TmdbCarousel items={f(thrillerMovies)} title="Thriller & Suspense" type="movie" viewAllHref="/discover?genre=53&type=movie" />
+        <TmdbCarousel items={f(classicMovies)} title="Clásicos del cine" subtitle="Obras maestras de siempre" type="movie" />
+        <TmdbCarousel items={f(crimeTV)} title="Crimen & Misterio" type="tv" viewAllHref="/discover?genre=80&type=tv" />
+        <TmdbCarousel items={f(comedyTV)} title="Comedia" type="tv" viewAllHref="/discover?genre=35&type=tv" />
       </div>
     </div>
   )

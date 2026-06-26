@@ -20,25 +20,24 @@ function ResultCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv
   const title = item.title ?? item.name ?? ''
   const year = (item.release_date ?? item.first_air_date ?? '').slice(0, 4)
   const rating = item.vote_average ? item.vote_average.toFixed(1) : null
-  const href = `/tmdb/${type}/${item.id}`
 
   return (
-    <Link href={href} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 12, overflow: 'hidden', background: 'var(--surface2)', transition: 'transform .25s ease, box-shadow .25s ease' }} className="result-card">
-        {poster && <Image src={poster} alt={title} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'cover' }} />}
+    <Link href={`/tmdb/${type}/${item.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: 7 }} className="result-card">
+      <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 'var(--radius)', overflow: 'hidden', background: 'var(--surface2)' }} className="result-img">
+        {poster && <Image src={poster} alt={title} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'cover', transition: 'transform .4s ease' }} className="result-poster" />}
         {rating && (
-          <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8, border: '1px solid rgba(245,197,24,0.2)' }}>
+          <div style={{ position: 'absolute', top: 7, right: 7, background: 'rgba(0,0,0,0.88)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '3px 7px', borderRadius: 6, backdropFilter: 'blur(6px)', border: '1px solid rgba(245,197,24,0.15)' }}>
             ★ {rating}
           </div>
         )}
-        <div style={{ position: 'absolute', top: 8, left: 8, background: type === 'tv' ? 'rgba(99,102,241,0.85)' : 'rgba(239,68,68,0.85)', color: '#fff', fontSize: 9, fontWeight: 800, padding: '3px 7px', borderRadius: 6, backdropFilter: 'blur(8px)' }}>
+        <div style={{ position: 'absolute', top: 7, left: 7, background: type === 'tv' ? 'rgba(99,102,241,0.9)' : 'rgba(220,38,38,0.9)', color: '#fff', fontSize: 8, fontWeight: 800, padding: '2px 6px', borderRadius: 4, backdropFilter: 'blur(6px)' }}>
           {type === 'tv' ? 'SERIE' : 'PEL.'}
         </div>
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '35%', background: 'linear-gradient(to top, rgba(0,0,0,0.65), transparent)' }} />
       </div>
       <div>
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</p>
-        <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{year}</p>
+        <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</p>
+        <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{year}</p>
       </div>
     </Link>
   )
@@ -81,25 +80,20 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
-      {/* Header */}
-      <div style={{ background: 'linear-gradient(to bottom, var(--surface) 0%, var(--bg) 100%)', borderBottom: '1px solid var(--border)' }}>
-        <div className="page-inner" style={{ paddingTop: 48, paddingBottom: 28 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 8 }}>
-            <div style={{ width: 46, height: 46, borderRadius: 13, background: 'linear-gradient(135deg, #6366f1, #a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, boxShadow: '0 8px 24px rgba(99,102,241,0.25)', flexShrink: 0 }}>🔍</div>
-            <div>
-              <h1 style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1.1 }}>Descubrir</h1>
-              <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 3 }}>
-                {data.total_results.toLocaleString('es')} {type === 'tv' ? 'series' : 'películas'}{activeGenreName ? ` de ${activeGenreName}` : ''}
-              </p>
-            </div>
-          </div>
+      {/* Compact header */}
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
+          <h1 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1 }}>Descubrir</h1>
+          <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>
+            {data.total_results.toLocaleString('es')} {type === 'tv' ? 'series' : 'películas'}{activeGenreName ? ` · ${activeGenreName}` : ''}
+          </p>
         </div>
       </div>
 
-      <div className="page-inner" style={{ paddingTop: 32, paddingBottom: 80 }}>
+      <div className="page-inner" style={{ paddingTop: 24, paddingBottom: 80 }}>
 
         {/* Filters */}
-        <div style={{ marginBottom: 36, padding: '24px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16 }}>
+        <div style={{ marginBottom: 28, padding: '18px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)' }}>
           <Suspense fallback={null}>
             <DiscoverFilters genres={movieGenres} tvGenres={tvGenres} />
           </Suspense>
@@ -108,38 +102,34 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
         {/* Results */}
         {results.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <p style={{ fontSize: 48, marginBottom: 16 }}>🔍</p>
-            <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>Sin resultados</p>
-            <p style={{ fontSize: 14, color: 'var(--muted)' }}>Prueba con otros filtros</p>
+            <p style={{ fontSize: 40, marginBottom: 14 }}>🔍</p>
+            <p style={{ fontSize: 17, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>Sin resultados</p>
+            <p style={{ fontSize: 13, color: 'var(--muted)' }}>Prueba con otros filtros</p>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 18 }}>
-            {results.map(item => (
-              <ResultCard key={item.id} item={item} type={type} />
-            ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(135px, 1fr))', gap: 14 }}>
+            {results.map(item => <ResultCard key={item.id} item={item} type={type} />)}
           </div>
         )}
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 48, flexWrap: 'wrap' }}>
-            {currentPage > 1 && (
-              <PaginationLink sp={sp} page={currentPage - 1} label="← Anterior" />
-            )}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 40, flexWrap: 'wrap' }}>
+            {currentPage > 1 && <PaginationLink sp={sp} page={currentPage - 1} label="←" />}
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const p = Math.max(1, currentPage - 2) + i
               if (p > totalPages) return null
               return <PaginationLink key={p} sp={sp} page={p} label={String(p)} active={p === currentPage} />
             })}
-            {currentPage < totalPages && (
-              <PaginationLink sp={sp} page={currentPage + 1} label="Siguiente →" />
-            )}
+            {currentPage < totalPages && <PaginationLink sp={sp} page={currentPage + 1} label="→" />}
           </div>
         )}
       </div>
 
       <style>{`
-        .result-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
+        .result-card:hover .result-poster { transform: scale(1.06); }
+        .result-img { box-shadow: 0 2px 12px rgba(0,0,0,0.4); transition: box-shadow .3s; }
+        .result-card:hover .result-img { box-shadow: 0 12px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,197,24,0.12); }
       `}</style>
     </div>
   )
@@ -156,13 +146,12 @@ function PaginationLink({ sp, page, label, active }: { sp: SearchParams; page: n
 
   return (
     <Link href={`/discover?${params.toString()}`} style={{
-      padding: '8px 16px', borderRadius: 8,
+      padding: '7px 14px', borderRadius: 6,
       background: active ? 'var(--accent)' : 'var(--surface2)',
-      color: active ? '#000' : 'var(--muted)',
+      color: active ? '#000' : 'var(--muted2)',
       fontSize: 13, fontWeight: active ? 800 : 500,
       textDecoration: 'none', border: '1px solid var(--border)',
-    }}>
-      {label}
-    </Link>
+      minWidth: 36, textAlign: 'center' as const,
+    }}>{label}</Link>
   )
 }

@@ -41,10 +41,10 @@ function CreditCard({ credit, type, role }: { credit: TmdbPersonCredit; type: 'm
 
 function SectionHeader({ title, count }: { title: string; count?: number }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-      <div style={{ width: 3, height: 20, background: 'var(--accent)', borderRadius: 2, flexShrink: 0 }} />
-      <h2 style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.2px' }}>{title}</h2>
-      {count !== undefined && <span style={{ fontSize: 12, color: 'var(--muted)', opacity: 0.7 }}>{count}</span>}
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+      <div style={{ width: 2, height: 16, background: 'var(--accent)', borderRadius: 2, flexShrink: 0 }} />
+      <h2 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{title}</h2>
+      {count !== undefined && <span style={{ fontSize: 11, color: 'var(--muted)' }}>{count}</span>}
     </div>
   )
 }
@@ -99,71 +99,67 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
-      {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <div style={{ background: 'linear-gradient(to bottom, var(--surface) 0%, var(--bg) 100%)', borderBottom: '1px solid var(--border)', paddingBottom: 0 }}>
-        <div className="page-inner" style={{ paddingTop: 48, paddingBottom: 40 }}>
-          <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+      {/* Hero */}
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 28 }}>
+          <div style={{ display: 'flex', gap: 28, alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
             {/* Photo */}
             <div style={{ flexShrink: 0 }}>
               {photo ? (
-                <div style={{ width: 'clamp(120px, 13vw, 190px)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 64px -8px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.07)', position: 'relative' }}>
-                  <Image src={photo} alt={detail.name} width={190} height={285} style={{ width: '100%', display: 'block' }} priority />
+                <div style={{ width: 'clamp(100px, 11vw, 160px)', borderRadius: 10, overflow: 'hidden', boxShadow: '0 16px 48px -8px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)' }}>
+                  <Image src={photo} alt={detail.name} width={160} height={240} style={{ width: '100%', display: 'block' }} priority />
                 </div>
               ) : (
-                <div style={{ width: 'clamp(120px, 13vw, 190px)', aspectRatio: '2/3', borderRadius: 16, background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 52, fontWeight: 900, color: 'var(--accent)' }}>
+                <div style={{ width: 'clamp(100px, 11vw, 160px)', aspectRatio: '2/3', borderRadius: 10, background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 42, fontWeight: 900, color: 'var(--accent)' }}>
                   {detail.name[0]}
                 </div>
               )}
             </div>
 
             {/* Info */}
-            <div style={{ flex: 1, minWidth: 240, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div>
-                <span style={{ display: 'inline-block', background: 'rgba(245,197,24,0.12)', border: '1px solid rgba(245,197,24,0.25)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '3px 10px', borderRadius: 999, marginBottom: 10 }}>
+            <div style={{ flex: 1, minWidth: 220, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                <span style={{ background: 'rgba(245,197,24,0.1)', border: '1px solid rgba(245,197,24,0.2)', color: 'var(--accent)', fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '2px 8px', borderRadius: 4 }}>
                   {deptLabel}
                 </span>
-                <h1 style={{ fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-1.2px', lineHeight: 1.05 }}>
-                  {detail.name}
-                </h1>
+                {totalWorks > 0 && (
+                  <span style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted)', fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 4 }}>
+                    {totalWorks} obras
+                  </span>
+                )}
               </div>
 
-              {/* Stats badges */}
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <h1 style={{ fontSize: 'clamp(24px, 3.5vw, 44px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-1px', lineHeight: 1 }}>
+                {detail.name}
+              </h1>
+
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
                 {detail.birthday && (
-                  <span style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted)', fontSize: 12, padding: '5px 12px', borderRadius: 999 }}>
-                    🎂 {detail.birthday}{age && !detail.deathday ? ` · ${age} años` : ''}
+                  <span style={{ color: 'var(--muted)', fontSize: 12 }}>
+                    {detail.birthday}{age && !detail.deathday ? ` · ${age} años` : ''}
                   </span>
                 )}
                 {detail.deathday && (
-                  <span style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', color: '#fca5a5', fontSize: 12, padding: '5px 12px', borderRadius: 999 }}>
-                    † {detail.deathday}
-                  </span>
+                  <span style={{ color: '#fca5a5', fontSize: 12 }}>† {detail.deathday}</span>
                 )}
                 {detail.place_of_birth && (
-                  <span style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted)', fontSize: 12, padding: '5px 12px', borderRadius: 999 }}>
-                    📍 {detail.place_of_birth}
-                  </span>
-                )}
-                {totalWorks > 0 && (
-                  <span style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted)', fontSize: 12, padding: '5px 12px', borderRadius: 999 }}>
-                    🎬 {totalWorks} obras
-                  </span>
+                  <span style={{ color: 'var(--muted)', fontSize: 12 }}>{detail.place_of_birth}</span>
                 )}
               </div>
 
               {detail.biography && (
-                <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.75, maxWidth: '65ch' }}>
-                  {detail.biography.slice(0, 480)}{detail.biography.length > 480 ? '…' : ''}
+                <p style={{ color: 'var(--muted)', fontSize: 13, lineHeight: 1.7, maxWidth: '65ch' }}>
+                  {detail.biography.slice(0, 400)}{detail.biography.length > 400 ? '…' : ''}
                 </p>
               )}
 
               {detail.imdb_id && (
                 <Link href={`https://www.imdb.com/name/${detail.imdb_id}/`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6, alignSelf: 'flex-start',
-                  background: 'rgba(245,197,24,0.1)', border: '1px solid rgba(245,197,24,0.25)',
-                  color: 'var(--accent)', fontSize: 13, fontWeight: 700,
-                  padding: '8px 16px', borderRadius: 10, textDecoration: 'none',
+                  background: 'rgba(245,197,24,0.08)', border: '1px solid rgba(245,197,24,0.2)',
+                  color: 'var(--accent)', fontSize: 12, fontWeight: 700,
+                  padding: '6px 14px', borderRadius: 6, textDecoration: 'none',
                 }}>IMDb ↗</Link>
               )}
             </div>
@@ -171,13 +167,13 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
         </div>
       </div>
 
-      <div className="page-inner" style={{ paddingTop: 48, paddingBottom: 80 }}>
+      <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 80 }}>
 
         {/* ── Conocido por ─────────────────────────────────────────────── */}
         {knownFor.length > 0 && (
-          <section style={{ marginBottom: 56 }}>
+          <section style={{ marginBottom: 40 }}>
             <SectionHeader title="Conocido por" />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 12 }}>
               {knownFor.map(credit => (
                 <CreditCard key={`kf-${credit.id}-${credit.media_type}`} credit={credit} type={credit.media_type as 'movie' | 'tv'} />
               ))}
@@ -187,7 +183,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
 
         {/* ── Profile gallery ───────────────────────────────────────────── */}
         {profileGallery.length > 1 && (
-          <section style={{ marginBottom: 56 }}>
+          <section style={{ marginBottom: 40 }}>
             <SectionHeader title="Fotos" count={profileGallery.length} />
             <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 8 }} className="scrollbar-hide">
               {profileGallery.map((p, i) => (
@@ -201,9 +197,9 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
 
         {/* ── Películas ─────────────────────────────────────────────────── */}
         {allMovies.length > 0 && (
-          <section style={{ marginBottom: 52 }}>
+          <section style={{ marginBottom: 40 }}>
             <SectionHeader title="Películas" count={allMovies.length} />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 12 }}>
               {allMovies.map(credit => (
                 <CreditCard key={`m-${credit.id}`} credit={credit} type="movie" />
               ))}
@@ -213,9 +209,9 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
 
         {/* ── Como director/a ───────────────────────────────────────────── */}
         {allDirected.length > 0 && (
-          <section style={{ marginBottom: 52 }}>
+          <section style={{ marginBottom: 40 }}>
             <SectionHeader title="Como director/a" count={allDirected.length} />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 12 }}>
               {allDirected.map(credit => (
                 <CreditCard key={`d-${credit.id}`} credit={{ ...credit, character: undefined }} type="movie" role="Director/a" />
               ))}
@@ -225,9 +221,9 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
 
         {/* ── Series ────────────────────────────────────────────────────── */}
         {allTV.length > 0 && (
-          <section style={{ marginBottom: 52 }}>
+          <section style={{ marginBottom: 40 }}>
             <SectionHeader title="Series" count={allTV.length} />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 12 }}>
               {allTV.map(credit => (
                 <CreditCard key={`t-${credit.id}`} credit={credit} type="tv" />
               ))}

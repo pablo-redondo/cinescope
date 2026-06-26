@@ -22,26 +22,26 @@ export default async function SeasonPage({ params }: { params: Promise<{ id: str
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Header */}
-      <div style={{ background: 'linear-gradient(to bottom, var(--surface) 0%, var(--bg) 100%)', borderBottom: '1px solid var(--border)' }}>
-        <div className="page-inner" style={{ paddingTop: 36, paddingBottom: 28 }}>
-          <Link href={`/tmdb/tv/${id}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--muted)', fontSize: 13, fontWeight: 600, textDecoration: 'none', marginBottom: 20 }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div className="page-inner" style={{ paddingTop: 20, paddingBottom: 20 }}>
+          <Link href={`/tmdb/tv/${id}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'rgba(255,255,255,0.5)', fontSize: 12, fontWeight: 600, textDecoration: 'none', marginBottom: 16 }}>
             ← {show?.name ?? 'Serie'}
           </Link>
-          <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: 18, alignItems: 'flex-start' }}>
             {seasonPoster && (
-              <div style={{ flexShrink: 0, width: 90, borderRadius: 10, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
-                <Image src={seasonPoster} alt={season.name} width={90} height={135} style={{ width: '100%', display: 'block' }} />
+              <div style={{ flexShrink: 0, width: 72, borderRadius: 8, overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
+                <Image src={seasonPoster} alt={season.name} width={72} height={108} style={{ width: '100%', display: 'block' }} />
               </div>
             )}
             <div>
-              <p style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 600, marginBottom: 4 }}>{show?.name}</p>
-              <h1 style={{ fontSize: 'clamp(22px, 3vw, 36px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.5px', marginBottom: 8 }}>{season.name}</h1>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-                <span style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)', color: '#a5b4fc', fontSize: 12, fontWeight: 700, padding: '3px 12px', borderRadius: 999 }}>{episodes.length} episodios</span>
-                {season.air_date && <span style={{ fontSize: 13, color: 'var(--muted)' }}>{season.air_date.slice(0,4)}</span>}
+              {show?.name && <p style={{ fontSize: 11, color: 'var(--muted)', fontWeight: 600, marginBottom: 3 }}>{show.name}</p>}
+              <h1 style={{ fontSize: 'clamp(20px, 2.5vw, 30px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.5px', lineHeight: 1, marginBottom: 8 }}>{season.name}</h1>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                <span style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', color: '#a5b4fc', fontSize: 11, fontWeight: 700, padding: '2px 10px', borderRadius: 4 }}>{episodes.length} ep.</span>
+                {season.air_date && <span style={{ fontSize: 11, color: 'var(--muted)' }}>{season.air_date.slice(0,4)}</span>}
               </div>
               {season.overview && (
-                <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6, marginTop: 10, maxWidth: '60ch' }}>{season.overview}</p>
+                <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6, marginTop: 8, maxWidth: '60ch' }}>{season.overview}</p>
               )}
             </div>
           </div>
@@ -67,7 +67,7 @@ export default async function SeasonPage({ params }: { params: Promise<{ id: str
                     <Image src={still} alt={ep.name} fill sizes="160px" style={{ objectFit: 'cover' }} />
                   </div>
                 ) : (
-                  <div style={{ flexShrink: 0, width: 'clamp(100px, 14vw, 160px)', aspectRatio: '16/9', borderRadius: 8, background: 'var(--surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📺</div>
+                  <div style={{ flexShrink: 0, width: 'clamp(100px, 14vw, 160px)', aspectRatio: '16/9', borderRadius: 8, background: 'var(--surface2)' }} />
                 )}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap', marginBottom: 4 }}>

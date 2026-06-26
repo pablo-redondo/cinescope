@@ -11,105 +11,89 @@ type Props = {
   title: string
   subtitle?: string
   type: 'movie' | 'tv'
+  viewAllHref?: string
 }
 
 function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' }) {
-  const [hovered, setHovered] = useState(false)
   const poster = getPosterUrl(item.poster_path, 'w342')
   const title = item.title ?? item.name ?? ''
   const year = (item.release_date ?? item.first_air_date ?? '').slice(0, 4)
   const rating = item.vote_average ? item.vote_average.toFixed(1) : null
-  const routeType = type === 'tv' ? 'tv' : 'movie'
-  const href = item.imdb_id
-    ? `/${routeType}/${item.imdb_id}`
-    : `/tmdb/${routeType}/${item.id}`
+  const href = `/tmdb/${type === 'tv' ? 'tv' : 'movie'}/${item.id}`
 
   return (
-    <Link
-      href={href}
-      style={{ display: 'block', textDecoration: 'none' }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+    <Link href={href} style={{ display: 'block', textDecoration: 'none', position: 'relative' }} className="tmdb-card">
       <div style={{
         position: 'relative',
         aspectRatio: '2/3',
         width: '100%',
-        borderRadius: 12,
+        borderRadius: 'var(--radius)',
         overflow: 'hidden',
-        background: '#1a1f2e',
-        transform: hovered ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
-        transition: 'transform .25s ease, box-shadow .25s ease',
-        boxShadow: hovered
-          ? '0 24px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(245,197,24,0.2)'
-          : '0 4px 16px rgba(0,0,0,0.4)',
-      }}>
+        background: 'var(--surface2)',
+      }} className="tmdb-card-img">
         {poster ? (
-          <Image
-            src={poster}
-            alt={title}
-            fill
-            sizes="(max-width: 768px) 40vw, 200px"
-            style={{ objectFit: 'cover', transition: 'transform .35s ease', transform: hovered ? 'scale(1.06)' : 'scale(1)' }}
-          />
+          <Image src={poster} alt={title} fill sizes="(max-width: 768px) 40vw, 180px"
+            style={{ objectFit: 'cover', transition: 'transform .4s ease' }} className="tmdb-poster" />
         ) : (
-          <div style={{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexDirection: 'column', gap: 8, color: '#3a4060', fontSize: 32,
-          }}>🎬</div>
-        )}
-
-        {rating && (
-          <div style={{
-            position: 'absolute', top: 8, right: 8,
-            display: 'flex', alignItems: 'center', gap: 3,
-            background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
-            color: 'var(--accent)', fontSize: 11, fontWeight: 800,
-            padding: '4px 8px', borderRadius: 8,
-            border: '1px solid rgba(245,197,24,0.2)',
-          }}>
-            ★ {rating}
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: 28 }}>
+            {type === 'tv' ? '📺' : '🎬'}
           </div>
         )}
 
-        <div style={{
-          position: 'absolute', top: 8, left: 8,
-          background: type === 'tv' ? 'rgba(99,102,241,0.85)' : 'rgba(239,68,68,0.85)',
-          color: '#fff', fontSize: 9, fontWeight: 800,
-          padding: '3px 7px', borderRadius: 6,
-          letterSpacing: '0.08em', textTransform: 'uppercase',
-          backdropFilter: 'blur(8px)',
-        }}>
-          {type === 'tv' ? 'SERIE' : 'PELÍCULA'}
-        </div>
+        {/* Gradient overlay */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%)', opacity: 0, transition: 'opacity .3s' }} className="tmdb-overlay" />
 
+        {/* Rating badge */}
+        {rating && (
+          <div style={{
+            position: 'absolute', top: 7, right: 7,
+            background: 'rgba(0,0,0,0.88)',
+            color: 'var(--accent)', fontSize: 10, fontWeight: 800,
+            padding: '3px 7px', borderRadius: 6,
+            backdropFilter: 'blur(6px)',
+            border: '1px solid rgba(245,197,24,0.15)',
+          }}>★ {rating}</div>
+        )}
+
+        {/* Type pill */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
-          height: '50%',
-          background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)',
-        }} />
+          position: 'absolute', top: 7, left: 7,
+          background: type === 'tv' ? 'rgba(99,102,241,0.9)' : 'rgba(220,38,38,0.9)',
+          color: '#fff', fontSize: 8, fontWeight: 800,
+          padding: '2px 6px', borderRadius: 4,
+          letterSpacing: '0.06em', textTransform: 'uppercase',
+          backdropFilter: 'blur(6px)',
+        }}>{type === 'tv' ? 'SERIE' : 'PEL.'}</div>
       </div>
 
-      <div style={{ marginTop: 10, padding: '0 2px' }}>
+      <div style={{ marginTop: 8, padding: '0 1px' }}>
         <p style={{
-          fontSize: 13, fontWeight: 700,
-          color: hovered ? 'var(--accent)' : 'var(--text)',
-          transition: 'color .2s',
+          fontSize: 12, fontWeight: 600,
+          color: 'var(--text)',
+          transition: 'color .15s',
           overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
           lineHeight: 1.3,
-        }}>
-          {title}
-        </p>
-        <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2, fontWeight: 500 }}>
-          {year}
-        </p>
+        }} className="tmdb-title">{title}</p>
+        <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2, fontWeight: 400 }}>{year}</p>
       </div>
+
+      <style>{`
+        .tmdb-card:hover .tmdb-poster { transform: scale(1.06); }
+        .tmdb-card:hover .tmdb-overlay { opacity: 1; }
+        .tmdb-card:hover .tmdb-title { color: var(--accent); }
+        .tmdb-card-img {
+          box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+          transition: box-shadow .3s ease;
+        }
+        .tmdb-card:hover .tmdb-card-img {
+          box-shadow: 0 16px 40px rgba(0,0,0,0.75), 0 0 0 1px rgba(245,197,24,0.15);
+        }
+      `}</style>
     </Link>
   )
 }
 
-export default function TmdbCarousel({ items, title, subtitle, type }: Props) {
+export default function TmdbCarousel({ items, title, subtitle, type, viewAllHref }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canLeft, setCanLeft] = useState(false)
   const [canRight, setCanRight] = useState(true)
@@ -130,62 +114,54 @@ export default function TmdbCarousel({ items, title, subtitle, type }: Props) {
   }, [items])
 
   function scroll(dir: 'left' | 'right') {
-    scrollRef.current?.scrollBy({ left: dir === 'right' ? 640 : -640, behavior: 'smooth' })
+    scrollRef.current?.scrollBy({ left: dir === 'right' ? 560 : -560, behavior: 'smooth' })
   }
 
   if (!items.length) return null
 
   return (
     <section>
-      <div className="page-offset" style={{
-        marginBottom: 14,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 3, height: 20, background: 'var(--accent)', borderRadius: 2, flexShrink: 0 }} />
-          <div>
-            <h2 style={{ fontSize: 17, fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.2px', lineHeight: 1.2, margin: 0 }}>
-              {title}
-            </h2>
-            {subtitle && (
-              <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{subtitle}</p>
-            )}
-          </div>
+      {/* Header row */}
+      <div className="page-offset" style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, minWidth: 0 }}>
+          <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.1px', whiteSpace: 'nowrap' }}>{title}</h2>
+          {subtitle && <p style={{ fontSize: 11, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{subtitle}</p>}
         </div>
 
-        <div style={{ display: 'flex', gap: 6 }}>
+        <div style={{ display: 'flex', gap: 4, flexShrink: 0, alignItems: 'center' }}>
+          {viewAllHref && (
+            <Link href={viewAllHref} style={{ fontSize: 11, color: 'var(--muted)', textDecoration: 'none', fontWeight: 600, marginRight: 8, whiteSpace: 'nowrap' }}>
+              Ver todo →
+            </Link>
+          )}
           {(['←', '→'] as const).map((arrow, i) => {
             const active = i === 0 ? canLeft : canRight
             return (
-              <button
-                key={arrow}
-                onClick={() => scroll(i === 0 ? 'left' : 'right')}
-                disabled={!active}
+              <button key={arrow} onClick={() => scroll(i === 0 ? 'left' : 'right')} disabled={!active}
                 style={{
-                  width: 30, height: 30, borderRadius: '50%',
+                  width: 28, height: 28, borderRadius: '50%',
                   border: '1px solid var(--border)',
                   background: active ? 'var(--surface2)' : 'transparent',
-                  color: active ? 'var(--text)' : 'rgba(255,255,255,0.15)',
-                  fontSize: 13, cursor: active ? 'pointer' : 'default',
+                  color: active ? 'var(--muted2)' : 'rgba(255,255,255,0.1)',
+                  fontSize: 12, cursor: active ? 'pointer' : 'default',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   transition: 'all .15s',
-                }}
-              >{arrow}</button>
+                }}>{arrow}</button>
             )
           })}
         </div>
       </div>
 
+      {/* Scroll row */}
       <div ref={scrollRef} className="scrollbar-hide" style={{ overflowX: 'auto' }}>
         <div className="page-offset-l" style={{
-          display: 'flex',
-          gap: 12,
+          display: 'flex', gap: 10,
           paddingRight: 'var(--page-pad)',
-          paddingBottom: 10,
+          paddingBottom: 4,
           width: 'max-content',
         }}>
-          {items.map((item) => (
-            <div key={item.id} style={{ flexShrink: 0, width: 'clamp(130px, 10.5vw, 168px)' }}>
+          {items.map(item => (
+            <div key={item.id} style={{ flexShrink: 0, width: 'clamp(120px, 9.5vw, 155px)' }}>
               <TmdbCard item={item} type={type} />
             </div>
           ))}

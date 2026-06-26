@@ -59,11 +59,11 @@ function PersonCard({ person }: { person: TmdbPersonResult }) {
 function SectionGrid({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <div style={{ width: 3, height: 20, background: 'var(--accent)', borderRadius: 2 }} />
-        <h2 style={{ fontSize: 18, fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.2px' }}>{title}</h2>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+        <div style={{ width: 2, height: 16, background: 'var(--accent)', borderRadius: 2 }} />
+        <h2 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text)' }}>{title}</h2>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 18 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(135px, 1fr))', gap: 14 }}>
         {children}
       </div>
     </section>
@@ -80,13 +80,17 @@ export default async function SearchPage({
   if (!q) {
     return (
       <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-        <div className="page-inner" style={{ paddingTop: 120, paddingBottom: 80, textAlign: 'center' }}>
-          <div style={{ width: 80, height: 80, borderRadius: 24, background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, margin: '0 auto 24px' }}>🔍</div>
-          <h1 style={{ fontSize: 28, fontWeight: 900, color: 'var(--text)', marginBottom: 12 }}>Busca lo que quieras ver</h1>
-          <p style={{ fontSize: 15, color: 'var(--muted)', maxWidth: 400, margin: '0 auto 32px', lineHeight: 1.6 }}>Películas, series y personas — todo en un solo lugar</p>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+          <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
+            <h1 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1 }}>Buscar</h1>
+            <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>Películas, series y personas</p>
+          </div>
+        </div>
+        <div className="page-inner" style={{ paddingTop: 60, paddingBottom: 80, textAlign: 'center' }}>
+          <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 24 }}>Prueba con alguno de estos términos</p>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
             {['Inception', 'Breaking Bad', 'Parasite', 'Interstellar', 'Christopher Nolan'].map(term => (
-              <Link key={term} href={`/search?q=${encodeURIComponent(term)}`} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted)', fontSize: 13, fontWeight: 600, padding: '8px 18px', borderRadius: 999, textDecoration: 'none' }}>
+              <Link key={term} href={`/search?q=${encodeURIComponent(term)}`} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted2)', fontSize: 12, fontWeight: 600, padding: '7px 16px', borderRadius: 6, textDecoration: 'none' }}>
                 {term}
               </Link>
             ))}
@@ -102,13 +106,12 @@ export default async function SearchPage({
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
-      <div style={{ background: 'linear-gradient(to bottom, var(--surface) 0%, var(--bg) 100%)', borderBottom: '1px solid var(--border)' }}>
-        <div className="page-inner" style={{ paddingTop: 40, paddingBottom: 28 }}>
-          <p style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 600, marginBottom: 6 }}>Resultados de búsqueda</p>
-          <h1 style={{ fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.5px' }}>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
+          <h1 style={{ fontSize: 'clamp(20px, 3vw, 30px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.6px', lineHeight: 1 }}>
             &ldquo;<span style={{ color: 'var(--accent)' }}>{q}</span>&rdquo;
           </h1>
-          <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 8 }}>
+          <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>
             {totalResults === 0
               ? 'Sin resultados'
               : `${results.movies.length} películas · ${results.tv.length} series · ${results.people.length} personas`}
@@ -116,30 +119,29 @@ export default async function SearchPage({
         </div>
       </div>
 
-      <div className="page-inner" style={{ paddingTop: 40, paddingBottom: 80 }}>
+      <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 80 }}>
         {totalResults === 0 ? (
           <div style={{ textAlign: 'center', paddingTop: 80, paddingBottom: 80 }}>
-            <div style={{ width: 72, height: 72, borderRadius: 20, background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, margin: '0 auto 20px' }}>😕</div>
-            <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text)', marginBottom: 10 }}>Sin resultados</h2>
-            <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 24 }}>No encontramos nada para &ldquo;{q}&rdquo;. Prueba con otro término.</p>
-            <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent)', color: '#000', fontSize: 13, fontWeight: 800, padding: '10px 22px', borderRadius: 10, textDecoration: 'none' }}>
-              ← Volver al inicio
+            <p style={{ fontSize: 17, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>Sin resultados</p>
+            <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 24 }}>No encontramos nada para &ldquo;{q}&rdquo;. Prueba con otro término.</p>
+            <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted2)', fontSize: 12, fontWeight: 700, padding: '8px 18px', borderRadius: 8, textDecoration: 'none' }}>
+              ← Inicio
             </Link>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 52 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
             {results.movies.length > 0 && (
-              <SectionGrid title={`🎬 Películas (${results.movies.length})`}>
+              <SectionGrid title={`Películas (${results.movies.length})`}>
                 {results.movies.map(m => <MovieCard key={m.id} item={m} type="movie" />)}
               </SectionGrid>
             )}
             {results.tv.length > 0 && (
-              <SectionGrid title={`📺 Series (${results.tv.length})`}>
+              <SectionGrid title={`Series (${results.tv.length})`}>
                 {results.tv.map(s => <MovieCard key={s.id} item={s} type="tv" />)}
               </SectionGrid>
             )}
             {results.people.length > 0 && (
-              <SectionGrid title={`👤 Personas (${results.people.length})`}>
+              <SectionGrid title={`Personas (${results.people.length})`}>
                 {results.people.map(p => <PersonCard key={p.id} person={p} />)}
               </SectionGrid>
             )}
