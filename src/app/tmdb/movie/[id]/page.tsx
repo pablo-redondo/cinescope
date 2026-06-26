@@ -6,6 +6,7 @@ import CastSection from '@/components/CastSection'
 import TmdbCarousel from '@/components/TmdbCarousel'
 import WatchProvidersSection from '@/components/WatchProvidersSection'
 import TrailerButton from '@/components/TrailerButton'
+import TmdbWatchlistButton from '@/components/TmdbWatchlistButton'
 import type { TmdbReleaseDateEntry } from '@/services/tmdb'
 
 function pickTrailer(videos: { key: string; site: string; type: string; official: boolean }[]) {
@@ -137,6 +138,14 @@ export default async function TmdbMoviePage({ params }: { params: Promise<{ id: 
 
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', paddingTop: 2 }}>
               {trailerKey && <TrailerButton videoKey={trailerKey} />}
+              <TmdbWatchlistButton
+                tmdbId={movie.id}
+                type="movie"
+                title={movie.title}
+                posterPath={movie.poster_path}
+                year={movie.release_date?.slice(0, 4) ?? ''}
+                rating={movie.vote_average > 0 ? movie.vote_average : null}
+              />
               {movie.imdb_id && (
                 <Link href={`https://www.imdb.com/title/${movie.imdb_id}/`} target="_blank" rel="noopener noreferrer" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -258,10 +267,12 @@ export default async function TmdbMoviePage({ params }: { params: Promise<{ id: 
             {companies.length > 0 && (
               <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
                 <p style={{ fontSize: 9, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>Producción</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
                   {companies.map(c => (
-                    <div key={c.id} title={c.name} style={{ position: 'relative', height: 28, width: 80, flexShrink: 0 }}>
-                      <Image src={`https://image.tmdb.org/t/p/w185${c.logo_path}`} alt={c.name} fill sizes="80px" style={{ objectFit: 'contain', filter: 'brightness(0) invert(0.6)' }} />
+                    <div key={c.id} title={c.name} style={{ background: '#fff', borderRadius: 8, padding: '6px 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 44, width: 90, flexShrink: 0 }}>
+                      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                        <Image src={`https://image.tmdb.org/t/p/w185${c.logo_path}`} alt={c.name} fill sizes="90px" style={{ objectFit: 'contain' }} />
+                      </div>
                     </div>
                   ))}
                 </div>

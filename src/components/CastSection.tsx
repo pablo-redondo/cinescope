@@ -8,49 +8,53 @@ export default function CastSection({ cast }: { cast: TmdbCastMember[] }) {
 
   return (
     <div>
-      <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
-        Reparto principal
-      </p>
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-        {cast.map((member) => {
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+          Reparto principal
+        </p>
+        <span style={{ fontSize: 11, color: 'var(--muted)', opacity: 0.6 }}>{cast.length} actores</span>
+      </div>
+      <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 8 }} className="scrollbar-hide">
+        {cast.map(member => {
           const photo = getPosterUrl(member.profile_path, 'w185')
           return (
-            <Link key={member.id} href={`/person/${member.id}`} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', width: 72, gap: 6 }}>
+            <Link key={member.id} href={`/person/${member.id}`}
+              style={{ textDecoration: 'none', flexShrink: 0, width: 96 }}
+            >
               <div style={{
-                width: 56, height: 56, borderRadius: '50%',
-                overflow: 'hidden', flexShrink: 0,
-                background: 'var(--surface2)',
-                border: '2px solid var(--border)',
-                position: 'relative',
-                transition: 'border-color .2s',
-              }}>
+                borderRadius: 10, overflow: 'hidden',
+                aspectRatio: '2/3', background: 'var(--surface2)',
+                position: 'relative', marginBottom: 8,
+              }} className="cast-photo">
                 {photo ? (
-                  <Image src={photo} alt={member.name} fill sizes="56px" style={{ objectFit: 'cover' }} />
+                  <Image src={photo} alt={member.name} fill sizes="96px" style={{ objectFit: 'cover' }} />
                 ) : (
                   <div style={{
                     position: 'absolute', inset: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 20, fontWeight: 700, color: 'var(--muted)',
-                    background: 'var(--surface2)',
+                    fontSize: 28, fontWeight: 800, color: 'var(--accent)',
+                    background: 'linear-gradient(135deg, var(--surface2), var(--surface))',
                   }}>
                     {member.name[0]}
                   </div>
                 )}
               </div>
-              <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--text)', lineHeight: 1.2, wordBreak: 'break-word' }}>
-                  {member.name.split(' ')[0]}
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text)', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {member.name}
+              </p>
+              {member.character && (
+                <p style={{ fontSize: 10, color: 'var(--muted)', marginTop: 2, lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', opacity: 0.8 }}>
+                  {member.character.split('/')[0].trim()}
                 </p>
-                {member.character && (
-                  <p style={{ fontSize: 9, color: 'var(--muted)', lineHeight: 1.2, marginTop: 1 }}>
-                    {member.character.split('/')[0].trim().slice(0, 12)}
-                  </p>
-                )}
-              </div>
+              )}
             </Link>
           )
         })}
       </div>
+      <style>{`
+        .cast-photo { transition: transform .2s ease, box-shadow .2s ease; }
+        .cast-photo:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.6); }
+      `}</style>
     </div>
   )
 }

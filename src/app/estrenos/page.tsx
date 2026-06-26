@@ -113,16 +113,35 @@ export default async function EstrenosPage() {
           </section>
         )}
 
-        {/* Próximos estrenos */}
+        {/* Próximos estrenos - agrupados por mes */}
         {upcomingSorted.length > 0 && (
           <section id="proximos">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
               <div style={{ width: 3, height: 22, background: 'var(--accent)', borderRadius: 2 }} />
               <h2 style={{ fontSize: 22, fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.3px' }}>📅 Próximos estrenos</h2>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {upcomingSorted.slice(0, 20).map(m => <MovieRow key={m.id} movie={m} />)}
-            </div>
+            {(() => {
+              const grouped: Record<string, TmdbMovieResult[]> = {}
+              upcomingSorted.slice(0, 30).forEach(m => {
+                const key = m.release_date?.slice(0, 7) ?? 'Sin fecha'
+                if (!grouped[key]) grouped[key] = []
+                grouped[key].push(m)
+              })
+              return Object.entries(grouped).map(([monthKey, movies]) => {
+                const label = monthKey === 'Sin fecha' ? 'Sin fecha' : new Date(monthKey + '-01').toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())
+                return (
+                  <div key={monthKey} style={{ marginBottom: 40 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                      <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--accent)', letterSpacing: '0.05em', textTransform: 'uppercase', background: 'rgba(245,197,24,0.1)', border: '1px solid rgba(245,197,24,0.2)', padding: '4px 14px', borderRadius: 999 }}>{label}</span>
+                      <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      {movies.map(m => <MovieRow key={m.id} movie={m} />)}
+                    </div>
+                  </div>
+                )
+              })
+            })()}
           </section>
         )}
 

@@ -83,13 +83,16 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
 
       {/* Header */}
       <div style={{ background: 'linear-gradient(to bottom, var(--surface) 0%, var(--bg) 100%)', borderBottom: '1px solid var(--border)' }}>
-        <div className="page-inner" style={{ paddingTop: 40, paddingBottom: 28 }}>
-          <h1 style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', marginBottom: 6 }}>
-            Descubrir
-          </h1>
-          <p style={{ fontSize: 13, color: 'var(--muted)' }}>
-            {data.total_results.toLocaleString('es')} {type === 'tv' ? 'series' : 'películas'}{activeGenreName ? ` de ${activeGenreName}` : ''}
-          </p>
+        <div className="page-inner" style={{ paddingTop: 48, paddingBottom: 28 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 8 }}>
+            <div style={{ width: 46, height: 46, borderRadius: 13, background: 'linear-gradient(135deg, #6366f1, #a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, boxShadow: '0 8px 24px rgba(99,102,241,0.25)', flexShrink: 0 }}>🔍</div>
+            <div>
+              <h1 style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1.1 }}>Descubrir</h1>
+              <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 3 }}>
+                {data.total_results.toLocaleString('es')} {type === 'tv' ? 'series' : 'películas'}{activeGenreName ? ` de ${activeGenreName}` : ''}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
