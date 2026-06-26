@@ -53,7 +53,7 @@ export default async function MoviesPage() {
         </div>
       </div>
 
-      <div style={{ paddingTop: 28, paddingBottom: 56, display: 'flex', flexDirection: 'column', gap: 28 }}>
+      <div style={{ paddingTop: 28, paddingBottom: 40, display: 'flex', flexDirection: 'column', gap: 28 }}>
         <TmdbCarousel items={trending.slice(0, 16)} title="Tendencias esta semana" subtitle="Lo más visto ahora mismo" type="movie" viewAllHref="/discover?sort=popularity.desc&type=movie" />
         <TmdbCarousel items={topRated.slice(0, 16)} title="Mejor valoradas de la historia" subtitle="Las más aclamadas de todos los tiempos" type="movie" viewAllHref="/top#movies" />
         <TmdbCarousel items={f(action)} title="Acción & Aventura" type="movie" viewAllHref="/discover?genre=28&type=movie" />

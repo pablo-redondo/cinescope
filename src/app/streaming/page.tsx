@@ -27,7 +27,7 @@ function StreamingCard({ item }: { item: TaggedItem }) {
       <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 10, overflow: 'hidden', background: 'var(--surface2)' }}>
         {poster
           ? <Image src={poster} alt={title} fill sizes="155px" style={{ objectFit: 'cover', transition: 'transform .3s ease' }} className="streaming-img" />
-          : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>{item._type === 'tv' ? '📺' : '🎬'}</div>
+          : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.4 }}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">{item._type === 'tv' ? <><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></> : <><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></>}</svg></div>
         }
         {rating && (
           <div style={{ position: 'absolute', top: 7, right: 7, background: 'rgba(0,0,0,0.88)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '3px 7px', borderRadius: 7 }}>★ {rating}</div>
@@ -77,47 +77,44 @@ export default async function StreamingPage() {
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
       {/* Header */}
-      <div style={{ background: 'linear-gradient(to bottom, var(--surface) 0%, var(--bg) 100%)', borderBottom: '1px solid var(--border)' }}>
-        <div className="page-inner" style={{ paddingTop: 48, paddingBottom: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
-            <div style={{ width: 46, height: 46, borderRadius: 13, background: 'linear-gradient(135deg, #7c3aed, #2563eb)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, boxShadow: '0 8px 24px rgba(124,58,237,0.3)', flexShrink: 0 }}>▶</div>
+      <div style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
             <div>
-              <h1 style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1.1 }}>Qué hay en streaming</h1>
-              <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 3 }}>Lo más popular en cada plataforma en España</p>
+              <h1 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.8px', lineHeight: 1 }}>Streaming</h1>
+              <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>Lo más popular en cada plataforma en España</p>
             </div>
-          </div>
-
-          {/* Platform quick nav */}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {PROVIDERS.map(p => (
-              <Link key={p.id} href={`#${p.id}`} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted)', fontSize: 12, fontWeight: 700, padding: '5px 14px', borderRadius: 999, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 18, height: 18, borderRadius: 4, background: p.gradient, color: '#fff', fontSize: 8, fontWeight: 900, letterSpacing: '-0.5px' }}>{p.logoText}</span>
-                {p.name}
-              </Link>
-            ))}
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              {PROVIDERS.map(p => (
+                <Link key={p.id} href={`#${p.id}`} style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted2)', fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 4, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 14, height: 14, borderRadius: 3, background: p.gradient, color: '#fff', fontSize: 7, fontWeight: 900, letterSpacing: '-0.3px', flexShrink: 0 }}>{p.logoText}</span>
+                  {p.name}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Platform sections */}
-      <div style={{ paddingBottom: 80 }}>
+      <div style={{ paddingBottom: 48 }}>
         {platforms.map(({ provider, items, movieCount, tvCount }) => {
           if (items.length === 0) return null
           return (
-            <div key={provider.id} id={provider.id} style={{ paddingTop: 52 }}>
+            <div key={provider.id} id={provider.id} style={{ paddingTop: 32 }}>
               {/* Section header */}
-              <div className="page-inner" style={{ marginBottom: 20 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 10, background: provider.gradient, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 13, fontWeight: 900, letterSpacing: '-0.5px', flexShrink: 0, boxShadow: `0 6px 20px ${provider.color}44` }}>
+              <div className="page-inner" style={{ marginBottom: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 8, background: provider.gradient, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 900, letterSpacing: '-0.4px', flexShrink: 0, boxShadow: `0 4px 14px ${provider.color}40` }}>
                     {provider.logoText}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <h2 style={{ fontSize: 20, fontWeight: 900, color: 'var(--text)', letterSpacing: '-0.3px' }}>{provider.name}</h2>
-                    <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 1 }}>
+                    <h2 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.2px' }}>{provider.name}</h2>
+                    <p style={{ fontSize: 10, color: 'var(--muted)', marginTop: 1 }}>
                       {movieCount} películas · {tvCount} series
                     </p>
                   </div>
-                  <Link href={`/discover?sort=popularity.desc&type=movie&provider=${provider.id}`} style={{ fontSize: 12, color: 'var(--muted)', textDecoration: 'none', fontWeight: 600, flexShrink: 0 }}>Ver más →</Link>
+                  <Link href={`/discover?sort=popularity.desc&type=movie&provider=${provider.id}`} style={{ fontSize: 11, color: 'var(--muted)', textDecoration: 'none', fontWeight: 600, flexShrink: 0 }}>Ver más →</Link>
                 </div>
               </div>
 
@@ -130,7 +127,7 @@ export default async function StreamingPage() {
                 </div>
               </div>
 
-              <div style={{ height: 1, background: 'var(--border)', marginTop: 40 }} className="page-inner" />
+              <div style={{ height: 1, background: 'var(--border)', marginTop: 24, marginLeft: 'var(--page-pad)', marginRight: 'var(--page-pad)' }} />
             </div>
           )
         })}

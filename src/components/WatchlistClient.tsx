@@ -20,7 +20,7 @@ function TmdbWatchlistCard({ item, onRemove }: { item: TmdbWatchlistItem; onRemo
         <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 12, overflow: 'hidden', background: 'var(--surface2)', boxShadow: '0 4px 16px rgba(0,0,0,0.4)' }}>
           {poster
             ? <Image src={poster} alt={item.title} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'cover' }} />
-            : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 }}>{item.type === 'tv' ? '📺' : '🎬'}</div>
+            : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.4 }}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">{item.type === 'tv' ? <><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></> : <><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></>}</svg></div>
           }
           {item.rating && (
             <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8, border: '1px solid rgba(245,197,24,0.2)' }}>
@@ -57,7 +57,7 @@ function OmdbWatchlistCard({ item, onRemove }: { item: OmdbDetail; onRemove: () 
         <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 12, overflow: 'hidden', background: 'var(--surface2)', boxShadow: '0 4px 16px rgba(0,0,0,0.4)' }}>
           {poster
             ? <Image src={poster} alt={item.Title} fill sizes="(max-width: 640px) 45vw, 200px" style={{ objectFit: 'cover' }} />
-            : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 }}>🎬</div>
+            : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.4 }}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
           }
           {item.imdbRating && item.imdbRating !== 'N/A' && (
             <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8 }}>
@@ -93,10 +93,14 @@ export default function WatchlistClient() {
 
   if (total === 0) {
     return (
-      <div style={{ textAlign: 'center', paddingTop: 80, paddingBottom: 80 }}>
-        <div style={{ fontSize: 64, marginBottom: 20 }}>🎬</div>
-        <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>Tu lista está vacía</h2>
-        <p style={{ fontSize: 14, color: 'var(--muted)' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: 48, paddingBottom: 48, gap: 12 }}>
+        <div style={{ width: 48, height: 48, borderRadius: 12, background: 'var(--surface2)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 4 }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <h2 style={{ fontSize: 16, fontWeight: 800, color: 'var(--text)' }}>Tu lista está vacía</h2>
+        <p style={{ fontSize: 13, color: 'var(--muted)', textAlign: 'center', maxWidth: 280 }}>
           Añade películas y series desde su página de detalle
         </p>
       </div>

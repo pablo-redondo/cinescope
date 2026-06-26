@@ -53,7 +53,7 @@ export default async function TVPage() {
         </div>
       </div>
 
-      <div style={{ paddingTop: 28, paddingBottom: 56, display: 'flex', flexDirection: 'column', gap: 28 }}>
+      <div style={{ paddingTop: 28, paddingBottom: 40, display: 'flex', flexDirection: 'column', gap: 28 }}>
         {airingToday.filter(s => s.poster_path).length > 0 && (
           <TmdbCarousel items={airingToday.filter(s => s.poster_path).slice(0, 16)} title="Hoy en emisión" subtitle="Episodios que se emiten hoy" type="tv" />
         )}

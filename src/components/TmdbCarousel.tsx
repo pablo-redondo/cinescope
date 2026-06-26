@@ -35,8 +35,12 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
           <Image src={poster} alt={title} fill sizes="(max-width: 768px) 40vw, 180px"
             style={{ objectFit: 'cover', transition: 'transform .4s ease' }} className="tmdb-poster" />
         ) : (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: 28 }}>
-            {type === 'tv' ? '📺' : '🎬'}
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.5">
+              {type === 'tv'
+                ? <><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></>
+                : <><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></>}
+            </svg>
           </div>
         )}
 

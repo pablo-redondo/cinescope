@@ -172,7 +172,7 @@ export default async function TopPage() {
         </div>
       </div>
 
-      <div className="page-inner" style={{ paddingTop: 36, paddingBottom: 80, display: 'flex', flexDirection: 'column', gap: 56 }}>
+      <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 48, display: 'flex', flexDirection: 'column', gap: 40 }}>
 
         {/* All-time tops */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 48, alignItems: 'start' }}>

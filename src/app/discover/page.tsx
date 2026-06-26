@@ -90,7 +90,7 @@ export default async function DiscoverPage({ searchParams }: { searchParams: Pro
         </div>
       </div>
 
-      <div className="page-inner" style={{ paddingTop: 24, paddingBottom: 80 }}>
+      <div className="page-inner" style={{ paddingTop: 20, paddingBottom: 48 }}>
 
         {/* Filters */}
         <div style={{ marginBottom: 28, padding: '18px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)' }}>

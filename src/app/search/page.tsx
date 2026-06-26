@@ -14,7 +14,7 @@ function MovieCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv'
       <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 10, overflow: 'hidden', background: 'var(--surface2)' }} className="search-card">
         {poster
           ? <Image src={poster} alt={title} fill sizes="(max-width: 640px) 45vw, 180px" style={{ objectFit: 'cover' }} />
-          : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32 }}>{type === 'tv' ? '📺' : '🎬'}</div>
+          : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.4 }}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">{type === 'tv' ? <><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></> : <><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></>}</svg></div>
         }
         {rating && (
           <div style={{ position: 'absolute', top: 7, right: 7, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '3px 7px', borderRadius: 7 }}>
@@ -42,7 +42,7 @@ function PersonCard({ person }: { person: TmdbPersonResult }) {
       <div style={{ position: 'relative', aspectRatio: '2/3', borderRadius: 10, overflow: 'hidden', background: 'var(--surface2)' }} className="search-card">
         {photo
           ? <Image src={photo} alt={person.name} fill sizes="180px" style={{ objectFit: 'cover' }} />
-          : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>👤</div>
+          : <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.4 }}><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
         }
         <div style={{ position: 'absolute', top: 7, left: 7, background: 'rgba(15,23,42,0.85)', color: '#94a3b8', fontSize: 9, fontWeight: 800, padding: '2px 6px', borderRadius: 5 }}>
           PERSONA
@@ -86,7 +86,7 @@ export default async function SearchPage({
             <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 5 }}>Películas, series y personas</p>
           </div>
         </div>
-        <div className="page-inner" style={{ paddingTop: 60, paddingBottom: 80, textAlign: 'center' }}>
+        <div className="page-inner" style={{ paddingTop: 32, paddingBottom: 40, textAlign: 'center' }}>
           <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 24 }}>Prueba con alguno de estos términos</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
             {['Inception', 'Breaking Bad', 'Parasite', 'Interstellar', 'Christopher Nolan'].map(term => (
@@ -119,9 +119,9 @@ export default async function SearchPage({
         </div>
       </div>
 
-      <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 80 }}>
+      <div className="page-inner" style={{ paddingTop: 28, paddingBottom: 40 }}>
         {totalResults === 0 ? (
-          <div style={{ textAlign: 'center', paddingTop: 80, paddingBottom: 80 }}>
+          <div style={{ textAlign: 'center', paddingTop: 32, paddingBottom: 32 }}>
             <p style={{ fontSize: 17, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>Sin resultados</p>
             <p style={{ fontSize: 13, color: 'var(--muted)', marginBottom: 24 }}>No encontramos nada para &ldquo;{q}&rdquo;. Prueba con otro término.</p>
             <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--muted2)', fontSize: 12, fontWeight: 700, padding: '8px 18px', borderRadius: 8, textDecoration: 'none' }}>

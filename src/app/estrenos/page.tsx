@@ -105,7 +105,7 @@ export default async function EstrenosPage() {
         </div>
       </div>
 
-      <div className="page-inner" style={{ paddingTop: 36, paddingBottom: 80, display: 'flex', flexDirection: 'column', gap: 52 }}>
+      <div className="page-inner" style={{ paddingTop: 24, paddingBottom: 48, display: 'flex', flexDirection: 'column', gap: 36 }}>
 
         {/* En cines */}
         {nowFiltered.length > 0 && (
