@@ -90,6 +90,41 @@ export type TmdbPersonCredit = TmdbMovieResult & {
   media_type: 'movie' | 'tv'
 }
 
+export type TmdbReleaseDateEntry = {
+  certification: string
+  release_type: number
+  release_date: string
+}
+
+export type TmdbImageEntry = {
+  file_path: string
+  width: number
+  height: number
+  vote_average: number
+}
+
+export type TmdbEpisode = {
+  id: number
+  name: string
+  overview: string
+  episode_number: number
+  season_number: number
+  air_date: string | null
+  runtime: number | null
+  vote_average: number
+  still_path: string | null
+}
+
+export type TmdbSeasonDetail = {
+  id: number
+  name: string
+  season_number: number
+  air_date: string | null
+  overview: string
+  poster_path: string | null
+  episodes: TmdbEpisode[]
+}
+
 export type TmdbFullMovieDetail = {
   id: number
   imdb_id: string | null
@@ -117,6 +152,8 @@ export type TmdbFullMovieDetail = {
   'watch/providers': { results: Record<string, WatchProviders> }
   reviews: { results: TmdbReview[] }
   keywords: { keywords: { id: number; name: string }[] }
+  release_dates: { results: { iso_3166_1: string; release_dates: TmdbReleaseDateEntry[] }[] }
+  images: { backdrops: TmdbImageEntry[]; posters: TmdbImageEntry[] }
 }
 
 export type TmdbFullTVDetail = {
@@ -148,6 +185,8 @@ export type TmdbFullTVDetail = {
   'watch/providers': { results: Record<string, WatchProviders> }
   reviews: { results: TmdbReview[] }
   keywords: { results: { id: number; name: string }[] }
+  content_ratings: { results: { iso_3166_1: string; rating: string }[] }
+  images: { backdrops: TmdbImageEntry[]; posters: TmdbImageEntry[] }
 }
 
 export type WatchProvider = {
@@ -281,14 +320,14 @@ export async function getTVEnhancement(imdbId: string): Promise<TmdbDetailEnhanc
 export async function getTmdbMovieDetail(tmdbId: number | string): Promise<TmdbFullMovieDetail | null> {
   return safeTmdbFetch<TmdbFullMovieDetail>(
     `/movie/${tmdbId}`,
-    { append_to_response: 'credits,videos,recommendations,similar,watch/providers,reviews,keywords' }
+    { append_to_response: 'credits,videos,recommendations,similar,watch/providers,reviews,keywords,release_dates,images' }
   )
 }
 
 export async function getTmdbTVDetail(tmdbId: number | string): Promise<TmdbFullTVDetail | null> {
   return safeTmdbFetch<TmdbFullTVDetail>(
     `/tv/${tmdbId}`,
-    { append_to_response: 'credits,videos,recommendations,similar,watch/providers,reviews,keywords' }
+    { append_to_response: 'credits,videos,recommendations,similar,watch/providers,reviews,keywords,content_ratings,images' }
   )
 }
 
@@ -315,6 +354,8 @@ export type DiscoverMovieParams = {
   'primary_release_date.lte'?: string
   primary_release_year?: string
   with_original_language?: string
+  with_watch_providers?: string
+  watch_region?: string
   page?: string
 }
 
@@ -331,6 +372,8 @@ export async function discoverTV(params: DiscoverMovieParams = {}): Promise<{ re
   if (params['vote_average.gte']) tvParams['vote_average.gte'] = params['vote_average.gte']
   if (params.primary_release_year) tvParams.first_air_date_year = params.primary_release_year
   if (params.with_original_language) tvParams.with_original_language = params.with_original_language
+  if (params.with_watch_providers) tvParams.with_watch_providers = params.with_watch_providers
+  if (params.watch_region) tvParams.watch_region = params.watch_region
   if (params.page) tvParams.page = params.page
   const data = await safeTmdbFetch<{ results: TmdbMovieResult[]; total_results: number; total_pages: number }>('/discover/tv', tvParams)
   return data ?? { results: [], total_results: 0, total_pages: 0 }
@@ -366,6 +409,20 @@ export async function getTrendingMovies(): Promise<TmdbMovieResult[]> {
 export async function getTrendingTV(): Promise<TmdbMovieResult[]> {
   const data = await safeTmdbFetch<{ results: TmdbMovieResult[] }>('/trending/tv/week')
   return data?.results ?? []
+}
+
+export async function getTVAiringToday(): Promise<TmdbMovieResult[]> {
+  const data = await safeTmdbFetch<{ results: TmdbMovieResult[] }>('/tv/airing_today', { language: 'es-ES' })
+  return data?.results ?? []
+}
+
+export async function getTVOnTheAir(): Promise<TmdbMovieResult[]> {
+  const data = await safeTmdbFetch<{ results: TmdbMovieResult[] }>('/tv/on_the_air')
+  return data?.results ?? []
+}
+
+export async function getTVSeason(tvId: number | string, seasonNumber: number): Promise<TmdbSeasonDetail | null> {
+  return safeTmdbFetch<TmdbSeasonDetail>(`/tv/${tvId}/season/${seasonNumber}`)
 }
 
 // ─── Person ──────────────────────────────────────────────────────────────────

@@ -1,11 +1,11 @@
 export const revalidate = 3600
 
-import { discoverTV, getTopRatedTV, getTrendingTV } from '@/services/tmdb'
+import { discoverTV, getTopRatedTV, getTrendingTV, getTVAiringToday, getTVOnTheAir } from '@/services/tmdb'
 import TmdbCarousel from '@/components/TmdbCarousel'
 import Link from 'next/link'
 
 export default async function TVPage() {
-  const [trending, topRated, crime, comedy, scifi, drama, action] = await Promise.all([
+  const [trending, topRated, crime, comedy, scifi, drama, action, airingToday, onTheAir] = await Promise.all([
     getTrendingTV(),
     getTopRatedTV(),
     discoverTV({ with_genres: '80', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
@@ -13,6 +13,8 @@ export default async function TVPage() {
     discoverTV({ with_genres: '10765', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
     discoverTV({ with_genres: '18', sort_by: 'vote_average.desc', 'vote_count.gte': '500' }),
     discoverTV({ with_genres: '10759', sort_by: 'popularity.desc', 'vote_count.gte': '100' }),
+    getTVAiringToday(),
+    getTVOnTheAir(),
   ])
 
   const f = (r: { results: import('@/services/tmdb').TmdbMovieResult[] }) =>
@@ -46,6 +48,12 @@ export default async function TVPage() {
       </div>
 
       <div style={{ paddingTop: 36, paddingBottom: 56, display: 'flex', flexDirection: 'column', gap: 36 }}>
+        {airingToday.filter(s => s.poster_path).length > 0 && (
+          <TmdbCarousel items={airingToday.filter(s => s.poster_path).slice(0, 16)} title="📡 Hoy en emisión" subtitle="Episodios que se emiten hoy" type="tv" />
+        )}
+        {onTheAir.filter(s => s.poster_path).length > 0 && (
+          <TmdbCarousel items={onTheAir.filter(s => s.poster_path).slice(0, 16)} title="📺 En emisión actualmente" subtitle="Series con nuevos episodios esta semana" type="tv" />
+        )}
         <TmdbCarousel items={trending.slice(0, 16)} title="🔥 En tendencia esta semana" subtitle="Los shows del momento" type="tv" />
         <TmdbCarousel items={topRated.slice(0, 16)} title="⭐ Las mejores series de la historia" subtitle="Las más aclamadas de todos los tiempos" type="tv" />
         <TmdbCarousel items={f(crime)} title="🔍 Crimen & Misterio" subtitle="Intriga y suspense hasta el final" type="tv" />

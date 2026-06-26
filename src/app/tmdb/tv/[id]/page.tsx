@@ -12,6 +12,13 @@ function pickTrailer(videos: { key: string; site: string; type: string; official
   return (yt.find(v => v.type === 'Trailer' && v.official) ?? yt.find(v => v.type === 'Trailer') ?? yt[0])?.key ?? null
 }
 
+function pickContentRating(contentRatings: { results: { iso_3166_1: string; rating: string }[] } | undefined): string | null {
+  if (!contentRatings?.results) return null
+  const es = contentRatings.results.find(r => r.iso_3166_1 === 'ES')?.rating
+  const us = contentRatings.results.find(r => r.iso_3166_1 === 'US')?.rating
+  return es ?? us ?? null
+}
+
 export default async function TmdbTVPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const show = await getTmdbTVDetail(id)
@@ -23,11 +30,19 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
   const recs = (show.recommendations?.results ?? []).filter(s => s.poster_path).slice(0, 12)
   const similar = (show.similar?.results ?? []).filter(s => s.poster_path).slice(0, 12)
   const display = recs.length ? recs : similar
-  const cast = (show.credits?.cast ?? []).slice(0, 12)
+  const cast = (show.credits?.cast ?? []).slice(0, 16)
   const providers = show['watch/providers']?.results?.['ES'] ?? show['watch/providers']?.results?.['US'] ?? null
   const ratingPercent = show.vote_average ? (show.vote_average / 10) * 100 : null
+  const contentRating = pickContentRating(show.content_ratings)
 
   const seasons = (show.seasons ?? []).filter(s => s.season_number > 0)
+
+  const galleryBackdrops = (show.images?.backdrops ?? [])
+    .filter(b => b.vote_average > 0)
+    .sort((a, b) => b.vote_average - a.vote_average)
+    .slice(0, 10)
+
+  const companies = (show.production_companies ?? []).filter(c => c.logo_path).slice(0, 5)
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
@@ -47,8 +62,7 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
           color: 'rgba(255,255,255,0.6)', fontSize: 13, fontWeight: 600,
           textDecoration: 'none', marginBottom: 28,
           background: 'rgba(0,0,0,0.35)', backdropFilter: 'blur(10px)',
-          padding: '6px 14px', borderRadius: 999,
-          border: '1px solid rgba(255,255,255,0.1)',
+          padding: '6px 14px', borderRadius: 999, border: '1px solid rgba(255,255,255,0.1)',
         }}>← Series</Link>
 
         <div style={{ display: 'flex', gap: 36, alignItems: 'flex-start', flexWrap: 'wrap' }}>
@@ -94,12 +108,19 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
                   {show.number_of_seasons} temp.
                 </span>
               )}
+              {contentRating && (
+                <span style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.65)', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 6 }}>{contentRating}</span>
+              )}
               {show.status && (
                 <span style={{ background: show.status === 'Ended' || show.status === 'Canceled' ? 'rgba(239,68,68,0.15)' : 'rgba(34,197,94,0.15)', border: `1px solid ${show.status === 'Ended' || show.status === 'Canceled' ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.3)'}`, color: show.status === 'Ended' || show.status === 'Canceled' ? '#fca5a5' : '#86efac', fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 6 }}>
                   {show.status === 'Ended' ? 'Finalizada' : show.status === 'Canceled' ? 'Cancelada' : 'En emisión'}
                 </span>
               )}
             </div>
+
+            {show.vote_count > 0 && (
+              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>{show.vote_count.toLocaleString('es')} valoraciones</p>
+            )}
 
             {show.overview && (
               <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 14, lineHeight: 1.65, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', maxWidth: '60ch' }}>
@@ -113,7 +134,7 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
 
-        {/* Seasons */}
+        {/* Seasons with episode guide links */}
         {seasons.length > 0 && (
           <div style={{ marginTop: 48 }}>
             <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>Temporadas</p>
@@ -121,7 +142,7 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
               {seasons.map(season => {
                 const sp = getPosterUrl(season.poster_path, 'w185')
                 return (
-                  <div key={season.id} style={{ flexShrink: 0, width: 110, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <Link key={season.id} href={`/tmdb/tv/${id}/temporada/${season.season_number}`} style={{ flexShrink: 0, width: 110, display: 'flex', flexDirection: 'column', gap: 6, textDecoration: 'none' }} className="season-card">
                     <div style={{ borderRadius: 8, overflow: 'hidden', background: 'var(--surface2)', aspectRatio: '2/3', position: 'relative' }}>
                       {sp ? (
                         <Image src={sp} alt={season.name} fill sizes="110px" style={{ objectFit: 'cover' }} />
@@ -130,12 +151,27 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
                           T{season.season_number}
                         </div>
                       )}
+                      <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0)', transition: 'background .2s' }} className="season-overlay" />
                     </div>
                     <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text)', lineHeight: 1.2 }}>{season.name}</p>
                     <p style={{ fontSize: 10, color: 'var(--muted)' }}>{season.episode_count} ep · {season.air_date?.slice(0,4)}</p>
-                  </div>
+                  </Link>
                 )
               })}
+            </div>
+          </div>
+        )}
+
+        {/* Image gallery */}
+        {galleryBackdrops.length > 1 && (
+          <div style={{ marginTop: 40 }}>
+            <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>Imágenes</p>
+            <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 8 }} className="scrollbar-hide">
+              {galleryBackdrops.map((img, i) => (
+                <div key={i} style={{ flexShrink: 0, borderRadius: 10, overflow: 'hidden', position: 'relative', width: 'clamp(240px, 30vw, 380px)', aspectRatio: '16/9' }}>
+                  <Image src={`https://image.tmdb.org/t/p/w780${img.file_path}`} alt="" fill sizes="380px" style={{ objectFit: 'cover' }} />
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -153,7 +189,7 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
               <div>
                 <p style={{ fontSize: 11, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>Temas</p>
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                  {show.keywords.results.slice(0, 18).map(kw => (
+                  {show.keywords.results.slice(0, 20).map(kw => (
                     <Link key={kw.id} href={`/search?q=${encodeURIComponent(kw.name)}`} style={{
                       background: 'var(--surface2)', border: '1px solid var(--border)',
                       color: 'var(--muted)', fontSize: 11, fontWeight: 500,
@@ -198,8 +234,10 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
                 { label: 'Creadores', value: show.created_by?.map(c => c.name).join(', ') || null },
                 { label: 'Red', value: show.networks?.map(n => n.name).join(', ') || null },
                 { label: 'Estreno', value: show.first_air_date },
+                { label: 'Último episodio', value: show.last_air_date || null },
                 { label: 'Episodios', value: show.number_of_episodes ? `${show.number_of_episodes} episodios` : null },
                 { label: 'Duración ep.', value: show.episode_run_time?.[0] ? `${show.episode_run_time[0]} min` : null },
+                { label: 'Clasificación', value: contentRating },
                 { label: 'Idiomas', value: show.spoken_languages?.map(l => l.name).join(', ') || null },
               ].filter(({ value }) => value).map(({ label, value }, i, arr) => (
                 <div key={label} style={{ borderBottom: i < arr.length - 1 ? '1px solid var(--border)' : 'none', padding: '14px 0' }}>
@@ -208,7 +246,21 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
                 </div>
               ))}
             </div>
+
             {providers && <WatchProvidersSection providers={providers} />}
+
+            {companies.length > 0 && (
+              <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+                <p style={{ fontSize: 9, fontWeight: 800, color: 'var(--muted)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 14 }}>Producción</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+                  {companies.map(c => (
+                    <div key={c.id} title={c.name} style={{ position: 'relative', height: 28, width: 80, flexShrink: 0 }}>
+                      <Image src={`https://image.tmdb.org/t/p/w185${c.logo_path}`} alt={c.name} fill sizes="80px" style={{ objectFit: 'contain', filter: 'brightness(0) invert(0.6)' }} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -223,6 +275,9 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
 
       <style>{`
         @media (max-width: 640px) { .detail-grid { grid-template-columns: 1fr !important; } }
+        .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .season-card:hover .season-overlay { background: rgba(245,197,24,0.08) !important; }
       `}</style>
     </div>
   )
