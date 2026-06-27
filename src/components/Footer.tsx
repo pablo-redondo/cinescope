@@ -45,11 +45,11 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
               <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
-                <circle cx="16" cy="16" r="15" stroke="#f5c518" strokeWidth="1.5" strokeOpacity="0.6" />
-                <polygon points="13,10 24,16 13,22" fill="#f5c518" />
+                <rect x="3" y="7" width="26" height="18" rx="3" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5"/>
+                <path d="M13 12l8 4-8 4V12z" fill="rgba(255,255,255,0.85)"/>
               </svg>
               <span style={{ fontFamily: 'var(--font-syne), system-ui', fontWeight: 800, fontSize: 17, color: 'var(--text)', letterSpacing: '-0.3px' }}>
-                Cine<span style={{ color: 'var(--accent)' }}>Scope</span>
+                La<span style={{ color: 'var(--accent)' }}> Sala</span>
               </span>
             </Link>
 
@@ -95,7 +95,7 @@ export default function Footer() {
           gap: 8,
         }}>
           <p style={{ fontSize: 11, color: 'var(--muted)', opacity: 0.6 }}>
-            © {new Date().getFullYear()} CineScope — Proyecto personal, no afiliado a TMDB ni OMDb.
+            © {new Date().getFullYear()} La Sala — Proyecto personal, no afiliado a TMDB ni OMDb.
           </p>
           <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
             <a href="https://www.themoviedb.org" target="_blank" rel="noopener noreferrer"

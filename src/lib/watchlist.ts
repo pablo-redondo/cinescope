@@ -1,6 +1,6 @@
 import type { OmdbDetail } from '@/types/omdb'
 
-const KEY = 'cinescope_watchlist'
+const KEY = 'lasala_watchlist'
 
 export function getWatchlist(): OmdbDetail[] {
   if (typeof window === 'undefined') return []

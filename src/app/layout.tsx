@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const syne = Syne({ subsets: ['latin'], variable: '--font-syne', weight: ['400', '500', '600', '700', '800'] })
 
 export const metadata: Metadata = {
-  title: 'CineScope — Descubre películas y series',
+  title: 'La Sala — Descubre películas y series',
   description: 'Explora las mejores películas y series, gestiona tu watchlist y descubre tendencias.',
 }
 

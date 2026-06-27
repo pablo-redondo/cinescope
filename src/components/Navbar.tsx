@@ -57,12 +57,12 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0, marginRight: 28 }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" fill="#f5c518" opacity="0.15"/>
-            <path d="M8 7.5L17 12L8 16.5V7.5Z" fill="#f5c518"/>
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <rect x="3" y="7" width="26" height="18" rx="3" stroke="rgba(255,255,255,0.45)" strokeWidth="1.5"/>
+            <path d="M13 12l8 4-8 4V12z" fill="rgba(255,255,255,0.8)"/>
           </svg>
           <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)', letterSpacing: '-0.3px' }}>
-            Cine<span style={{ color: 'var(--accent)' }}>Scope</span>
+            La<span style={{ color: 'var(--accent)' }}> Sala</span>
           </span>
         </Link>
 
