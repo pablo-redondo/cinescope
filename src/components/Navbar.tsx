@@ -9,10 +9,8 @@ const NAV = [
   { href: '/movies', label: 'Películas' },
   { href: '/tv', label: 'Series' },
   { href: '/estrenos', label: 'Estrenos' },
-  { href: '/streaming', label: 'Streaming' },
   { href: '/discover', label: 'Descubrir' },
   { href: '/top', label: 'Top' },
-  { href: '/watchlist', label: 'Mi lista' },
 ]
 
 export default function Navbar() {
@@ -44,92 +42,135 @@ export default function Navbar() {
   return (
     <header style={{
       position: 'sticky', top: 0, zIndex: 100,
-      height: 56,
+      height: 58,
       display: 'flex', alignItems: 'center',
-      background: 'rgba(4,4,7,0.93)',
-      backdropFilter: 'blur(20px) saturate(180%)',
-      borderBottom: '1px solid var(--border)',
+      background: 'rgba(13,11,8,0.97)',
+      backdropFilter: 'blur(20px) saturate(160%)',
+      borderBottom: '1px solid rgba(240,236,227,0.07)',
     }}>
-      <div className="page-inner" style={{
-        width: '100%',
-        display: 'flex', alignItems: 'center', gap: 0,
-      }}>
+      <div className="page-inner" style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
 
-        {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0, marginRight: 28 }}>
-          <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
-            <circle cx="16" cy="16" r="12" stroke="#d4982a" strokeWidth="1.8" opacity="0.85"/>
-            <circle cx="16" cy="16" r="6.5" stroke="#d4982a" strokeWidth="1.4" opacity="0.55"/>
-            <circle cx="16" cy="16" r="2.5" fill="#d4982a"/>
-            <circle cx="13" cy="13" r="1.2" fill="#f0ece3" opacity="0.5"/>
-          </svg>
-          <span style={{ fontWeight: 700, fontSize: 14, color: 'var(--text)', letterSpacing: '2px', textTransform: 'uppercase', fontFamily: 'Georgia, serif' }}>
-            La Sala
-          </span>
-        </Link>
+        {/* Logo — flex:1 left */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}>
+            <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="13" stroke="#d4982a" strokeWidth="1.5" opacity="0.9"/>
+              <circle cx="16" cy="16" r="7" stroke="#d4982a" strokeWidth="1.2" opacity="0.5"/>
+              <circle cx="16" cy="16" r="2.5" fill="#d4982a"/>
+              <circle cx="11.5" cy="11.5" r="1.4" fill="#f0ece3" opacity="0.45"/>
+              <circle cx="20.5" cy="11.5" r="1.4" fill="#f0ece3" opacity="0.45"/>
+              <circle cx="11.5" cy="20.5" r="1.4" fill="#f0ece3" opacity="0.45"/>
+              <circle cx="20.5" cy="20.5" r="1.4" fill="#f0ece3" opacity="0.45"/>
+            </svg>
+            <span style={{
+              fontFamily: 'var(--font-bebas), sans-serif',
+              fontSize: 19,
+              letterSpacing: '5px',
+              color: 'var(--text)',
+              lineHeight: 1,
+              paddingTop: 2,
+            }}>
+              LA SALA
+            </span>
+          </Link>
+        </div>
 
-        {/* Nav links */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 0, flex: 1, overflow: 'hidden' }}>
+        {/* Nav — centered */}
+        <nav style={{ display: 'flex', alignItems: 'center' }}>
           {NAV.map(({ href, label }) => {
             const active = pathname === href || (href !== '/' && pathname.startsWith(href))
             return (
-              <Link key={href} href={href} style={{
-                padding: '0 12px',
-                height: 56,
-                display: 'flex', alignItems: 'center',
-                fontSize: 13,
-                fontWeight: active ? 600 : 400,
-                textDecoration: 'none',
-                color: active ? 'var(--text)' : 'var(--muted)',
-                borderBottom: active ? '2px solid var(--accent)' : '2px solid transparent',
-                transition: 'color .15s, border-color .15s',
-                whiteSpace: 'nowrap',
-              }} onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--muted2)' }}
-                 onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.color = 'var(--muted)' }}>
+              <Link key={href} href={href} className={`nv${active ? ' nv-active' : ''}`}
+                style={{
+                  padding: '0 14px',
+                  height: 58,
+                  display: 'flex', alignItems: 'center',
+                  fontSize: 13,
+                  fontWeight: active ? 600 : 400,
+                  textDecoration: 'none',
+                  color: active ? 'var(--text)' : 'var(--muted2)',
+                  position: 'relative',
+                  transition: 'color .15s',
+                  whiteSpace: 'nowrap',
+                }}>
                 {label}
               </Link>
             )
           })}
         </nav>
 
-        {/* Search */}
-        <form onSubmit={onSearch} style={{ marginLeft: 'auto', flexShrink: 0 }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            background: focused ? 'var(--surface2)' : 'transparent',
-            border: `1px solid ${focused ? 'var(--border2)' : 'var(--border)'}`,
-            borderRadius: 8,
-            padding: '0 10px',
-            height: 34,
-            width: focused ? 220 : 150,
-            transition: 'width .2s ease, background .2s, border-color .2s',
-          }}>
-            <svg width="13" height="13" fill="none" stroke={focused ? 'var(--muted2)' : 'var(--muted)'} strokeWidth="2" viewBox="0 0 24 24" style={{ flexShrink: 0, transition: 'stroke .2s' }}>
-              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-            </svg>
-            <input
-              ref={inputRef}
-              value={q}
-              onChange={e => setQ(e.target.value)}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              placeholder={focused ? 'Buscar películas, series...' : 'Buscar... /'}
-              style={{
-                background: 'transparent', border: 'none', outline: 'none',
-                color: 'var(--text)', fontSize: 12, width: '100%',
-                fontFamily: 'inherit',
-              }}
-            />
-            {q && (
-              <button type="button" onClick={() => setQ('')}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 12, padding: 0, lineHeight: 1, flexShrink: 0 }}>
-                ✕
-              </button>
-            )}
-          </div>
-        </form>
+        {/* Right side — flex:1, justify-end */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 10 }}>
+          {/* Search box */}
+          <form onSubmit={onSearch}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: focused ? 'var(--surface2)' : 'rgba(255,255,255,0.04)',
+              border: `1px solid ${focused ? 'var(--border2)' : 'var(--border)'}`,
+              borderRadius: 8,
+              padding: '0 10px',
+              height: 34,
+              width: focused ? 210 : 140,
+              transition: 'width .2s ease, background .2s, border-color .2s',
+            }}>
+              <svg width="12" height="12" fill="none" stroke={focused ? 'var(--muted2)' : 'var(--muted)'} strokeWidth="2" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input
+                ref={inputRef}
+                value={q}
+                onChange={e => setQ(e.target.value)}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                placeholder={focused ? 'Buscar películas, series...' : 'Buscar… /'}
+                style={{
+                  background: 'transparent', border: 'none', outline: 'none',
+                  color: 'var(--text)', fontSize: 12, width: '100%',
+                  fontFamily: 'inherit',
+                }}
+              />
+              {q && (
+                <button type="button" onClick={() => setQ('')}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 11, padding: 0, lineHeight: 1, flexShrink: 0 }}>
+                  ✕
+                </button>
+              )}
+            </div>
+          </form>
 
+          {/* Mi lista — solid amber button */}
+          <Link href="/watchlist" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            background: '#d4982a', color: '#0d0b08',
+            fontWeight: 700, fontSize: 12,
+            padding: '0 16px', height: 34, borderRadius: 8,
+            textDecoration: 'none', whiteSpace: 'nowrap',
+            letterSpacing: '0.01em',
+            transition: 'background .15s',
+          }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Mi lista
+          </Link>
+        </div>
       </div>
+
+      <style>{`
+        .nv::after {
+          content: '';
+          position: absolute;
+          bottom: 0; left: 14px; right: 14px;
+          height: 1.5px;
+          background: var(--accent);
+          opacity: 0;
+          transition: opacity .15s;
+        }
+        .nv-active::after { opacity: 1; }
+        .nv:hover { color: var(--text) !important; }
+        .nv:hover::after { opacity: 0.5; }
+        .nv-active:hover::after { opacity: 1; }
+      `}</style>
     </header>
   )
 }
