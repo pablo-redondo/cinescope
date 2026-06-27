@@ -94,7 +94,7 @@ function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
           </div>
 
           {/* Título */}
-          <h1 style={{ fontSize: 'clamp(28px, 4vw, 62px)', fontWeight: 900, lineHeight: 0.92, letterSpacing: '-2px', color: '#fff', margin: 0 }}>
+          <h1 style={{ fontFamily: 'var(--font-bebas), sans-serif', fontSize: 'clamp(48px, 6vw, 88px)', fontWeight: 400, lineHeight: 0.9, letterSpacing: '2px', color: '#fff', margin: 0 }}>
             {movie.Title}
           </h1>
 

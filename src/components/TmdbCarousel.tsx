@@ -126,35 +126,51 @@ export default function TmdbCarousel({ items, title, subtitle, type, viewAllHref
   return (
     <section>
       {/* Header row */}
-      <div className="page-offset" style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-          <div style={{ width: 2, height: 14, borderRadius: 2, flexShrink: 0, background: 'var(--accent)' }} />
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.1px', whiteSpace: 'nowrap' }}>{title}</h2>
-          {subtitle && <p style={{ fontSize: 11, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{subtitle}</p>}
-        </div>
+      <div className="page-offset" style={{ marginBottom: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 10 }}>
+          <div style={{ minWidth: 0 }}>
+            {subtitle && (
+              <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 4 }}>
+                {subtitle}
+              </p>
+            )}
+            <h2 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(18px, 2vw, 24px)',
+              fontWeight: 700,
+              fontStyle: 'italic',
+              color: 'var(--text)',
+              letterSpacing: '-0.3px',
+              lineHeight: 1.15,
+              whiteSpace: 'nowrap',
+            }}>{title}</h2>
+          </div>
 
-        <div style={{ display: 'flex', gap: 4, flexShrink: 0, alignItems: 'center' }}>
-          {viewAllHref && (
-            <Link href={viewAllHref} style={{ fontSize: 11, color: 'var(--muted)', textDecoration: 'none', fontWeight: 600, marginRight: 8, whiteSpace: 'nowrap' }}>
-              Ver todo →
-            </Link>
-          )}
-          {(['←', '→'] as const).map((arrow, i) => {
-            const active = i === 0 ? canLeft : canRight
-            return (
-              <button key={arrow} onClick={() => scroll(i === 0 ? 'left' : 'right')} disabled={!active}
-                style={{
-                  width: 28, height: 28, borderRadius: '50%',
-                  border: '1px solid var(--border)',
-                  background: active ? 'var(--surface2)' : 'transparent',
-                  color: active ? 'var(--muted2)' : 'rgba(255,255,255,0.1)',
-                  fontSize: 12, cursor: active ? 'pointer' : 'default',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  transition: 'all .15s',
-                }}>{arrow}</button>
-            )
-          })}
+          <div style={{ display: 'flex', gap: 4, flexShrink: 0, alignItems: 'center', paddingBottom: 2 }}>
+            {viewAllHref && (
+              <Link href={viewAllHref} style={{ fontSize: 11, color: 'var(--muted)', textDecoration: 'none', fontWeight: 600, marginRight: 8, whiteSpace: 'nowrap' }}>
+                Ver todo →
+              </Link>
+            )}
+            {(['←', '→'] as const).map((arrow, i) => {
+              const active = i === 0 ? canLeft : canRight
+              return (
+                <button key={arrow} onClick={() => scroll(i === 0 ? 'left' : 'right')} disabled={!active}
+                  style={{
+                    width: 28, height: 28, borderRadius: '50%',
+                    border: '1px solid var(--border)',
+                    background: active ? 'var(--surface2)' : 'transparent',
+                    color: active ? 'var(--muted2)' : 'rgba(255,255,255,0.1)',
+                    fontSize: 12, cursor: active ? 'pointer' : 'default',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    transition: 'all .15s',
+                  }}>{arrow}</button>
+              )
+            })}
+          </div>
         </div>
+        {/* Divider */}
+        <div style={{ height: 1, background: 'var(--border)' }} />
       </div>
 
       {/* Scroll row */}
