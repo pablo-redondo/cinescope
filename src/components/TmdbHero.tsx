@@ -76,9 +76,9 @@ function TmdbHeroInner({ items, type }: Props) {
       </div>
 
       {/* Gradient overlays */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'linear-gradient(to right, rgba(9,9,15,0.95) 0%, rgba(9,9,15,0.7) 45%, rgba(9,9,15,0.2) 75%, transparent 100%)' }} />
-      <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'linear-gradient(to top, rgba(9,9,15,1) 0%, transparent 35%)' }} />
-      <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'linear-gradient(to bottom, rgba(9,9,15,0.4) 0%, transparent 20%)' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'linear-gradient(to right, rgba(13,11,8,0.95) 0%, rgba(13,11,8,0.7) 45%, rgba(13,11,8,0.2) 75%, transparent 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'linear-gradient(to top, rgba(13,11,8,1) 0%, transparent 35%)' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'linear-gradient(to bottom, rgba(13,11,8,0.4) 0%, transparent 20%)' }} />
 
       {/* Content */}
       <div className="page-inner" style={{
@@ -97,16 +97,16 @@ function TmdbHeroInner({ items, type }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 5,
-              background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)',
-              color: 'var(--text)', fontSize: 10, fontWeight: 700,
+              background: 'rgba(212,152,42,0.1)', border: '1px solid rgba(212,152,42,0.3)',
+              color: '#d4982a', fontSize: 10, fontWeight: 700,
               padding: '3px 10px', borderRadius: 4, letterSpacing: '0.08em', textTransform: 'uppercase',
             }}>
               <span style={{ width: 4, height: 4, background: 'var(--accent)', borderRadius: '50%', animation: 'heroHbeat 2s infinite' }} />
               Destacado
             </span>
-            {year && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>{year}</span>}
+            {year && <span style={{ color: 'rgba(240,236,227,0.45)', fontSize: 12 }}>{year}</span>}
             {genres.map(g => (
-              <span key={g} style={{ color: 'rgba(255,255,255,0.35)', fontSize: 11 }}>{g}</span>
+              <span key={g} style={{ color: 'rgba(240,236,227,0.38)', fontSize: 11 }}>{g}</span>
             ))}
           </div>
 
@@ -142,7 +142,7 @@ function TmdbHeroInner({ items, type }: Props) {
           {/* CTA */}
           <Link href={href} style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: '#fff', color: '#000', fontWeight: 800, fontSize: 13,
+            background: '#d4982a', color: '#0d0b08', fontWeight: 800, fontSize: 13,
             padding: '11px 22px', borderRadius: 8, textDecoration: 'none',
             transition: 'background .15s',
           }}>
@@ -167,10 +167,10 @@ function TmdbHeroInner({ items, type }: Props) {
                 position: 'relative', flexShrink: 0,
                 width: active ? 46 : 38,
                 aspectRatio: '2/3', borderRadius: 6, overflow: 'hidden',
-                border: active ? '2px solid var(--accent)' : '1px solid rgba(255,255,255,0.08)',
+                border: active ? '2px solid var(--accent)' : '1px solid rgba(212,152,42,0.12)',
                 background: 'var(--surface2)', cursor: 'pointer', padding: 0,
                 opacity: active ? 1 : 0.38,
-                boxShadow: active ? '0 0 12px rgba(255,255,255,0.15)' : 'none',
+                boxShadow: active ? '0 0 12px rgba(212,152,42,0.3)' : 'none',
                 transition: 'width .3s, opacity .25s, border-color .25s, box-shadow .25s',
               }}>
               {p && <Image src={p} alt={m.title ?? m.name ?? ''} fill sizes="46px" style={{ objectFit: 'cover' }} />}

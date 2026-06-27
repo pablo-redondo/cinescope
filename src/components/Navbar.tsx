@@ -56,13 +56,15 @@ export default function Navbar() {
       }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0, marginRight: 28 }}>
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <rect x="3" y="7" width="26" height="18" rx="3" stroke="rgba(255,255,255,0.45)" strokeWidth="1.5"/>
-            <path d="M13 12l8 4-8 4V12z" fill="rgba(255,255,255,0.8)"/>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0, marginRight: 28 }}>
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="12" stroke="#d4982a" strokeWidth="1.8" opacity="0.85"/>
+            <circle cx="16" cy="16" r="6.5" stroke="#d4982a" strokeWidth="1.4" opacity="0.55"/>
+            <circle cx="16" cy="16" r="2.5" fill="#d4982a"/>
+            <circle cx="13" cy="13" r="1.2" fill="#f0ece3" opacity="0.5"/>
           </svg>
-          <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text)', letterSpacing: '-0.3px' }}>
-            La<span style={{ color: 'var(--accent)' }}> Sala</span>
+          <span style={{ fontWeight: 700, fontSize: 14, color: 'var(--text)', letterSpacing: '2px', textTransform: 'uppercase', fontFamily: 'Georgia, serif' }}>
+            La Sala
           </span>
         </Link>
 

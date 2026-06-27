@@ -113,7 +113,7 @@ export default async function TVDetailPage({ params }: { params: Promise<{ id: s
                     <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>/10 IMDb</span>
                   </div>
                   {ratingPercent !== null && (
-                    <div style={{ width: 52, height: 4, background: 'rgba(255,255,255,0.12)', borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ width: 52, height: 4, background: 'rgba(212,152,42,0.2)', borderRadius: 2, overflow: 'hidden' }}>
                       <div style={{ width: `${ratingPercent}%`, height: '100%', background: 'var(--accent)', borderRadius: 2 }} />
                     </div>
                   )}

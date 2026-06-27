@@ -116,7 +116,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
                     <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 13 }}>/10 IMDb</span>
                   </div>
                   {ratingPercent !== null && (
-                    <div style={{ width: 52, height: 4, background: 'rgba(255,255,255,0.12)', borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ width: 52, height: 4, background: 'rgba(212,152,42,0.2)', borderRadius: 2, overflow: 'hidden' }}>
                       <div style={{ width: `${ratingPercent}%`, height: '100%', background: 'var(--accent)', borderRadius: 2 }} />
                     </div>
                   )}
@@ -180,7 +180,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
               <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{tmdb.collection.parts.length} películas</p>
             </div>
             <Link href={`/tmdb/collection/${tmdb.collection.id}`} style={{
-              background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.12)',
+              background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(212,152,42,0.2)',
               color: 'var(--accent)', fontSize: 12, fontWeight: 700,
               padding: '8px 16px', borderRadius: 8, textDecoration: 'none', flexShrink: 0,
             }}>

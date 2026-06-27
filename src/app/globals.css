@@ -3,22 +3,22 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Palette — deep space, futuristic */
-  --bg:        #060609;
-  --surface:   #0c0c16;
-  --surface2:  #131322;
-  --surface3:  #1c1c30;
-  --border:    rgba(255,255,255,0.07);
-  --border2:   rgba(255,255,255,0.13);
+  /* Palette — warm cinema dark */
+  --bg:        #0d0b08;
+  --surface:   #131009;
+  --surface2:  #1c180f;
+  --surface3:  #252017;
+  --border:    rgba(212,152,42,0.1);
+  --border2:   rgba(212,152,42,0.2);
 
-  /* Accent — clean white */
-  --accent:    #ffffff;
-  --accent2:   rgba(255,255,255,0.09);
+  /* Accent — golden amber */
+  --accent:    #d4982a;
+  --accent2:   rgba(212,152,42,0.1);
 
   /* Text */
-  --text:      #eeeeff;
-  --muted:     #4e4e70;
-  --muted2:    #8080a8;
+  --text:      #f0ece3;
+  --muted:     #5c5448;
+  --muted2:    #9a8e7c;
 
   /* Layout */
   --page-pad:  clamp(16px, 3.5vw, 72px);
@@ -55,8 +55,8 @@ h1, h2, h3 {
 
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
+::-webkit-scrollbar-thumb { background: rgba(212,152,42,0.15); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(212,152,42,0.28); }
 
 /* ── Focus ring ────────────────────────────────────────────────────────────── */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }

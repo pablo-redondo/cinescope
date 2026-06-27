@@ -54,9 +54,9 @@ function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
           />
         )}
       </div>
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(to right, #141820 20%, rgba(20,24,32,0.82) 52%, rgba(20,24,32,0.25) 78%, transparent)' }} />
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(to top, #141820 0%, transparent 40%)' }} />
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(to bottom, #141820 0%, transparent 12%)' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(to right, #0d0b08 20%, rgba(13,11,8,0.82) 52%, rgba(13,11,8,0.25) 78%, transparent)' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(to top, #0d0b08 0%, transparent 40%)' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(to bottom, #0d0b08 0%, transparent 12%)' }} />
 
       {/* ── Contenido principal (flujo normal) ── */}
       <div className="page-inner" style={{
@@ -77,8 +77,8 @@ function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 5,
-              background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.15)',
-              color: 'var(--accent)', fontSize: 10, fontWeight: 800,
+              background: 'rgba(212,152,42,0.1)', border: '1px solid rgba(212,152,42,0.3)',
+              color: '#d4982a', fontSize: 10, fontWeight: 800,
               padding: '3px 10px', borderRadius: 999, letterSpacing: '0.1em', textTransform: 'uppercase',
             }}>
               <span style={{ width: 5, height: 5, background: 'var(--accent)', borderRadius: '50%', animation: 'pulse 2s infinite' }} />
@@ -148,14 +148,14 @@ function HeroCarouselInner({ movies }: { movies: OmdbDetail[] }) {
           {/* Botones */}
           <div style={{ display: 'flex', gap: 10, paddingTop: 4 }}>
             <Link href={`/movie/${movie.imdbID}`} style={{
-              background: '#fff', color: '#000', fontWeight: 800, fontSize: 13,
+              background: '#d4982a', color: '#0d0b08', fontWeight: 800, fontSize: 13,
               padding: '11px 26px', borderRadius: 10, textDecoration: 'none',
             }}>
               ▶ Ver detalles
             </Link>
             <Link href={`/movie/${movie.imdbID}`} style={{
-              background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
-              color: '#fff', fontWeight: 600, fontSize: 13,
+              background: 'rgba(212,152,42,0.08)', border: '1px solid rgba(212,152,42,0.2)',
+              color: '#f0ece3', fontWeight: 600, fontSize: 13,
               padding: '11px 22px', borderRadius: 10, textDecoration: 'none',
               backdropFilter: 'blur(12px)',
             }}>

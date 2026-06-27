@@ -66,8 +66,8 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
           <Image src={backdrop ?? poster!} alt="" fill priority sizes="100vw"
             style={{ objectFit: 'cover', filter: 'brightness(0.3) saturate(1.2)' }} />
         )}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(6,6,9,0.1) 0%, rgba(6,6,9,0.55) 60%, var(--bg) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, rgba(6,6,9,0.25) 50%, transparent 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,11,8,0.1) 0%, rgba(13,11,8,0.55) 60%, var(--bg) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, rgba(13,11,8,0.25) 50%, transparent 100%)' }} />
       </div>
 
       <div className="page-inner" style={{ marginTop: -420, position: 'relative', zIndex: 10 }}>
@@ -86,7 +86,7 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
             {show.genres?.length > 0 && (
               <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                 {show.genres.slice(0, 4).map(g => (
-                  <Link key={g.id} href={`/discover?genre=${g.id}&type=tv`} style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 4, textDecoration: 'none' }}>{g.name}</Link>
+                  <Link key={g.id} href={`/discover?genre=${g.id}&type=tv`} style={{ background: 'rgba(212,152,42,0.08)', border: '1px solid rgba(212,152,42,0.12)', color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 4, textDecoration: 'none' }}>{g.name}</Link>
                 ))}
               </div>
             )}
@@ -110,7 +110,7 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
               {show.first_air_date && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>{show.first_air_date.slice(0, 4)}</span>}
               {show.number_of_seasons > 0 && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>· {show.number_of_seasons} temp. · {show.number_of_episodes} ep.</span>}
               {contentRating && (
-                <span style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>{contentRating}</span>
+                <span style={{ background: 'rgba(212,152,42,0.08)', border: '1px solid rgba(212,152,42,0.2)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>{contentRating}</span>
               )}
               {show.status && (
                 <span style={{ background: isEnded ? 'rgba(239,68,68,0.12)' : 'rgba(34,197,94,0.12)', border: `1px solid ${isEnded ? 'rgba(239,68,68,0.25)' : 'rgba(34,197,94,0.25)'}`, color: isEnded ? '#fca5a5' : '#86efac', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>
@@ -239,7 +239,7 @@ export default async function TmdbTVPage({ params }: { params: Promise<{ id: str
                         <p style={{ fontSize: 10, color: 'var(--muted)' }}>{new Date(r.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'long' })}</p>
                       </div>
                       {r.author_details?.rating != null && (
-                        <span style={{ marginLeft: 'auto', background: 'var(--accent2)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 4, flexShrink: 0 }}>★ {r.author_details.rating}/10</span>
+                        <span style={{ marginLeft: 'auto', background: 'var(--accent2)', border: '1px solid rgba(212,152,42,0.2)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 4, flexShrink: 0 }}>★ {r.author_details.rating}/10</span>
                       )}
                     </div>
                     <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.65, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{r.content}</p>

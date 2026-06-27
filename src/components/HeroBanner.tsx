@@ -25,9 +25,9 @@ export default function HeroBanner({ movie }: { movie: OmdbDetail }) {
       )}
 
       {/* Gradientes */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #141820 30%, rgba(20,24,32,0.7) 65%, transparent)' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #141820 0%, transparent 55%)' }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #141820 0%, transparent 20%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #0d0b08 30%, rgba(13,11,8,0.7) 65%, transparent)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0d0b08 0%, transparent 55%)' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, #0d0b08 0%, transparent 20%)' }} />
 
       {/* Contenido */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center' }}>
@@ -46,8 +46,8 @@ export default function HeroBanner({ movie }: { movie: OmdbDetail }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <span style={{
                 display: 'inline-flex', alignItems: 'center', gap: 6,
-                background: 'rgba(255,255,255,0.09)', border: '1px solid rgba(255,255,255,0.18)',
-                color: 'var(--accent)', fontSize: 10, fontWeight: 800,
+                background: 'rgba(212,152,42,0.1)', border: '1px solid rgba(212,152,42,0.3)',
+                color: '#d4982a', fontSize: 10, fontWeight: 800,
                 padding: '4px 12px', borderRadius: 999, letterSpacing: '0.12em', textTransform: 'uppercase',
               }}>
                 <span style={{ width: 5, height: 5, background: 'var(--accent)', borderRadius: '50%', animation: 'pulse 2s infinite' }} />
@@ -82,8 +82,8 @@ export default function HeroBanner({ movie }: { movie: OmdbDetail }) {
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {genres.map(g => (
                   <span key={g} style={{
-                    background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-                    color: 'var(--muted)', fontSize: 12, fontWeight: 500,
+                    background: 'rgba(212,152,42,0.06)', border: '1px solid rgba(212,152,42,0.15)',
+                    color: 'var(--muted2)', fontSize: 12, fontWeight: 500,
                     padding: '4px 14px', borderRadius: 999,
                   }}>{g}</span>
                 ))}
@@ -101,16 +101,16 @@ export default function HeroBanner({ movie }: { movie: OmdbDetail }) {
             {/* Botones */}
             <div style={{ display: 'flex', gap: 10, paddingTop: 4 }}>
               <Link href={`/movie/${movie.imdbID}`} style={{
-                background: '#fff', color: '#000', fontWeight: 800, fontSize: 13,
+                background: '#d4982a', color: '#0d0b08', fontWeight: 800, fontSize: 13,
                 padding: '12px 28px', borderRadius: 10, textDecoration: 'none',
                 letterSpacing: '0.01em',
-                boxShadow: '0 8px 32px rgba(255,255,255,0.12)',
+                boxShadow: '0 8px 32px rgba(212,152,42,0.25)',
               }}>
                 Ver detalles
               </Link>
               <Link href={`/movie/${movie.imdbID}`} style={{
-                background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.14)',
-                color: '#fff', fontWeight: 600, fontSize: 13,
+                background: 'rgba(212,152,42,0.08)', border: '1px solid rgba(212,152,42,0.2)',
+                color: '#f0ece3', fontWeight: 600, fontSize: 13,
                 padding: '12px 24px', borderRadius: 10, textDecoration: 'none',
                 backdropFilter: 'blur(12px)',
               }}>

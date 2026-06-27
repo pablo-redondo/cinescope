@@ -24,11 +24,11 @@ export default function MediaCard({ item }: { item: MediaItem }) {
         width: '100%',
         borderRadius: 12,
         overflow: 'hidden',
-        background: '#1a1f2e',
+        background: 'var(--surface2)',
         transform: hovered ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
         transition: 'transform .25s ease, box-shadow .25s ease',
         boxShadow: hovered
-          ? '0 24px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1)'
+          ? '0 24px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(212,152,42,0.18)'
           : '0 4px 16px rgba(0,0,0,0.4)',
       }}>
 
@@ -59,7 +59,7 @@ export default function MediaCard({ item }: { item: MediaItem }) {
             background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)',
             color: 'var(--accent)', fontSize: 11, fontWeight: 800,
             padding: '4px 8px', borderRadius: 8,
-            border: '1px solid rgba(255,255,255,0.12)',
+            border: '1px solid rgba(212,152,42,0.25)',
           }}>
             ★ {item.rating}
           </div>
