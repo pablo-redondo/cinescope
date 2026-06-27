@@ -76,8 +76,8 @@ export default async function TmdbMoviePage({ params }: { params: Promise<{ id: 
           <Image src={backdrop ?? poster!} alt="" fill priority sizes="100vw"
             style={{ objectFit: 'cover', filter: 'brightness(0.3) saturate(1.2)' }} />
         )}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(6,6,9,0.1) 0%, rgba(6,6,9,0.55) 60%, var(--bg) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, rgba(6,6,9,0.25) 50%, transparent 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,11,8,0.1) 0%, rgba(13,11,8,0.55) 60%, var(--bg) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, rgba(13,11,8,0.25) 50%, transparent 100%)' }} />
       </div>
 
       <div className="page-inner" style={{ marginTop: -420, position: 'relative', zIndex: 10 }}>
@@ -96,7 +96,7 @@ export default async function TmdbMoviePage({ params }: { params: Promise<{ id: 
             {movie.genres?.length > 0 && (
               <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
                 {movie.genres.slice(0, 4).map(g => (
-                  <Link key={g.id} href={`/discover?genre=${g.id}&type=movie`} style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 4, textDecoration: 'none' }}>{g.name}</Link>
+                  <Link key={g.id} href={`/discover?genre=${g.id}&type=movie`} style={{ background: 'rgba(212,152,42,0.08)', border: '1px solid rgba(212,152,42,0.12)', color: 'rgba(255,255,255,0.55)', fontSize: 10, fontWeight: 600, padding: '3px 10px', borderRadius: 4, textDecoration: 'none' }}>{g.name}</Link>
                 ))}
               </div>
             )}
@@ -120,7 +120,7 @@ export default async function TmdbMoviePage({ params }: { params: Promise<{ id: 
               {movie.release_date && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>{movie.release_date.slice(0, 4)}</span>}
               {movie.runtime && <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }}>· {movie.runtime} min</span>}
               {certification && (
-                <span style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>{certification}</span>
+                <span style={{ background: 'rgba(212,152,42,0.08)', border: '1px solid rgba(212,152,42,0.2)', color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 4 }}>{certification}</span>
               )}
             </div>
 
@@ -134,7 +134,7 @@ export default async function TmdbMoviePage({ params }: { params: Promise<{ id: 
               {trailerKey && <TrailerButton videoKey={trailerKey} />}
               <TmdbWatchlistButton tmdbId={movie.id} type="movie" title={movie.title} posterPath={movie.poster_path} year={movie.release_date?.slice(0, 4) ?? ''} rating={movie.vote_average > 0 ? movie.vote_average : null} />
               {movie.imdb_id && (
-                <Link href={`https://www.imdb.com/title/${movie.imdb_id}/`} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', fontSize: 12, fontWeight: 700, padding: '9px 16px', borderRadius: 8, textDecoration: 'none' }}>IMDb ↗</Link>
+                <Link href={`https://www.imdb.com/title/${movie.imdb_id}/`} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(212,152,42,0.08)', border: '1px solid rgba(212,152,42,0.2)', color: 'rgba(255,255,255,0.7)', fontSize: 12, fontWeight: 700, padding: '9px 16px', borderRadius: 8, textDecoration: 'none' }}>IMDb ↗</Link>
               )}
             </div>
           </div>
@@ -224,7 +224,7 @@ export default async function TmdbMoviePage({ params }: { params: Promise<{ id: 
                         <p style={{ fontSize: 10, color: 'var(--muted)' }}>{new Date(r.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'long' })}</p>
                       </div>
                       {r.author_details?.rating != null && (
-                        <span style={{ marginLeft: 'auto', background: 'var(--accent2)', border: '1px solid rgba(255,255,255,0.12)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 4, flexShrink: 0 }}>★ {r.author_details.rating}/10</span>
+                        <span style={{ marginLeft: 'auto', background: 'var(--accent2)', border: '1px solid rgba(212,152,42,0.2)', color: 'var(--accent)', fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 4, flexShrink: 0 }}>★ {r.author_details.rating}/10</span>
                       )}
                     </div>
                     <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.65, display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{r.content}</p>

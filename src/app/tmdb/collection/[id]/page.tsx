@@ -23,8 +23,8 @@ export default async function CollectionPage({ params }: { params: Promise<{ id:
         {backdrop && (
           <Image src={backdrop} alt="" fill priority sizes="100vw" style={{ objectFit: 'cover', filter: 'brightness(0.35) saturate(1.1)' }} />
         )}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(9,9,15,0.1) 0%, rgba(9,9,15,0.5) 60%, var(--bg) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, rgba(9,9,15,0.2) 50%, transparent 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,11,8,0.1) 0%, rgba(13,11,8,0.5) 60%, var(--bg) 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, rgba(13,11,8,0.2) 50%, transparent 100%)' }} />
         <div className="page-inner" style={{ position: 'absolute', bottom: 36, left: 0, right: 0 }}>
           <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6, opacity: 0.8 }}>Saga · {parts.length} películas</p>
           <h1 style={{ fontSize: 'clamp(26px, 5vw, 56px)', fontWeight: 900, color: '#fff', letterSpacing: '-1.5px', lineHeight: 0.95 }}>
@@ -55,7 +55,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ id:
                     #{i + 1}
                   </div>
                   {rating && (
-                    <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.12)' }}>
+                    <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.85)', color: 'var(--accent)', fontSize: 11, fontWeight: 800, padding: '4px 8px', borderRadius: 8, border: '1px solid rgba(212,152,42,0.2)' }}>
                       ★ {rating}
                     </div>
                   )}

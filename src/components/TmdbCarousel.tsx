@@ -55,7 +55,7 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
             color: 'var(--accent)', fontSize: 10, fontWeight: 800,
             padding: '3px 7px', borderRadius: 6,
             backdropFilter: 'blur(6px)',
-            border: '1px solid rgba(255,255,255,0.12)',
+            border: '1px solid rgba(212,152,42,0.25)',
           }}>★ {rating}</div>
         )}
 
@@ -90,7 +90,7 @@ function TmdbCard({ item, type }: { item: TmdbMovieResult; type: 'movie' | 'tv' 
           transition: box-shadow .3s ease;
         }
         .tmdb-card:hover .tmdb-card-img {
-          box-shadow: 0 16px 40px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.1);
+          box-shadow: 0 16px 40px rgba(0,0,0,0.75), 0 0 0 1px rgba(212,152,42,0.15);
         }
       `}</style>
     </Link>
@@ -128,7 +128,7 @@ export default function TmdbCarousel({ items, title, subtitle, type, viewAllHref
       {/* Header row */}
       <div className="page-offset" style={{ marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
-          <div style={{ width: 2, height: 14, borderRadius: 2, flexShrink: 0, background: 'rgba(255,255,255,0.25)' }} />
+          <div style={{ width: 2, height: 14, borderRadius: 2, flexShrink: 0, background: 'var(--accent)' }} />
           <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)', letterSpacing: '-0.1px', whiteSpace: 'nowrap' }}>{title}</h2>
           {subtitle && <p style={{ fontSize: 11, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{subtitle}</p>}
         </div>
